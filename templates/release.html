@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>一甫集代购达人 IF Collections Master Buyer</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+	<link rel="stylesheet" type="text/css" href="/{{ STATIC_URL }}css/main.min.css" />
+</head>
+<body class="bg-fff">
+	<!--header-->
+	<div class="header panel-header">
+		<div class="container">
+			<div class="top-bar clearfix">
+				<div class="logo fl">
+					<div class="m-btn"></div>
+					<a href="index.html"><img src="/{{ STATIC_URL }}images/logo-black.png" /></a>
+				</div>
+				<div class="panel-search">
+					<form class="search clearfix">
+						<input type="text" class="text fl" placeholder="开始在全世界淘你想淘" name="keywords">
+						<input type="submit" class="submit fl" value="搜索" name="submit">
+					</form>
+				</div>
+				<div class="hd-right fr hide">
+					<a href="#">达人入驻</a>
+					<a href="#">登录</a>
+					<a href="#" class="join">加入</a>
+				</div>
+				<div class="hd-right fr">
+					<a href="#" class="user">
+						<img src="/{{ STATIC_URL }}images/300x300.jpg">
+					</a>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<div class="nav">
+		<div class="container">
+			<a href="/index">首页</a>
+			<a href="news.html">海淘那些事</a>
+			<a href="man.html">达人发布台</a>
+			<a href="want.html">我要我要的</a>
+			<a href="reasoning.html">说说谁有理</a>
+		</div>
+	</div>
+	<!--main-->
+	<div class="main">
+		<div class="container release-container clearfix">
+			<form method="post">
+			<div class="item">
+				<label>头像：</label>
+				<div class="info infoIMG">
+					<img src="/{{ STATIC_URL }}images/300x300.jpg">
+					<div class="btn-upload"><input type="file" name="head_img">
+					<span>上传图片</span></div>
+				</div>
+			</div>
+			<div class="item">
+				<label>描述：</label>
+				<div class="info">
+					<textarea name="desc" class="textarea" placeholder="请输入描述内容" rows="5"></textarea>
+				</div>
+			</div>
+			<div class="item">
+				<label>擅长品类：<em>（最多选三项）</em></label>
+				<div class="info">
+					<label>
+						<input type="checkbox" name="goods">
+						奢侈品
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						服装 鞋帽 箱包
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						美妆 个护健康
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						玩具 母婴 儿童用品
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						食品 保健品 酒水
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						钟表 首饰
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						手机 摄影 数码
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						电器 电子配件 智能生活
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						家具 厨具  家装
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						电脑 办公
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						运动 户外
+					</label>
+					<label>
+						<input type="checkbox" name="goods">
+						汽车用品
+					</label>
+				</div>
+			</div>
+			<div class="item">
+				<label>单选产品主要来源地：</label>
+				<div class="info">
+					<label>
+						<input type="radio" name="source">
+						欧洲
+					</label>
+					<label>
+						<input type="radio" name="source">
+						美洲
+					</label>
+					<label>
+						<input type="radio" name="source">
+						大洋洲
+					</label>
+					<label>
+						<input type="radio" name="source">
+						亚洲
+					</label>
+					<label>
+						<input type="radio" name="source">
+						非洲
+					</label>
+					<span>（五大洲）</span>
+				</div>
+				<div class="info">
+					<label>
+						<input type="radio" name="pro">
+						美国
+					</label>
+					<label>
+						<input type="radio" name="source">
+						加拿大
+					</label>
+					<label>
+						<input type="radio" name="source">
+						英国
+					</label>
+					<label>
+						<input type="radio" name="source">
+						法国
+					</label>
+					<label>
+						<input type="radio" name="source">
+						意大利
+					</label>
+					<label>
+						<input type="radio" name="source">
+						德国
+					</label>
+					<label>
+						<input type="radio" name="source">
+						澳大利亚
+					</label>
+					<label>
+						<input type="radio" name="source">
+						新西兰
+					</label>
+					<label>
+						<input type="radio" name="source">
+						日本
+					</label>
+					<label>
+						<input type="radio" name="source">
+						韩国
+					</label>
+					<label>
+						<input type="radio" name="source">
+						港澳
+					</label>
+					<label>
+						<input type="radio" name="source">
+						中国
+					</label>
+					<span>（热门地区）</span>
+				</div>
+				<div class="info other">
+					<label>
+						<input type="text" placeholder="不在热门地区的，手动输入国名" name="source">
+					</label>
+					<span>（其他）</span>
+				</div>
+			</div>
+			<div class="item">
+				<label>供货形式：<em>（多选）</em></label>
+				<div class="info">
+					<label>
+						<input type="checkbox" name="delivery">
+						海外直邮
+					</label>
+					<label>
+						<input type="checkbox" name="delivery">
+						国内现货
+					</label>
+					<label>
+						<input type="checkbox" name="delivery">
+						人肉带回
+					</label>
+					<label>
+						<input type="checkbox" name="delivery">
+						物流转运
+					</label>
+					
+				</div>
+			</div>
+			<div class="item">
+				<label>服务内容：<em>（多选）</em></label>
+				<div class="info">
+					<label>
+						<input type="checkbox" name="service">
+						代购
+					</label>
+					<label>
+						<input type="checkbox" name="service">
+						拼单
+					</label>
+					<label>
+						<input type="checkbox" name="service">
+						代收转发
+					</label>
+					<label>
+						<input type="checkbox" name="service">
+						物流货代
+					</label>
+					
+				</div>
+			</div>
+			<div class="item">
+				<label>客服微信号：</label>
+				<div class="info">
+					<input type="text" placeholder="请输入微信号" class="text" name="wx">
+				</div>
+			</div>
+			<div class="item">
+				<label>客服QQ号：</label>
+				<div class="info">
+					<input type="text" placeholder="请输入QQ号" class="text" name="qq">
+				</div>
+			</div>
+			<div class="item">
+				<label>客服电话号码：</label>
+				<div class="info">
+					<input type="text" placeholder="请输入电话号码" class="text" name="phone">
+				</div>
+			</div>
+			<div class="item">
+				<label>客服电子邮箱：</label>
+				<div class="info">
+					<input type="text" placeholder="请输入电子邮箱" class="text" name="email">
+				</div>
+			</div>
+			<div class="item">
+				<label>网址：</label>
+				<div class="info">
+					<input type="text" placeholder="请输入网址" class="text" name="www">
+				</div>
+			</div>
+			<button type="submit" class="btn">提交</button>
+			</form>
+		</div>
+	</div>
+		
+	<!--footer-->
+	<div class="footer">
+		<div class="container">
+			版权所有&copy;2018 一甫集代购达人
+		</div>
+	</div>
+	<div class="m-mask"></div>
+	<script type="text/javascript" src="/{{ STATIC_URL }}js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="/{{ STATIC_URL }}js/main.js"></script>
+</body>
+</html>
