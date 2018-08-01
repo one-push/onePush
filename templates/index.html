@@ -40,7 +40,7 @@
 					<input type="submit" class="submit fl" value="搜索" name="submit">
 				</form>
 				<div class="area">
-					<a href="rankings.html"><span></span>国家与地区</a>
+					<a href="blogs/area"><span></span>国家与地区</a>
 				</div>
 			</div>
 		</div>
@@ -51,28 +51,28 @@
 		<div class="container">
 			<div class="panel-group clearfix">
 				<div class="item">
-					<a href="news.html">
+					<a href="blogs/news">
 						<img src="{{ STATIC_URL }}images/icon-item-1.png">
 						<span></span>
 						海淘那些事
 					</a>
 				</div>
 				<div class="item">
-					<a href="man.html">
+					<a href="blogs/man">
 						<img src="{{ STATIC_URL }}images/icon-item-2.png">
 						<span></span>
 						达人发布台
 					</a>
 				</div>
 				<div class="item">
-					<a href="want.html">
+					<a href="blogs/want">
 						<img src="{{ STATIC_URL }}images/icon-item-3.png">
 						<span></span>
 						我要我要的
 					</a>
 				</div>
 				<div class="item">
-					<a href="theory.html">
+					<a href="blogs/theory">
 						<img src="{{ STATIC_URL }}images/icon-item-4.png">
 						<span></span>
 						说说谁有理
@@ -187,8 +187,8 @@
 		<div class="panel-more">
 			<a href="#">查看更多</a>
 		</div>
-		<div class="panel-code" style="background:url(images/banner.jpg) no-repeat top center;">
-			<div class="item">
+		<div class="panel-code" style="background:url({{ STATIC_URL }}images/banner.jpg) no-repeat top center;">
+            <div class="item">
 				<img src="{{ STATIC_URL }}images/qrcode.png" />
 				<span>公众号二维码</span>
 			</div>

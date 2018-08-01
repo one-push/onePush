@@ -23,7 +23,7 @@ ENV = os.getenv('ENV', 'LOCAL').upper()
 
 db_host = '127.0.0.1'
 db_user = 'root'
-db_passwd = '123'
+db_passwd = '123456'
 
 # CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 # CELERY_BROKER_URL = 'redis://localhost//'
@@ -160,7 +160,6 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-# STATIC_URL = '/static/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

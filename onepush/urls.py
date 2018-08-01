@@ -28,7 +28,7 @@ urlpatterns = [
     # url(r'^$', TemplateView.as_view(template_name="index.html")),
     url(r'/?', include('account.urls')),
     url(r'accounts/', include('account.urls')),
-
+    url(r'blogs/', include('blog.urls')),
 ]
 
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

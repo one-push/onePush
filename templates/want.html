@@ -1,246 +1,194 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>一甫集代购达人 IF Collections Master Buyer</title>
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
-	<link rel="stylesheet" type="text/css" href="dist/css/main.min.css" />
-</head>
-<body class="bg-fff">
-	<!--header-->
-	<div class="header panel-header">
-		<div class="container">
-			<div class="top-bar clearfix">
-				<div class="logo fl">
-					<div class="m-btn"></div>
-					<a href="index.html"><img src="images/logo-black.png" /></a>
-				</div>
-				<div class="panel-search">
-					<form class="search clearfix">
-						<input type="text" class="text fl" placeholder="开始在全世界淘你想淘" name="keywords">
-						<input type="submit" class="submit fl" value="搜索" name="submit">
-					</form>
-				</div>
-				<div class="hd-right fr">
-					<a href="#">达人入驻</a>
-					<a href="#">登录</a>
-					<a href="#" class="join">加入</a>
-				</div>
-				<div class="hd-right fr hide">
-					<a href="#" class="user">
-						<img src="images/300x300.jpg">
-					</a>
-				</div>
-			</div>
-			
-		</div>
-	</div>
-	<div class="nav">
-		<div class="container">
-			<a href="index.html">首页</a>
-			<a href="news.html">海淘那些事</a>
-			<a href="man.html">达人发布台</a>
-			<a href="want.html" class="active">我要我要的</a>
-			<a href="reasoning.html">说说谁有理</a>
-		</div>
-	</div>
-	<!--main-->
-	<div class="main">
+{% extends 'base.html' %}
 
-		<div class="cont-text">
-			<h1>踏破铁鞋无觅处，得来就靠这一贴。说出你要的，满足你心愿的天使就会到来。</h1>
-		</div>
+{% block main-menu-want %}
+    <a href="want" class="active">我要我要的</a>
+{% endblock %}
 
-		<div class="container clearfix">
-			<div class="news-wrap clearfix">
-				<div class="aside-type fl">
-					<dl>
-						<dt><a href="#" class="active">全部</a></dt>
-					</dl>
-					<dl>
-						<dt><a href="#">关于</a></dt>
-						<dd><a href="#">产品</a></dd>
-						<dd><a href="#">物流</a></dd>
-					</dl>
-					<dl>
-						<dt><a href="#">来源于</a></dt>
-						<dd><a href="#">加拿大</a></dd>
-						<dd><a href="#">美国</a></dd>
-						<dd><a href="#">英国</a></dd>
-						<dd><a href="#">法国</a></dd>
-						<dd><a href="#">意大利</a></dd>
-						<dd><a href="#">德国</a></dd>
-						<dd><a href="#">澳大利亚</a></dd>
-						<dd><a href="#">新西兰</a></dd>
-						<dd><a href="#">日本</a></dd>
-						<dd><a href="#">韩国</a></dd>
-						<dd><a href="#">港澳</a></dd>
-						<dd><a href="#">中国</a></dd>
+{% block main-big-title %}
+    <div class="cont-text">
+        <h1>踏破铁鞋无觅处，得来就靠这一贴。说出你要的，满足你心愿的天使就会到来。</h1>
+    </div>
+{% endblock %}
 
-						<dd><a href="#">美洲区</a></dd>
-						<dd><a href="#">欧洲区</a></dd>
-						<dd><a href="#">大洋洲</a></dd>
-						<dd><a href="#">亚洲区</a></dd>
-						<dd><a href="#">非洲区</a></dd>
-					</dl>
-				</div>
-				<div class="news-list fr">
-					<ul>
-						<li>
-							<h4><a href="news-detail.html">国家统计局发布5月经济数据 5月CPI同比上涨1.8%</a></h4>
-							<p> 国家统计局9日发布数据显示，5月份，居民消费价格同比涨幅与上月持平，工业品市场价格环比由降转升，物价总体处于温和上涨范围之内。</p>
-							<span>2018-06-09 12:00:30</span>
-						</li>
-						<li>
-							<h4><a href="news-detail.html">“六大门派围攻光明顶”,这张照片堪称G7峰会全场最佳!</a></h4>
-							<p> 德国总理默克尔的团队9日晚在社交媒体发布一张七国集团峰会的照片，默克尔双手架于桌子上，几国领导人围特朗普而站，颇有“围攻”特朗普之势...</p>
-							<span>2018-06-09 12:00:30</span>
-						</li>
-						<li>
-							<h4><a href="news-detail.html">国税地税机构合并信息不断释出:安徽、内蒙古已研究落实</a></h4>
-							<p> 其实大家一看到代购两个字就从内心无意识的给别人定义其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-							<span>2018-06-09 12:00:30</span>
-						</li>
-						<li>
-							<h4><a href="news-detail.html">中国已拥有52项“世界遗产”，名列世界第二</a></h4>
-							<p> 经济日报北京6月9日讯 （记者黄俊毅）记者从9日举行的2018年文化和自然遗产日大会获悉：目前，我国已拥有52项“世界遗产”，名列世界第二...</p>
-							<span>2018-06-09 12:00:30</span>
-						</li>
-						<li>
-							<h4><a href="news-detail.html">天然气批发价改革将致气价上涨？ 专家：影响不大</a></h4>
-							<p> 据中国之声《新闻纵横》报道，前段时间，不少地方的市民为了买天然气排起队来，甚至有的地方凌晨就有人带着马扎排队。这都是源自一则天然气要涨价的消息，而消息的根源，是今天正式开始实施的理顺居民用气门站价格方案 。...</p>
-							<span>2018-06-09 12:00:30</span>
-						</li>
-					</ul>
-				</div>
-				<div class="panel-paging">
-					<a href="#">1</a>
-					<a href="#" class="active">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-				</div>
-			</div>
-			<div class="release-container news-container clearfix">
+{% block main-body %}
+    <div class="container clearfix">
+        <div class="news-wrap clearfix">
+            <div class="aside-type fl">
+                <dl>
+                    <dt><a href="#" class="active">全部</a></dt>
+                </dl>
+                <dl>
+                    <dt><a href="#">关于</a></dt>
+                    <dd><a href="#">产品</a></dd>
+                    <dd><a href="#">物流</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">来源于</a></dt>
+                    <dd><a href="#">加拿大</a></dd>
+                    <dd><a href="#">美国</a></dd>
+                    <dd><a href="#">英国</a></dd>
+                    <dd><a href="#">法国</a></dd>
+                    <dd><a href="#">意大利</a></dd>
+                    <dd><a href="#">德国</a></dd>
+                    <dd><a href="#">澳大利亚</a></dd>
+                    <dd><a href="#">新西兰</a></dd>
+                    <dd><a href="#">日本</a></dd>
+                    <dd><a href="#">韩国</a></dd>
+                    <dd><a href="#">港澳</a></dd>
+                    <dd><a href="#">中国</a></dd>
 
-				<div class="q-title">快速发布</div>
+                    <dd><a href="#">美洲区</a></dd>
+                    <dd><a href="#">欧洲区</a></dd>
+                    <dd><a href="#">大洋洲</a></dd>
+                    <dd><a href="#">亚洲区</a></dd>
+                    <dd><a href="#">非洲区</a></dd>
+                </dl>
+            </div>
+            <div class="news-list fr">
+                <ul>
+                    <li>
+                        <h4><a href="news-detail.html">国家统计局发布5月经济数据 5月CPI同比上涨1.8%</a></h4>
+                        <p> 国家统计局9日发布数据显示，5月份，居民消费价格同比涨幅与上月持平，工业品市场价格环比由降转升，物价总体处于温和上涨范围之内。</p>
+                        <span>2018-06-09 12:00:30</span>
+                    </li>
+                    <li>
+                        <h4><a href="news-detail.html">“六大门派围攻光明顶”,这张照片堪称G7峰会全场最佳!</a></h4>
+                        <p> 德国总理默克尔的团队9日晚在社交媒体发布一张七国集团峰会的照片，默克尔双手架于桌子上，几国领导人围特朗普而站，颇有“围攻”特朗普之势...</p>
+                        <span>2018-06-09 12:00:30</span>
+                    </li>
+                    <li>
+                        <h4><a href="news-detail.html">国税地税机构合并信息不断释出:安徽、内蒙古已研究落实</a></h4>
+                        <p> 其实大家一看到代购两个字就从内心无意识的给别人定义其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
+                        <span>2018-06-09 12:00:30</span>
+                    </li>
+                    <li>
+                        <h4><a href="news-detail.html">中国已拥有52项“世界遗产”，名列世界第二</a></h4>
+                        <p> 经济日报北京6月9日讯 （记者黄俊毅）记者从9日举行的2018年文化和自然遗产日大会获悉：目前，我国已拥有52项“世界遗产”，名列世界第二...</p>
+                        <span>2018-06-09 12:00:30</span>
+                    </li>
+                    <li>
+                        <h4><a href="news-detail.html">天然气批发价改革将致气价上涨？ 专家：影响不大</a></h4>
+                        <p> 据中国之声《新闻纵横》报道，前段时间，不少地方的市民为了买天然气排起队来，甚至有的地方凌晨就有人带着马扎排队。这都是源自一则天然气要涨价的消息，而消息的根源，是今天正式开始实施的理顺居民用气门站价格方案 。...</p>
+                        <span>2018-06-09 12:00:30</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-paging">
+                <a href="#">1</a>
+                <a href="#" class="active">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+            </div>
+        </div>
+        <div class="release-container news-container clearfix">
 
-				<div class="item">
-					<label>主题：</label>
-					<div class="info">
-						<input type="text" placeholder="请输入标题" class="text" name="pro">
-					</div>
-				</div>
-				<div class="item">
-					<label>关于：</label>
-					<div class="info">
-						<label>
-							<input type="radio" name="pro">
-							产品
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							物流
-						</label>
-					</div>
-				</div>
-				<div class="item">
-					<label>来源地：</label>
-					<div class="info">
-						<label>
-							<input type="radio" name="pro">
-							美国
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							加拿大
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							英国
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							法国
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							意大利
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							德国
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							澳大利亚
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							新西兰
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							日本
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							韩国
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							港澳
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							中国
-						</label>
-						<span>（热门地区）</span>
-					</div>
+            <div class="q-title">快速发布</div>
 
-					<div class="info">
-						<label>
-							<input type="radio" name="pro">
-							欧洲
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							美洲
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							大洋洲
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							亚洲
-						</label>
-						<label>
-							<input type="radio" name="pro">
-							非洲
-						</label>
-						<span>（五大洲）</span>
-					</div>
-				</div>
-				<div class="item">
-					<label>文章内容：</label>
-					<div class="info">
-						<textarea class="textarea" placeholder="请输入内容" rows="5"></textarea>
-					</div>
-				</div>
-				<button type="submit" class="btn">发布</button>
-			</div>
-		</div>
-	</div>
-		
-	<!--footer-->
-	<div class="footer">
-		<div class="container">
-			版权所有&copy;2018 一甫集代购达人
-		</div>
-	</div>	
-	<div class="m-mask"></div>
-	<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>	
-	<script type="text/javascript" src="js/main.js"></script>
-</body>
-</html>
+            <div class="item">
+                <label>主题：</label>
+                <div class="info">
+                    <input type="text" placeholder="请输入标题" class="text" name="pro">
+                </div>
+            </div>
+            <div class="item">
+                <label>关于：</label>
+                <div class="info">
+                    <label>
+                        <input type="radio" name="pro">
+                        产品
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        物流
+                    </label>
+                </div>
+            </div>
+            <div class="item">
+                <label>来源地：</label>
+                <div class="info">
+                    <label>
+                        <input type="radio" name="pro">
+                        美国
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        加拿大
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        英国
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        法国
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        意大利
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        德国
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        澳大利亚
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        新西兰
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        日本
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        韩国
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        港澳
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        中国
+                    </label>
+                    <span>（热门地区）</span>
+                </div>
+
+                <div class="info">
+                    <label>
+                        <input type="radio" name="pro">
+                        欧洲
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        美洲
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        大洋洲
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        亚洲
+                    </label>
+                    <label>
+                        <input type="radio" name="pro">
+                        非洲
+                    </label>
+                    <span>（五大洲）</span>
+                </div>
+            </div>
+            <div class="item">
+                <label>文章内容：</label>
+                <div class="info">
+                    <textarea class="textarea" placeholder="请输入内容" rows="5"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn">发布</button>
+        </div>
+    </div>
+{% endblock %}

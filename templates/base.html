@@ -1,0 +1,90 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>一甫集代购达人 IF Collections Master Buyer</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+	<link rel="stylesheet" type="text/css" href="{% static "css/main.min.css" %}" />
+</head>
+<body class="bg-fff">
+	<!--header-->
+    {% block header %}
+	<div class="header panel-header">
+		<div class="container">
+			<div class="top-bar clearfix">
+				<div class="logo fl">
+					<div class="m-btn"></div>
+					<a href="index.html"><img src="{% static "images/logo-black.png" %}" /></a>
+				</div>
+				<div class="panel-search">
+					<form class="search clearfix">
+						<input type="text" class="text fl" placeholder="开始在全世界淘你想淘" name="keywords">
+						<input type="submit" class="submit fl" value="搜索" name="submit">
+					</form>
+				</div>
+				<div class="hd-right fr">
+					<a href="#">达人入驻</a>
+					<a href="#">登录</a>
+					<a href="#" class="join">加入</a>
+				</div>
+				<div class="hd-right fr hide">
+					<a href="#" class="user">
+						<img src="{% static "images/300x300.jpg" %}">
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+    {% endblock %}
+
+	<div class="nav">
+		<div class="container">
+            {% block main-menu-index %}
+			<a href="/">首页</a>
+            {% endblock %}
+            {% block main-menu-news %}
+			<a href="news">海淘那些事</a>
+            {% endblock %}
+            {% block main-menu-man %}
+			<a href="man">达人发布台</a>
+            {% endblock %}
+            {% block main-menu-want %}
+			<a href="want">我要我要的</a>
+            {% endblock %}
+            {% block main-menu-theory %}
+			<a href="theory">说说谁有理</a>
+            {% endblock %}
+		</div>
+	</div>
+
+    <!--main-->
+	<div class="main">
+
+        {% block main-big-title %}
+		<div class="cont-text">
+			<h1>几多欢乐，几多愁。分享您的海淘经验，燃烧自已，照亮他人。</h1>
+        </div>
+        {% endblock %}
+
+		<div class="container clearfix">
+
+            {% block main-body %}
+			<!-- body -->
+		    {% endblock main-body %}
+        </div>
+	</div>
+
+    {% block footer %}
+	<div class="footer">
+		<div class="container">
+			版权所有&copy;2018 一甫集代购达人 IF
+		</div>
+	</div>
+	<div class="m-mask"></div>
+    <script type="text/javascript" src="{% static "js/jquery-1.8.3.min.js"  %}"></script>
+	<script type="text/javascript" src="{% static "js/main.js" %}"></script>
+    {% endblock %}
+</body>
+</html>
