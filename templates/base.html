@@ -45,16 +45,16 @@
 			<a href="/">首页</a>
             {% endblock %}
             {% block main-menu-news %}
-			<a href="news">海淘那些事</a>
+			<a href="/blogs/block?block=news">海淘那些事</a>
             {% endblock %}
             {% block main-menu-man %}
-			<a href="man">达人发布台</a>
+			<a href="/blogs/block?block=man">达人发布台</a>
             {% endblock %}
             {% block main-menu-want %}
-			<a href="want">我要我要的</a>
+			<a href="/blogs/block?block=want">我要我要的</a>
             {% endblock %}
             {% block main-menu-theory %}
-			<a href="theory">说说谁有理</a>
+			<a href="{% url 'theory' %}">说说谁有理</a>
             {% endblock %}
 		</div>
 	</div>

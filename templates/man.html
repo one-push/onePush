@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main-menu-man %}
-    <a href="man" class="active">达人发布台</a>
+    <a href="block?block=man" class="active">达人发布台</a>
 {% endblock %}
 
 {% block main-big-title %}
@@ -14,62 +14,44 @@
     <div class="news-wrap clearfix">
         <div class="aside-type fl">
             <dl>
-                <dt><a href="#" class="active">全部</a></dt>
+                <dt><a href="block?block=man" class="active">全部</a></dt>
             </dl>
             <dl>
-                <dt><a href="#">关于</a></dt>
-                <dd><a href="#">产品</a></dd>
-                <dd><a href="#">物流</a></dd>
+                <dt><a href="block?block=man&about=">关于</a></dt>
+                <dd><a href="block?block=man&about=product">产品</a></dd>
+                <dd><a href="block?block=man&about=logistics">物流</a></dd>
             </dl>
             <dl>
-                <dt><a href="#">来源于</a></dt>
-                <dd><a href="#">加拿大</a></dd>
-                <dd><a href="#">美国</a></dd>
-                <dd><a href="#">英国</a></dd>
-                <dd><a href="#">法国</a></dd>
-                <dd><a href="#">意大利</a></dd>
-                <dd><a href="#">德国</a></dd>
-                <dd><a href="#">澳大利亚</a></dd>
-                <dd><a href="#">新西兰</a></dd>
-                <dd><a href="#">日本</a></dd>
-                <dd><a href="#">韩国</a></dd>
-                <dd><a href="#">港澳</a></dd>
-                <dd><a href="#">中国</a></dd>
+                <dt><a href="block?block=man&source_area=">来源于</a></dt>
+                <dd><a href="block?block=man&source_area=Canada">加拿大</a></dd>
+                <dd><a href="block?block=man&source_area=USA">美国</a></dd>
+                <dd><a href="block?block=man&source_area=UK">英国</a></dd>
+                <dd><a href="block?block=man&source_area=France">法国</a></dd>
+                <dd><a href="block?block=man&source_area=Italy">意大利</a></dd>
+                <dd><a href="block?block=man&source_area=Germany">德国</a></dd>
+                <dd><a href="block?block=man&source_area=Australia">澳大利亚</a></dd>
+                <dd><a href="block?block=man&source_area=Nz">新西兰</a></dd>
+                <dd><a href="block?block=man&source_area=Japan">日本</a></dd>
+                <dd><a href="block?block=man&source_area=Korea">韩国</a></dd>
+                <dd><a href="block?block=man&source_area=HKM">港澳</a></dd>
+                <dd><a href="block?block=man&source_area=China">中国</a></dd>
 
-                <dd><a href="#">美洲区</a></dd>
-                <dd><a href="#">欧洲区</a></dd>
-                <dd><a href="#">大洋洲</a></dd>
-                <dd><a href="#">亚洲区</a></dd>
-                <dd><a href="#">非洲区</a></dd>
+                <dd><a href="block?block=man&source_area=America">美洲区</a></dd>
+                <dd><a href="block?block=man&source_area=Europe">欧洲区</a></dd>
+                <dd><a href="block?block=man&source_area=Oceania">大洋洲</a></dd>
+                <dd><a href="block?block=man&source_area=Asia">亚洲区</a></dd>
+                <dd><a href="block?block=man&source_area=Africa">非洲区</a></dd>
             </dl>
         </div>
         <div class="news-list fr">
             <ul>
+                {% for item in data %}
                 <li>
-                    <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                    <p> 其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，</p>
-                    <span>2018-06-09 12:00:30</span>
+                    <h4><a href="block/{{ item.id }}">{{ item.title }}</a></h4>
+                    <p>{{ item.intro | linebreaks }}</p>
+                    <span>{{ item.created_at | date:"Y-m-d H:i:s" }}</span>
                 </li>
-                <li>
-                    <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                    <p> 其实大家一看到代购两个字就从内心无意识的给别人定其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，义为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-                    <span>2018-06-09 12:00:30</span>
-                </li>
-                <li>
-                    <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                    <p> 其实大家一看到代购两个字就从内心无意识的给别人定义其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-                    <span>2018-06-09 12:00:30</span>
-                </li>
-                <li>
-                    <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                    <p> 其实大家一看到代购两个字就从内心无意识的给别人其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，定义为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-                    <span>2018-06-09 12:00:30</span>
-                </li>
-                <li>
-                    <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                    <p> 其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-                    <span>2018-06-09 12:00:30</span>
-                </li>
+                {% endfor %}
             </ul>
         </div>
         <div class="panel-paging">
@@ -83,22 +65,24 @@
     <div class="release-container news-container clearfix">
 
         <div class="q-title">快速发布</div>
-
+        <form method="post", action="/blogs/block">
         <div class="item">
             <label>主题：</label>
             <div class="info">
-                <input type="text" placeholder="请输入标题" class="text" name="pro">
+                <input type="text", name="block" value="man" hidden="true">
+                <input type="text", name="user_id" value="1" hidden="true">
+                <input type="text" placeholder="请输入标题" class="text" name="title">
             </div>
         </div>
         <div class="item">
             <label>关于：</label>
             <div class="info">
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="about" value="product">
                     产品
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="about" value="logistics">
                     物流
                 </label>
             </div>
@@ -107,51 +91,51 @@
             <label>来源地：</label>
             <div class="info">
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="USA">
                     美国
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Canada">
                     加拿大
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="UK">
                     英国
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="France">
                     法国
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Italy">
                     意大利
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Germany">
                     德国
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Australia">
                     澳大利亚
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="新西兰">
                     新西兰
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="pro" value="日本">
                     日本
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Korea">
                     韩国
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="HKM">
                     港澳
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="China">
                     中国
                 </label>
                 <span>（热门地区）</span>
@@ -159,23 +143,23 @@
 
             <div class="info">
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Europe">
                     欧洲
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="America">
                     美洲
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Oceania">
                     大洋洲
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Asia">
                     亚洲
                 </label>
                 <label>
-                    <input type="radio" name="pro">
+                    <input type="radio" name="source_area" value="Africa">
                     非洲
                 </label>
                 <span>（五大洲）</span>
@@ -184,9 +168,10 @@
         <div class="item">
             <label>文章内容：</label>
             <div class="info">
-                <textarea class="textarea" placeholder="请输入内容" rows="5"></textarea>
+                <textarea class="textarea" placeholder="请输入内容" name="article" rows="5"></textarea>
             </div>
         </div>
         <button type="submit" class="btn">发布</button>
+        </form>
     </div>
 {% endblock %}

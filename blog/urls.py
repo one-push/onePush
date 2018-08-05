@@ -6,25 +6,17 @@ Create at 2018/7/8
 
 __author__ = 'TT'
 
-from django.conf.urls import url
-from blog.news.views import overseas_news
-
-from blog.man.views import man
-
-from blog.want.views import want
-
+from django.conf.urls import url, include
+from rest_framework.routers import DefaultRouter
+from views import *
 from blog.theory.views import theory
 
-from views import area
+router = DefaultRouter(trailing_slash=False)
+router.register(r'block', BlogViews, base_name='blocks')
+router.register(r'area', AreaViews, base_name='areas')
 
 urlpatterns = [
-    url(r'^news/?$', overseas_news, name='news'),
-
-    url(r'^man/?$', man, name='man'),
-
-    url(r'^want/?$', want, name='want'),
+    url(r'^', include(router.urls)),
 
     url(r'^theory/?$', theory, name='theory'),
-
-    url(r'^area/?$', area, name='area'),
 ]

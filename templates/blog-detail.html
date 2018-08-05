@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block main-big-title %}
+{% endblock %}
+
+
+{% block main-body %}
+<div class="container clearfix">
+    <div class="news-detail">
+        <h1>如何找靠谱的代购</h1>
+        <div class="info">
+            <span>来源：代购达人</span>
+            <span>作者：一甫集</span>
+            <span>浏览量：{{ data.see_count }}</span>
+            <span>发布时间：{{ data.created_at | date:"Y-m-d H:i:s" }}</span>
+        </div>
+        <div class="cont">
+            {{ data.article | linebreaks }}
+        </div>
+
+        <div class="panel-comments">
+            <div class="coms-title">评论内容</div>
+            <div class="coms-list">
+                <ul>
+                    <li>
+                        <img src="{% static "images/300x300.jpg" %}" />
+                        <div class="info">
+                            <div class="name clearfix">
+                                <h4>张三</h4>
+                                <div class="right fr">
+                                    <span>转发(20)</span>
+                                    <span>收藏(13)</span>
+                                    <span>回复(3)</span>
+                                </div>
+                            </div>
+                            <div class="coms-cont">货币贬值导致我们：以前工作是为了致富，而现在是为了脱贫。</div>
+                            <div class="panel">
+                                <span class="time">10小时前</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{% static "images/300x300.jpg" %}" />
+                        <div class="info">
+                            <div class="name clearfix">
+                                <h4>张三</h4>
+                                <div class="right fr">
+                                    <span>转发(20)</span>
+                                    <span>收藏(13)</span>
+                                    <span>回复(3)</span>
+                                </div>
+                            </div>
+                            <div class="coms-cont">货币贬值导致我们：以前工作是为了致富，而现在是为了脱贫。</div>
+                            <div class="panel">
+                                <span class="time">10小时前</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="{% static "images/300x300.jpg" %}" />
+                        <div class="info">
+                            <div class="name clearfix">
+                                <h4>张三</h4>
+                                <div class="right fr">
+                                    <span>转发(20)</span>
+                                    <span>收藏(13)</span>
+                                    <span>回复(3)</span>
+                                </div>
+                            </div>
+                            <div class="coms-cont">货币贬值导致我们：以前工作是为了致富，而现在是为了脱贫。</div>
+                            <div class="panel">
+                                <span class="time">10小时前</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="coms-box">
+                <label>发布评论</label>
+                <textarea rows="5" placeholder="请输入评论内容"></textarea>
+                <input type="submit" value="发布" name="">
+            </div>
+        </div>
+    <div>
+</div>
+{% endblock %}

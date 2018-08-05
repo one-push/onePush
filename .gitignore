@@ -2,3 +2,4 @@
 .idea/
 *.py[com]
 __pycache__/
+migrations

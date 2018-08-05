@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main-menu-news %}
-    <a href="news" class="active">海淘那些事</a>
+    <a href="block?block=news" class="active">海淘那些事</a>
 {% endblock %}
 
 {% block main-big-title %}
@@ -13,33 +13,16 @@
 {% block main-body %}
     <div class="news-list">
         <ul>
+            {% for item in data %}
             <li>
-                <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                <p> 其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，</p>
-                <span>2018-06-09 12:00:30</span>
+                <h4><a href="block/{{ item.id }}">{{ item.title }}</a></h4>
+                <p>{{ item.intro | linebreaks }}</p>
+                <span>{{ item.created_at | date:"Y-m-d H:i:s" }}</span>
             </li>
-            <li>
-                <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                <p> 其实大家一看到代购两个字就从内心无意识的给别人定其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，义为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-                <span>2018-06-09 12:00:30</span>
-            </li>
-            <li>
-                <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                <p> 其实大家一看到代购两个字就从内心无意识的给别人定义其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-                <span>2018-06-09 12:00:30</span>
-            </li>
-            <li>
-                <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                <p> 其实大家一看到代购两个字就从内心无意识的给别人其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，定义为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-                <span>2018-06-09 12:00:30</span>
-            </li>
-            <li>
-                <h4><a href="news-detail.html">如何找靠谱的代购</a></h4>
-                <p> 其实大家一看到代购两个字就从内心无意识的给别人定义为骗子，正如4年前还没留学意大利的我的一样。心里莫名的抵触...</p>
-                <span>2018-06-09 12:00:30</span>
-            </li>
+            {% endfor %}
         </ul>
     </div>
+
     <div class="panel-paging news-paging">
         <a href="#">1</a>
         <a href="#" class="active">2</a>
@@ -49,22 +32,24 @@
     </div>
 
     <div class="release-container news-container clearfix">
-
         <div class="q-title">快速发布</div>
-
+        <form method="post", action="/blogs/block">
         <div class="item">
             <label>主题：</label>
             <div class="info">
-                <input type="text" placeholder="请输入标题" class="text" name="pro">
+                <input type="text", name="block" value="news" hidden="true">
+                <input type="text", name="user_id" value="1" hidden="true">
+                <input type="text" placeholder="请输入标题" class="text" name="title">
             </div>
         </div>
         <div class="item">
             <label>文章内容：</label>
             <div class="info">
-                <textarea class="textarea" placeholder="请输入内容" rows="5"></textarea>
+                <textarea class="textarea" placeholder="请输入内容" name="article" rows="5"></textarea>
             </div>
         </div>
         <button type="submit" class="btn">发布</button>
+        </form>
     </div>
 {% endblock %}
 

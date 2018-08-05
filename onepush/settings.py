@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'blog',
     # 'reverie.apps.ReverieConfig',
 ]
 
@@ -122,8 +122,11 @@ DATABASES = {
         'HOST': db_host,  # nzwh
         'PORT': '3306',
         'OPTIONS': {
-            'sql_mode': 'traditional',
+            "init_command": "SET default_storage_engine=MyISAM",
         }
+        # 'OPTIONS': {
+        #     'sql_mode': 'traditional',
+        # }
     }
 }
 
