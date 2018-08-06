@@ -50,7 +50,7 @@
                     <li>
                         <h4><a href="block/{{ item.id }}">{{ item.title }}</a></h4>
                         <p>{{ item.intro | linebreaks }}</p>
-                        <span>{{ item.created_at | date:"Y-m-d H:i:s" }}</span>
+                        <span>{{ item.created_at }}</span>
                     </li>
                     {% endfor %}
                 </ul>
@@ -71,7 +71,7 @@
                 <label>主题：</label>
                 <div class="info">
                     <input type="text", name="block" value="want" hidden="true">
-                    <input type="text", name="user_id" value="1" hidden="true">
+                    <input type="text", name="user_id" value="{{ request.user.id }}" hidden="true">
                     <input type="text" placeholder="请输入标题" class="text" name="title">
                 </div>
             </div>

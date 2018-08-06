@@ -18,6 +18,17 @@ SERVICE = {
     1: u'代购', 2: u'拼单', 3: u'代收转发', 4: u'物流货代'
 }
 
+TRADE_STATE = (
+    (u'confirm', u'已确认'),
+    (u'waiting', u'待确认'),
+)
+
+THEORY_STATE = (
+    (u'trial', u'审判中'),
+    (u'win', u'胜'),
+    (u'lose', u'输'),
+)
+
 SOURCE_AREA = dict(
     Europe=u'欧洲', America=u'美洲', Oceania=u'大洋洲',
     Asia=u'亚洲', Africa=u'非洲',
@@ -43,6 +54,7 @@ class UserInfo(models.Model):
     """用户信息，跟用户表一对一
     来区分达人买手和普通用户"""
     user = models.OneToOneField(User, related_name='info')
+    is_vip = models.BooleanField(default=False)
     nickname = models.CharField(max_length=200, default='')
     open_id = models.CharField(max_length=200, default='')
     is_buyer = models.BooleanField(default=False)

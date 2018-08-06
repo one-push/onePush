@@ -1,57 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>一甫集代购达人 IF Collections Master Buyer</title>
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
-	<link rel="stylesheet" type="text/css" href="/{{ STATIC_URL }}css/main.min.css" />
-</head>
-<body>
-	<!--header-->
-	<div class="header panel-header">
-		<div class="container">
-			<div class="top-bar clearfix">
-				<div class="logo fl">
-					<div class="m-btn"></div>
-					<a href="/index"><img src="/{{ STATIC_URL }}images/logo-black.png" /></a>
-				</div>
-				<div class="panel-search">
-					<form class="search clearfix" method="get" action="/search">
-						<input type="text" class="text fl" placeholder="开始在全世界淘你想淘" name="keywords">
-						<input type="submit" class="submit fl" value="搜索" name="submit">
-					</form>
-				</div>
-				<div class="hd-right fr hide">
-					<a href="#">达人入驻</a>
-					<a href="#">登录</a>
-					<a href="#" class="join">加入</a>
-				</div>
-				<div class="hd-right fr">
-					<!--<a href="#">入驻达人</a>
-					<a href="#">寻找达人</a>-->
-					<a href="#" class="user">
-						<img src="/{{ STATIC_URL }}images/300x300.jpg">
-					</a>
-				</div>
-			</div>
-			
-		</div>
-	</div>
-	<div class="nav">
-		<div class="container">
-			<a href="/index">首页</a>
-			<a href="news.html">海淘那些事</a>
-			<a href="man.html">达人发布台</a>
-			<a href="want.html">我要我要的</a>
-			<a href="reasoning.html">说说谁有理</a>
-		</div>
-	</div>
-	<!--main-->
-	<div class="main">
-		<div class="container member-container clearfix">
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block main-big-title %}
+{% endblock %}
+
+
+{% block main-body %}
+    <div class="container member-container clearfix">
 			<div class="member-aside fl">
 				<div class="head-portrait">
-					<img src="/{{ STATIC_URL }}images/300x300.jpg" />
+					<img src="{% static "images/300x300.jpg" %}" />
 					<i class="grade"></i>
 					<div class="name">{{ user.username }}</div>
 					<p class="declaration">经验值<span>菜鸟</span>35积分<a href="#">积分说明</a></p>
@@ -98,9 +56,9 @@
 			<div class="member-cont fr">
 				<div class="member-tab-title">
 					<a href="javascript:;" class="active">服务详情</a>
-					<a href="javascript:;">发布记录(3条)</a>
-					<a href="javascript:;">交易记录(2条)</a>
-					<a href="javascript:;">说理记录(5条)</a>
+					<a href="javascript:;">发布记录({{ blog_count }}条)</a>
+					<a href="javascript:;">交易记录({{ trade_count }}条)</a>
+					<a href="javascript:;">说理记录({{ theory_count }}条)</a>
 				</div>
 				<div class="member-tab-cont m-table">
 					<div class="member-tab-item tab-details">
@@ -124,48 +82,37 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>2018-05-02</td>
-									<td>我要我要的</td>
-									<td>代购是一件不错的事情</td>
-									<td class="red"><a href="news-detail.html">查看详情</a></td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>2018-05-04</td>
-									<td>海淘那些事</td>
-									<td>5.1大方送买一送二</td>
-									<td class="red"><a href="news-detail.html">查看详情</a></td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>2018-05-06</td>
-									<td>我要我要的</td>
-									<td>海外购物快速便捷</td>
-									<td class="red"><a href="news-detail.html">查看详情</a></td>
-								</tr>
+								{% for item in blogs %}
+                                <tr>
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.created_at }}</td>
+                                    <td>{{ item.block }}</td>
+                                    <td>{{ item.title }}</td>
+                                    <td class="red"><a href="/blogs/block/{{ item.id }}">查看详情</a></td>
+                                </tr>
+                                {% endfor %}
 							</tbody>
 						</table>
 					</div>
 
 					<div class="member-tab-item tab-transactionRecord hide">
-						<div class="form">
+						<form method="post", action="/blogs/trade">
+                        <div class="form">
 							<div class="form-item">
 								<label>日期</label>
-								<input type="text" placeholder="请输入日期" name="">
+								<input type="date" placeholder="请输入日期" name="date">
 							</div>
 							<div class="form-item">
 								<label>买方</label>
-								<input type="text" placeholder="请输入买方账号" name="">
+								<input type="text" placeholder="请输入买方账号" name="buyer">
 							</div>
 							<div class="form-item">
 								<label>交易金额RMB</label>
-								<input type="text" placeholder="请输入交易今额" name="">
+								<input type="text" placeholder="请输入交易今额" name="amount">
 							</div>
 							<div class="form-item">
 								<label>交易内容</label>
-								<input type="text" placeholder="请输入交易内容" name="">
+								<input type="text" placeholder="请输入交易内容" name="content">
 							</div>
 							<div class="form-item">
 								<label>首付款截图</label>
@@ -177,9 +124,10 @@
 							</div>
 						</div>
 						<div class="form-btn">
-							<button class="btn">创建新交易</button>
+							<button type="submit" class="btn">创建新交易</button>
 						</div>
-						<table class="tb">
+						</form>
+                        <table class="tb">
 							<thead>
 								<tr>
 									<th>日期</th>
@@ -192,33 +140,21 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>2018年6月2日</td>
-									<td>小刘</td>
-									<td>5000</td>
-									<td>CuCu包1只</td>
-									<td><img src="/{{ STATIC_URL }}images/300x300.jpg" /></td>
-									<td class="green">待买方确认中</td>
-									<td class="green"><a href="#">修改</a></td>
-								</tr>
-								<tr>
-									<td>2018年6月2日</td>
-									<td>小刘</td>
-									<td>5000</td>
-									<td>CuCu包1只</td>
-									<td><img src="/{{ STATIC_URL }}images/300x300.jpg" /></td>
-									<td class="red">买方已经确认</td>
-									<td class="red"><a href="theory.html">发起说理</a></td>
-								</tr>
-								<tr>
-									<td>2018年6月2日</td>
-									<td>小刘</td>
-									<td>5000</td>
-									<td>CuCu包1只</td>
-									<td><img src="/{{ STATIC_URL }}images/300x300.jpg" /></td>
-									<td class="red">买方已经确认</td>
-									<td class="red"><a href="theory.html">发起说理</a></td>
-								</tr>
+                                {% for item in trades %}
+                                <tr>
+                                    <td>{{ item.date }}</td>
+                                    <td>{{ item.buyer }}</td>
+                                    <td>{{ item.amount }}</td>
+                                    <td>{{ item.content }}</td>
+                                    <td><img src="../../images/300x300.jpg" /></td>
+                                    <td class="red">{{ item.status }}</td>
+                                    {% if item.status == '已确认'  %}
+                                        <td class="red"><a href="theory.html">发起说理</a></td>
+                                    {% else %}
+                                        <td class="green"><a href="#">修改</a></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
 							</tbody>
 						</table>
 					</div>
@@ -236,43 +172,19 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>2018050221</td>
-									<td>商品伪劣问题。</td>
-									<td>大众审判中</td>
-									<td class="red"><a href="theory-info.html">查看详情</a></td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>2018050221</td>
-									<td>商品伪劣问题。</td>
-									<td>胜</td>
-									<td class="red"><a href="theory-info.html">查看详情</a></td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>2018050221</td>
-									<td>商品伪劣问题。</td>
-									<td>负</td>
-									<td class="red"><a href="theory-info.html">查看详情</a></td>
-								</tr>
+								{% for item in theorys %}
+                                <tr>
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.code }}</td>
+                                    <td>{{ item.title }}</td>
+                                    <td>{{ item.status }}</td>
+                                    <td class="red"><a href="theory-info.html">查看详情</a></td>
+                                </tr>
+                                {% endfor %}
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-		
-	<!--footer-->
-	<div class="footer">
-		<div class="container">
-			版权所有&copy;2018 一甫集代购达人
-		</div>
-	</div>
-	<div class="m-mask"></div>
-	<script type="text/javascript" src="/{{ STATIC_URL }}js/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript" src="/{{ STATIC_URL }}js/main.js"></script>
-</body>
-</html>
+{% endblock %}

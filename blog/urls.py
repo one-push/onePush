@@ -10,10 +10,12 @@ from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter
 from views import *
 from blog.theory.views import theory
+from blog.trade.views import TradeViews
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'block', BlogViews, base_name='blocks')
 router.register(r'area', AreaViews, base_name='areas')
+router.register(r'trade', TradeViews, base_name='trades')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

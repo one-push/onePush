@@ -12,12 +12,12 @@
 		<div class="container">
 			<div class="top-bar clearfix">
 				<div class="logo fl">
-
 					<a href="index"><img src="{{ STATIC_URL }}images/logo.png" /></a>
 				</div>
-				{% if user %}
+                {% if user.is_authenticated %}
+{#				{% if request.user.username %}#}
 				<div class="hd-right fr">
-					<a href="/account/center" class="user">
+					<a href="/accounts/center" class="user">
 						<img src="{{ STATIC_URL }}images/300x300.jpg" width="30px">
 					</a>
 					<a href="/accounts/logout" data-ele="btnLogin">退出</a>
@@ -29,7 +29,6 @@
 					<a href="javascript:;" data-ele="btnLogin" class="join">加入</a>
 				</div>
 				{% endif %}
-
 			</div>
 
 			<div class="panel-search">
@@ -50,6 +49,7 @@
 	<div class="main">
 		<div class="container">
 			<div class="panel-group clearfix">
+
 				<div class="item">
 					<a href="blogs/block?block=news">
 						<img src="{{ STATIC_URL }}images/icon-item-1.png">
@@ -220,7 +220,7 @@
 
 			<div class="group panel-group-2 hide">
 				<h2>加入一甫集</h2>
-				<form method="post" action="/account/sign/up">
+				<form method="post" action="/accounts/sign/up">
 				<input type="text" class="text" placeholder="请输入用户名" name="username">
 				<input type="password" class="text" placeholder="请输入密码" name="password">
 				<button class="submit" type="submit">确定</button>

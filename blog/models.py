@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 from django.db import models
 from account.models import UserInfo
-from account.models import BLOCKS, ABOUT
+from account.models import BLOCKS, ABOUT, TRADE_STATE, THEORY_STATE
 from django.contrib.auth.models import User
 
 
@@ -77,10 +77,12 @@ class BlogReply(models.Model):
 
 class Theory(BaseModel):
     """发起说理"""
+    user = models.ForeignKey(User, verbose_name=u'用户', blank=True)
     code = models.CharField(max_length=50, default='', verbose_name=u'序号')
     prosecute = models.ForeignKey(User, related_name='the_pro', verbose_name=u'起诉方')
     respondent = models.ForeignKey(User, related_name='the_res', verbose_name=u'被诉方')
 
+    status = models.CharField(choices=THEORY_STATE, default='trial', max_length=30, verbose_name=u'状态')
     title = models.CharField(max_length=200, default='', verbose_name=u'主题')
     content = models.CharField(max_length=200, default='', verbose_name=u'内容')
     picture = models.ForeignKey(Picture, verbose_name=u'起诉用图片')
@@ -109,8 +111,11 @@ class Trade(BaseModel):
 
     达人创建，非达人只能查看相关
     """
+    user = models.ForeignKey(User, verbose_name=u'用户', blank=True)
     date = models.DateField(verbose_name=u'交易日期')
     buyer = models.ForeignKey(User, related_name='tra_buy', verbose_name=u'买方')
     seller = models.ForeignKey(User, related_name='tra_sel', verbose_name=u'卖方')
     amount = models.FloatField(default=0, verbose_name=u'交易金额')
-    screen_shot = models.ForeignKey(Picture, related_name='tra_pic', verbose_name=u'首付款截图')
+    content = models.CharField(default='', max_length=100, verbose_name=u'交易内容')
+    status = models.CharField(choices=TRADE_STATE, default='waiting', max_length=30, verbose_name=u'交易状态')
+    screen_shot = models.ForeignKey(Picture, related_name='tra_pic', verbose_name=u'首付款截图', blank=True, null=True)

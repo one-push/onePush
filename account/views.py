@@ -13,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from onepush import settings
+from blog.models import Blog, Trade, Theory
+from blog.serializer import BlogListSerializer, \
+    TradeListSerializer, TheoryListSerializer
 
 
 def index(req):
@@ -38,7 +41,9 @@ def sign_up(req):
     # return HttpResponseRedirect('/index')
     user = User.objects.filter(username=username).first()
     if user:
-        return HttpResponse('user exists')
+        login(req, user)
+        return HttpResponseRedirect('/index')
+        # return HttpResponse('user exists')
     user = User.objects.create(username=username, password=password)
     UserInfo.objects.create(user=user)
     login(req, user)
@@ -97,14 +102,46 @@ def user_setting(req):
 
 @login_required()
 def user_center(req):
-    """"""
+    """
+    用户中心
+    """
+
+    html = 'member.html'
+    trades_waiting_serial = None
+    params = dict(is_delete=False)
+    args = dict(user=req.user, is_delete=False)
+    if isinstance(req.user.info, UserInfo) and req.user.info.is_vip:
+        params['user'] = req.user
+        html = 'member-vip.html'
+        trades = Trade.objects.filter(**params).all()
+    else:
+        params['buyer'] = req.user
+        trades = Trade.objects.filter(**dict(params, **dict(status='confirm'))).all()
+        params = dict(params, **dict(status='waiting'))
+        trades_waiting = Trade.objects.filter(**params).all()
+        trades_waiting_serial = TradeListSerializer(trades_waiting, many=True)
+
+    blogs = Blog.objects.filter(**args).all()
+    theorys = Theory.objects.filter(**args).all()
+
+    blogs_serial = BlogListSerializer(blogs, many=True)
+    theorys_serial = TheoryListSerializer(theorys, many=True)
+    trades_serial = TradeListSerializer(trades, many=True)
+
     context = dict(
         STATIC_URL=settings.STATIC_URL,
         user_info=req.user.info,
+        blogs=blogs_serial.data,
+        trades=trades_serial.data,
+        trades_waiting=trades_waiting_serial.data if trades_waiting_serial else [],
+        theorys=theorys_serial.data,
         user=req.user,
+        blog_count=blogs.count(),
+        trade_count=trades.count() + trades_waiting.count(),
+        theory_count=theorys.count(),
     )
-    print(context)
-    return render(req, 'member-vip.html', context)
+
+    return render(req, html, context)
 
 
 

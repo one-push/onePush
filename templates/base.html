@@ -23,16 +23,20 @@
 						<input type="submit" class="submit fl" value="搜索" name="submit">
 					</form>
 				</div>
+                {% if user.is_authenticated %}
 				<div class="hd-right fr">
-					<a href="#">达人入驻</a>
-					<a href="#">登录</a>
-					<a href="#" class="join">加入</a>
-				</div>
-				<div class="hd-right fr hide">
-					<a href="#" class="user">
-						<img src="{% static "images/300x300.jpg" %}">
+					<a href="/accounts/center" class="user">
+						<img src="{% static "images/300x300.jpg" %}" width="30px">
 					</a>
+					<a href="/accounts/logout" data-ele="btnLogin">退出</a>
 				</div>
+				{% else %}
+				<div class="hd-right fr">
+					<a href="javascript:;" data-ele="btnLogin">达人入驻</a>
+					<a href="javascript:;" data-ele="btnLogin">登录</a>
+					<a href="javascript:;" data-ele="btnLogin" class="join">加入</a>
+				</div>
+				{% endif %}
 			</div>
 
 		</div>

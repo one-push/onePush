@@ -65,14 +65,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'blog',
     # 'reverie.apps.ReverieConfig',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'onepush.utils.DisableCSRF',
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -97,6 +99,11 @@ TEMPLATES = [
         },
     },
 ]
+
+#
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     "django.core.context_processors.request",
+# )
 
 WSGI_APPLICATION = 'onepush.wsgi.application'
 
