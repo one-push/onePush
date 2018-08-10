@@ -58,7 +58,7 @@
 			<a href="/blogs/block?block=want">我要我要的</a>
             {% endblock %}
             {% block main-menu-theory %}
-			<a href="{% url 'theory' %}">说说谁有理</a>
+			<a href="/blogs/theory">说说谁有理</a>
             {% endblock %}
 		</div>
 	</div>
@@ -91,4 +91,10 @@
 	<script type="text/javascript" src="{% static "js/main.js" %}"></script>
     {% endblock %}
 </body>
+
+{% block js-body %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
 </html>

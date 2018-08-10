@@ -19,6 +19,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from onepush.utils import image_upload
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 # from comment.views import upload_image
@@ -29,6 +30,8 @@ urlpatterns = [
     url(r'/?', include('account.urls')),
     url(r'accounts/', include('account.urls')),
     url(r'blogs/', include('blog.urls')),
+    url(r'image_upload/?$', image_upload),
+
 ]
 
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

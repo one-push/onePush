@@ -10,10 +10,14 @@
     <div class="news-detail">
         <h1>如何找靠谱的代购</h1>
         <div class="info">
-            <span>来源：代购达人</span>
-            <span>作者：一甫集</span>
+            {% if request.user.is_vip %}
+                <span>来源：代购达人</span>
+            {% else %}
+                <span>来源：海淘消费者</span>
+            {% endif %}
+            <span>作者：{{ username }}</span>
             <span>浏览量：{{ data.see_count }}</span>
-            <span>发布时间：{{ data.created_at | date:"Y-m-d H:i:s" }}</span>
+            <span>发布时间：{{ data.created_at }}</span>
         </div>
         <div class="cont">
             {{ data.article | linebreaks }}
@@ -23,65 +27,56 @@
             <div class="coms-title">评论内容</div>
             <div class="coms-list">
                 <ul>
+                    {% for item in reply %}
                     <li>
                         <img src="{% static "images/300x300.jpg" %}" />
                         <div class="info">
                             <div class="name clearfix">
-                                <h4>张三</h4>
+                                <h4>{{ item.username }}</h4>
                                 <div class="right fr">
                                     <span>转发(20)</span>
                                     <span>收藏(13)</span>
                                     <span>回复(3)</span>
                                 </div>
                             </div>
-                            <div class="coms-cont">货币贬值导致我们：以前工作是为了致富，而现在是为了脱贫。</div>
+                            <div class="coms-cont">{{ item.content }}</div>
                             <div class="panel">
-                                <span class="time">10小时前</span>
+                                <span class="time">{{ item.created_at }}</span>
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <img src="{% static "images/300x300.jpg" %}" />
-                        <div class="info">
-                            <div class="name clearfix">
-                                <h4>张三</h4>
-                                <div class="right fr">
-                                    <span>转发(20)</span>
-                                    <span>收藏(13)</span>
-                                    <span>回复(3)</span>
-                                </div>
-                            </div>
-                            <div class="coms-cont">货币贬值导致我们：以前工作是为了致富，而现在是为了脱贫。</div>
-                            <div class="panel">
-                                <span class="time">10小时前</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="{% static "images/300x300.jpg" %}" />
-                        <div class="info">
-                            <div class="name clearfix">
-                                <h4>张三</h4>
-                                <div class="right fr">
-                                    <span>转发(20)</span>
-                                    <span>收藏(13)</span>
-                                    <span>回复(3)</span>
-                                </div>
-                            </div>
-                            <div class="coms-cont">货币贬值导致我们：以前工作是为了致富，而现在是为了脱贫。</div>
-                            <div class="panel">
-                                <span class="time">10小时前</span>
-                            </div>
-                        </div>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
             <div class="coms-box">
                 <label>发布评论</label>
-                <textarea rows="5" placeholder="请输入评论内容"></textarea>
-                <input type="submit" value="发布" name="">
+                <textarea rows="5" placeholder="请输入评论内容" name="reply_content"></textarea>
+                <input type="submit" onclick="submitReply()" value="发布">
             </div>
         </div>
-    <div>
+    </div>
 </div>
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+
+    function submitReply(){
+        var data = {{ params | safe}};
+        var params = {
+            blog_id: data.blog_id,
+            user_id: data.cur_user_id,
+            content: document.getElementsByName('reply_content')[0].value
+
+        };
+        $.ajax({
+            type:'POST',
+            url: '/blogs/reply',
+            data: params,
+            success: function(data){
+                location.reload();
+            }
+        })
+    }
+</script>
 {% endblock %}

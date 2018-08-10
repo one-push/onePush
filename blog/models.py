@@ -49,9 +49,9 @@ class Blog(BaseModel):
     user = models.ForeignKey(User, related_name='blo_user', blank=True)
 
     title = models.CharField(max_length=200, default='', verbose_name=u'主题')
-    about = models.CharField(max_length=50, default='', verbose_name=u'主题')
-    block = models.CharField(default='', max_length=20, verbose_name=u'发布板块')
-    intro = models.CharField(default='', max_length=250, verbose_name=u'文章简介')
+    about = models.CharField(max_length=50, default='', choices=ABOUT, verbose_name=u'主题')
+    block = models.CharField(max_length=20, default='', choices=BLOCKS, verbose_name=u'发布板块')
+    intro = models.CharField(max_length=250, default='', verbose_name=u'文章简介')
     source_area = models.CharField(max_length=50, verbose_name=u'来源地', blank=True, null=True)
     article = models.TextField(default='', verbose_name=u'文章正文')
 
@@ -67,12 +67,12 @@ class Blog(BaseModel):
 #     pass
 
 
-class BlogReply(models.Model):
+class BlogReply(BaseModel):
     """博客回复内容 属性"""
     blog = models.ForeignKey(Blog, related_name='reply_blog', verbose_name=u'文章')
     user = models.ForeignKey(User, related_name='reply_user', verbose_name=u'评论的用户', blank=True)
     content = models.TextField(default='', verbose_name=u'评论的内容')
-    ref_reply = models.ForeignKey('self', verbose_name=u'回答哪条内容', blank=True)
+    ref_reply = models.ForeignKey('self', verbose_name=u'回答哪条内容', blank=True, null=True)
 
 
 class Theory(BaseModel):
@@ -85,10 +85,10 @@ class Theory(BaseModel):
     status = models.CharField(choices=THEORY_STATE, default='trial', max_length=30, verbose_name=u'状态')
     title = models.CharField(max_length=200, default='', verbose_name=u'主题')
     content = models.CharField(max_length=200, default='', verbose_name=u'内容')
-    picture = models.ForeignKey(Picture, verbose_name=u'起诉用图片')
+    picture = models.ForeignKey(Picture, verbose_name=u'起诉用图片', blank=True, null=True)
 
-    pro_support_count = models.IntegerField(verbose_name=u'起诉方支持数')
-    res_support_count = models.IntegerField(verbose_name=u'被诉方支持数')
+    pro_support_count = models.IntegerField(verbose_name=u'起诉方支持数', default=0)
+    res_support_count = models.IntegerField(verbose_name=u'被诉方支持数', default=0)
 
 
 class TheoryReply(models.Model):
@@ -118,4 +118,4 @@ class Trade(BaseModel):
     amount = models.FloatField(default=0, verbose_name=u'交易金额')
     content = models.CharField(default='', max_length=100, verbose_name=u'交易内容')
     status = models.CharField(choices=TRADE_STATE, default='waiting', max_length=30, verbose_name=u'交易状态')
-    screen_shot = models.ForeignKey(Picture, related_name='tra_pic', verbose_name=u'首付款截图', blank=True, null=True)
+    img = models.CharField(default='', max_length=100, verbose_name=u'首付款截图', blank=True, null=True)

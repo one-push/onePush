@@ -6,7 +6,8 @@ Create at 2018/7/4
 
 __author__ = 'TT'
 
-from account.models import UserInfo
+from account.models import UserInfo, UserScore
+from account.models import VIP_LEVEL
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -46,6 +47,7 @@ def sign_up(req):
         # return HttpResponse('user exists')
     user = User.objects.create(username=username, password=password)
     UserInfo.objects.create(user=user)
+    UserScore.objects.create(user=user)
     login(req, user)
     return HttpResponseRedirect('/index')
 
@@ -107,6 +109,7 @@ def user_center(req):
     """
 
     html = 'member.html'
+    trades_waiting = None
     trades_waiting_serial = None
     params = dict(is_delete=False)
     args = dict(user=req.user, is_delete=False)
@@ -131,13 +134,14 @@ def user_center(req):
     context = dict(
         STATIC_URL=settings.STATIC_URL,
         user_info=req.user.info,
+        level_text=dict(VIP_LEVEL).get(req.user.info.level, u'菜鸟'),
         blogs=blogs_serial.data,
         trades=trades_serial.data,
         trades_waiting=trades_waiting_serial.data if trades_waiting_serial else [],
         theorys=theorys_serial.data,
         user=req.user,
         blog_count=blogs.count(),
-        trade_count=trades.count() + trades_waiting.count(),
+        trade_count=trades.count() + (trades_waiting.count() if trades_waiting else 0),
         theory_count=theorys.count(),
     )
 

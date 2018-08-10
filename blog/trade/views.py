@@ -9,6 +9,7 @@
 """
 
 from __future__ import unicode_literals
+import json
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -18,6 +19,7 @@ from blog.serializer import TradeListSerializer
 from blog.serializer import TradeCreateSerializer
 from blog.serializer import TradeDetailSerializer
 from blog.models import Trade
+from blog.service import update_score
 
 
 class TradeViews(ModelViewSet):
@@ -44,8 +46,10 @@ class TradeViews(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.POST.dict()
+        'file' in data and data.pop('file')
         if data.get('method') == 'put':
-            return self.update(request, *args, **kwargs)
+            'method' in data and data.pop('method')
+            return self.update(request, data)
 
         buyer = User.objects.filter(username=data.get('buyer')).first()
         if not buyer:
@@ -60,22 +64,45 @@ class TradeViews(ModelViewSet):
         data['seller'] = request.user
         data['user'] = request.user
         trade = Trade.objects.create(**data)
+        if trade:
+            update_score(request.user, 'trade')
         return HttpResponseRedirect('/accounts/center')
 
     def retrieve(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
         trade = Trade.objects.filter(id=pk).first()
-        serial = TradeDetailSerializer(trade)
-        data = serial.data
-        context = dict(data=data)
-        return render(request, 'blog-detail.html', context)
+        # serial = TradeDetailSerializer(trade)
+        # data = serial.data
 
-    def update(self, request, *args, **kwargs):
-        params = request.POST.dict()
+        data = dict(trade_id=pk)
+        if request.user.username == trade.buyer.username:
+            data['prosecute_user'] = trade.buyer.username
+            data['prosecute_id'] = trade.buyer.id
+            data['prosecute'] = u'买方'
+            data['respondent_user'] = trade.seller.username
+            data['respondent_id'] = trade.seller.id
+            data['respondent'] = '卖方'
+        else:
+            data['prosecute_user'] = trade.seller.username
+            data['prosecute_id'] = trade.seller.id
+            data['prosecute'] = u'卖方'
+            data['respondent_user'] = trade.buyer.username
+            data['respondent_id'] = trade.buyer.id
+            data['respondent'] = '买方'
+
+        context = dict(data=data, content=json.dumps(data))
+        return render(request, 'theory.html', context)
+
+    def update(self, request, params):
         id = params.get('id')
-        trade = Trade.objects.filter(pk=id).first()
+        if 'buyer' in params:
+            buyer = params.pop('buyer')
+            user = User.objects.filter(username=buyer).first()
+            if user:
+                params['buyer_id'] = user.id
+
+        trade = Trade.objects.filter(pk=id).update(**params)
         if trade:
-            trade.status = u'confirm'
-            trade.save()
+            update_score(request.user, 'trade')
 
         return HttpResponseRedirect('/accounts/center')

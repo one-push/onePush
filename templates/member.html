@@ -10,8 +10,15 @@
             <div class="head-portrait">
 
                 <div class="name">Hi，{{ request.user.username }}</div>
-                <a href="#" class="btn-demand">发布你的需求</a>
-                <p class="declaration">经验值<span>菜鸟</span>35积分<a href="#">积分说明</a></p>
+                <a href="/blogs/deploy" class="btn-demand">发布你的需求</a>
+                <p class="declaration">经验值<span>{{ level_text }}</span>{{ user_info.score }}积分<a href=""
+                title="海淘那些事： 发布篇原创文章 一次25分 （达人／普通会员均可）
+创建一次交易记录：一次15分 （达人会员创建，邀请普通会员（买方）确认）
+达人工作台：发布一次 5分（仅限达人会员）
+我要我要的： 发布一次 5分 （达人／普通会员均可）
+说说谁有理中：点击支持任何一方一次 3个分
+在任何地方发表评论：一次3分 （达人／普通会员均可）
+在任何地方点 赞 或 倒： 一次1分 （达人／普通会员均可）">积分说明</a></p>
                 <div class="credit">
                     <div class="stars">
                         <span></span>
@@ -43,7 +50,7 @@
             <div class="member-tab-cont m-table">
 
                 <div class="member-tab-item tab-transactionRecord">
-                    <a href="news-add.html" class="btn-add">新发布</a>
+                    <a href="/blogs/deploy" class="btn-add">新发布</a>
                     <table>
                         <thead>
                             <tr>
@@ -57,7 +64,7 @@
                         <tbody>
                             {% for item in blogs %}
                             <tr>
-                                <td>{{ item.id }}</td>
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ item.created_at }}</td>
                                 <td>{{ item.block }}</td>
                                 <td>{{ item.title }}</td>
@@ -96,6 +103,7 @@
                         <div class="form-item">
                             <label>首付款截图</label>
                             <img src="{% static "images/300x300.jpg" %}"/>
+                            <input type="hidden" value="confirm" name="status" disabled>
                             <div class="btn-upload">
                                 <input type="submit">确认</input>
                             </div>
@@ -119,13 +127,13 @@
                         <tbody>
                             {% for item in trades %}
                             <tr>
-                                <td>{{ item.created_at }}</td>
+                                <td>{{ item.date }}</td>
                                 <td>{{ item.seller }}</td>
                                 <td>{{ item.amount }}</td>
                                 <td>{{ item.content }}</td>
-                                <td><img src="{% static "images/300x300.jpg" %}" /></td>
+                                <td><img src="{{ item.img }}" /></td>
                                 <td class="red">{{ item.status }}</td>
-                                <td class="red"><a href="theory.html">发起说理</a></td>
+                                <td class="green"><a href="/blogs/trade/{{ item.id }}">发起说理</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -147,11 +155,11 @@
                         <tbody>
                             {% for item in theorys %}
                             <tr>
-                                <td>{{ item.id }}</td>
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ item.code }}</td>
                                 <td>{{ item.title }}</td>
                                 <td>{{ item.status }}</td>
-                                <td class="red"><a href="theory-info.html">查看详情</a></td>
+                                <td class="red"><a href="/blogs/theory/{{ item.id }}">查看详情</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>

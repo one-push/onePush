@@ -9,10 +9,17 @@
     <div class="container member-container clearfix">
 			<div class="member-aside fl">
 				<div class="head-portrait">
-					<img src="{% static "images/300x300.jpg" %}" />
+					<img src="" />
 					<i class="grade"></i>
 					<div class="name">{{ user.username }}</div>
-					<p class="declaration">经验值<span>菜鸟</span>35积分<a href="#">积分说明</a></p>
+					<p class="declaration">经验值<span>菜鸟</span>35积分<a href=""
+                    title="海淘那些事： 发布篇原创文章 一次25分 （达人／普通会员均可）
+创建一次交易记录：一次15分 （达人会员创建，邀请普通会员（买方）确认）
+达人工作台：发布一次 5分（仅限达人会员）
+我要我要的： 发布一次 5分 （达人／普通会员均可）
+说说谁有理中：点击支持任何一方一次 3个分
+在任何地方发表评论：一次3分 （达人／普通会员均可）
+在任何地方点 赞 或 倒： 一次1分 （达人／普通会员均可）">积分说明</a></p>
 					<div class="credit">
 						<div class="stars">
 							<span></span>
@@ -70,7 +77,7 @@
 						{{ user_info.desc }}
 					</div>
 					<div class="member-tab-item tab-transactionRecord hide">
-						<a href="news-add.html" class="btn-add">新发布</a>	
+						<a href="/blogs/deploy" class="btn-add">新发布</a>
 						<table>
 							<thead>
 								<tr>
@@ -100,26 +107,29 @@
                         <div class="form">
 							<div class="form-item">
 								<label>日期</label>
-								<input type="date" placeholder="请输入日期" name="date">
+								<input type="date" placeholder="请输入日期" id="trade-date" name="date">
 							</div>
 							<div class="form-item">
 								<label>买方</label>
-								<input type="text" placeholder="请输入买方账号" name="buyer">
+								<input type="text" placeholder="请输入买方账号" id="trade-buyer" name="buyer">
 							</div>
 							<div class="form-item">
 								<label>交易金额RMB</label>
-								<input type="text" placeholder="请输入交易今额" name="amount">
+								<input type="text" placeholder="请输入交易今额" id="trade-amount" name="amount">
 							</div>
 							<div class="form-item">
 								<label>交易内容</label>
-								<input type="text" placeholder="请输入交易内容" name="content">
+								<input type="text" placeholder="请输入交易内容" id="trade-content" name="content">
 							</div>
 							<div class="form-item">
 								<label>首付款截图</label>
-								<img src="/{{ STATIC_URL }}images/300x300.jpg"/>
-								<div class="btn-upload">
-									<input type="file" name="">
-									<span>上传图片</span>
+                                <img id="trade-img"/>
+                                <input type="hidden" id="trade-img-url" name="img">
+                                <input type="hidden" id="trade-id" name="id">
+                                <input type="hidden" id="trade-method" name="method" value="" />
+								<div class="btn-upload" id="uploadForm">
+                                    <input type="file" id="trade-file"  name="file" onchange="uploadFile()">
+                                    <span>上传图片</span>
 								</div>
 							</div>
 						</div>
@@ -142,16 +152,17 @@
 							<tbody>
                                 {% for item in trades %}
                                 <tr>
-                                    <td>{{ item.date }}</td>
+                                    <td>{{ item.date_text }}</td>
                                     <td>{{ item.buyer }}</td>
                                     <td>{{ item.amount }}</td>
                                     <td>{{ item.content }}</td>
-                                    <td><img src="../../images/300x300.jpg" /></td>
-                                    <td class="red">{{ item.status }}</td>
+                                    <td><img src="{{ item.img }}" /></td>
                                     {% if item.status == '已确认'  %}
-                                        <td class="red"><a href="theory.html">发起说理</a></td>
+                                        <td class="red">{{ item.status }}</td>
+                                        <td class="red"><a href="/blogs/trade/{{ item.id }}">发起说理</a></td>
                                     {% else %}
-                                        <td class="green"><a href="#">修改</a></td>
+                                        <td class="green">{{ item.status }}</td>
+                                        <td class="green"><a onClick="updateTrade({{ item.id }}, '{{ item.date }}', '{{ item.buyer }}', '{{ item.amount }}', '{{ item.content }}', '{{ item.img }}')">修改</a></td>
                                     {% endif %}
                                 </tr>
                                 {% endfor %}
@@ -187,4 +198,45 @@
 				</div>
 			</div>
 		</div>
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+    function uploadFile() {
+
+        var formData = new FormData();
+        formData.append('file', $('#trade-file')[0].files[0]);
+        $.ajax({
+            type:'POST',
+            url: '/image_upload',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                var url = '/media/' + data.url;
+                $("#trade-img").attr("src", url);
+                $("#trade-img-url").val(url);
+            },
+        })
+    }
+
+    function createTrade(){
+
+    }
+
+    // 直接传item对象，语法报错
+    function updateTrade(id, date, buyer, amount, content, img){
+        $("#trade-method").val('put')
+        $("#trade-id").val(id);
+        $("#trade-date").val(date);
+        $("#trade-buyer").val(buyer);
+        $("#trade-amount").val(amount);
+        $("#trade-content").val(content);
+        $("#trade-img-url").val(img);
+        $("#trade-img").attr("src", img);
+        console.log('--------', id, date, buyer, amount, content, img)
+
+    }
+</script>
 {% endblock %}

@@ -15,39 +15,64 @@
 {% block main-body %}
     <div class="container release-container clearfix">
 
-        <div class="panel-item">
-            <div class="panel">
-                <div class="col">起诉方：<span>买方</span></div>
-                <div class="col default">被诉方：<span>卖方</span></div>
+{#        <form method="post", action="/blogs/theory">#}
+            <div class="panel-item">
+                <div class="panel">
+                    <div class="col">起诉方：<span>{{ data.prosecute }}</span></div>
+                    <div class="col default">被诉方：<span>{{ data.respondent }}</span></div>
+                </div>
+                <div class="panel">
+                    <div class="col">账户名：<span>{{ data.prosecute_user }}</span></div>
+                    <div class="col default">账户名：<span>{{ data.respondent_user }}</span></div>
+                </div>
             </div>
-            <div class="panel">
-                <div class="col">账户名：<span>张三</span></div>
-                <div class="col default">账户名：<span>李四</span></div>
-            </div>
-        </div>
 
-        <div class="item">
-            <label>起诉理由（主题）：</label>
-            <div class="info">
-                <input type="text" placeholder="请输入主题" class="text" name="pro">
-            </div>
-        </div>
-        <div class="item">
-            <label>起诉文字内容：</label>
-            <div class="info">
-                <textarea class="textarea" placeholder="请输入描述内容" rows="5"></textarea>
-            </div>
-        </div>
-        <div class="item">
-            <label>起诉截图佐证：</label>
-            <div class="info infoIMG imgList">
-                <img src="{% static "images/300x300.jpg" %}">
-                <div class="btn-upload"><input type="file" name="">
-                <span>上传图片</span></div>
-            </div>
-        </div>
-        <!--<button type="submit" class="btn">发起</button>-->
 
-        <a href="theory-info.html" type="submit" class="btn">发起</a>
+            <div class="item">
+                <input type="text", name="data" value="{{ data }}" hidden="true">
+                <label>起诉理由（主题）：</label>
+                <div class="info">
+                    <input type="text" placeholder="请输入主题" class="text" name="title">
+                </div>
+            </div>
+            <div class="item">
+                <label>起诉文字内容：</label>
+                <div class="info">
+                    <textarea class="textarea" placeholder="请输入描述内容" name="content" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="item">
+                <label>起诉截图佐证：</label>
+                <div class="info infoIMG imgList">
+                    <img src="{% static "images/300x300.jpg" %}">
+                    <div class="btn-upload"><input type="file" name="">
+                    <span>上传图片</span></div>
+                </div>
+            </div>
+            <button onclick="submitTheory()" class="btn">发起</button>
+{#            <a type="submit" class="btn">发起</a>#}
+{#        </form>#}
     </div>
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+    var data = {{ content | safe}};
+    function submitTheory(){
+
+        var params = {
+            trade_id: data.trade_id,
+            prosecute_id: data.prosecute_id,
+            respondent_id: data.respondent_id,
+            title: document.getElementsByName('title')[0].value,
+            content: document.getElementsByName('content')[0].value,
+
+        };
+        $.ajax({
+            type:'POST',
+            url: '/blogs/theory',
+            data: params,
+        })
+    }
+</script>
 {% endblock %}

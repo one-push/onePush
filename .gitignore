@@ -3,3 +3,4 @@
 *.py[com]
 __pycache__/
 migrations
+media

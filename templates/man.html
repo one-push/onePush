@@ -55,15 +55,11 @@
             </ul>
         </div>
         <div class="panel-paging">
-            <a href="#">1</a>
-            <a href="#" class="active">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
+            {{ page_str | safe }}
         </div>
     </div>
     <div class="release-container news-container clearfix">
-
+        {% if request.user.info.is_vip %}
         <div class="q-title">快速发布</div>
         <form method="post", action="/blogs/block">
         <div class="item">
@@ -173,5 +169,6 @@
         </div>
         <button type="submit" class="btn">发布</button>
         </form>
+    {% endif %}
     </div>
 {% endblock %}
