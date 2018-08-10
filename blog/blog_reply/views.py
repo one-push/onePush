@@ -12,7 +12,7 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from django.http import HttpResponseRedirect
-from blog.serializer import ReplyBlogCreateSerializer, ReplyBlogListSerializer
+from serializer import ReplyBlogCreateSerializer, ReplyBlogListSerializer
 from blog.models import BlogReply
 from blog.service import update_score
 
@@ -34,7 +34,7 @@ class BlogReplyViews(ModelViewSet):
 
         context = dict(data=ret.data,
                        reply_count=self.queryset.count())
-        return HttpResponseRedirect('block/{}'.format(blog_id), context)
+        return HttpResponseRedirect('/blogs/block/{}'.format(blog_id), context)
 
     def create(self, request, *args, **kwargs):
         data = request.POST.dict()
@@ -45,7 +45,7 @@ class BlogReplyViews(ModelViewSet):
         ins = serial.save()
         if ins:
             update_score(request.user, 'comments', ins.id)
-        return HttpResponseRedirect('block/{}'.format(data.get('blog_id')))
+        return HttpResponseRedirect('/blogs/block/{}'.format(data.get('blog_id')))
 
     def retrieve(self, request, *args, **kwargs):
         context = dict()

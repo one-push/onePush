@@ -9,7 +9,8 @@ from django.http import HttpResponseRedirect
 from blog.models import Blog, BlogReply
 from blog.serializer import BlogListSerializer, \
     BlogCreateSerializer, BlogDetailSerializer
-from blog.serializer import ReplyBlogCreateSerializer, ReplyBlogListSerializer
+from blog.blog_reply.serializer import ReplyBlogCreateSerializer, \
+    ReplyBlogListSerializer
 from service import update_score
 from onepush.pagination import Pagination
 from django.conf import settings

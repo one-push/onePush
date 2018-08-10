@@ -15,8 +15,9 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from onepush import settings
 from blog.models import Blog, Trade, Theory
-from blog.serializer import BlogListSerializer, \
-    TradeListSerializer, TheoryListSerializer
+from blog.serializer import BlogListSerializer
+from blog.trade.serializer import TradeListSerializer
+from blog.theory.serializer import TheoryListSerializer
 
 
 def index(req):

@@ -153,7 +153,7 @@
                                 {% for item in trades %}
                                 <tr>
                                     <td>{{ item.date_text }}</td>
-                                    <td>{{ item.buyer }}</td>
+                                    <td>{{ item.buyer_name }}</td>
                                     <td>{{ item.amount }}</td>
                                     <td>{{ item.content }}</td>
                                     <td><img src="{{ item.img }}" /></td>
@@ -162,7 +162,7 @@
                                         <td class="red"><a href="/blogs/trade/{{ item.id }}">发起说理</a></td>
                                     {% else %}
                                         <td class="green">{{ item.status }}</td>
-                                        <td class="green"><a onClick="updateTrade({{ item.id }}, '{{ item.date }}', '{{ item.buyer }}', '{{ item.amount }}', '{{ item.content }}', '{{ item.img }}')">修改</a></td>
+                                        <td class="green"><a onClick="updateTrade({{ item.id }}, '{{ item.date }}', '{{ item.buyer_name }}', '{{ item.amount }}', '{{ item.content }}', '{{ item.img }}')">修改</a></td>
                                     {% endif %}
                                 </tr>
                                 {% endfor %}
@@ -189,7 +189,7 @@
                                     <td>{{ item.code }}</td>
                                     <td>{{ item.title }}</td>
                                     <td>{{ item.status }}</td>
-                                    <td class="red"><a href="theory-info.html">查看详情</a></td>
+                                    <td class="red"><a href="/blogs/theory/{{ item.id }}">查看详情</a></td>
                                 </tr>
                                 {% endfor %}
 							</tbody>
@@ -202,8 +202,8 @@
 
 {% block js-body %}
 <script type="text/javascript">
-    function uploadFile() {
 
+    function uploadFile() {
         var formData = new FormData();
         formData.append('file', $('#trade-file')[0].files[0]);
         $.ajax({
@@ -235,8 +235,6 @@
         $("#trade-content").val(content);
         $("#trade-img-url").val(img);
         $("#trade-img").attr("src", img);
-        console.log('--------', id, date, buyer, amount, content, img)
-
     }
 </script>
 {% endblock %}

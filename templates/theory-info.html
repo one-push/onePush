@@ -9,87 +9,164 @@
 
         <div class="panel-item">
             <div class="panel">
-                <div class="col">序号：<span>20180530001</span></div>
+                <div class="col">序号：<span>{{ data.code }}</span></div>
             </div>
+            {% if data.initiator  %}
             <div class="panel">
                 <div class="col">起诉方：<span>买方</span></div>
                 <div class="col default">被诉方：<span>卖方</span></div>
             </div>
             <div class="panel">
-                <div class="col">支持数：<span>36<i class="icon-1"></i></span></div>
-                <div class="col default">支持数：<span>42<i class="icon-2"></i></span></div>
+                <div class="col">支持数：<span>{{ data.like_prosecute }}<i onclick="likeThisMan({{ request.user.id }}, data.id, true)" class="icon-1"></i></span></div>
+                <div class="col default">支持数：<span>{{ data.like_respondent }}<i onclick="likeThisMan({{ request.user.id }}, data.id, false)" class="icon-2"></i></span></div>
             </div>
+            {% else %}
+                <div class="panel">
+                    <div class="col">起诉方：<span>卖方</span></div>
+                    <div class="col default">被诉方：<span>买方</span></div>
+                </div>
+                <div class="panel">
+                    <div class="col">支持数：<span>{{ data.like_prosecute }}<i onclick="likeThisMan({{ request.user.id }}, data.id, true)" class="icon-1"></i></span></div>
+                    <div class="col default">支持数：<span>{{ data.like_respondent }}<i onclick="likeThisMan({{ request.user.id }}, data.id, false)" class="icon-2"></i></span></div>
+                </div>
+            {% endif %}
         </div>
 
         <div class="item">
             <label>起诉理由（主题）：</label>
             <div class="info">
-                卖方出售劣质商品。
+                {{ data.title }}
             </div>
         </div>
         <div class="item">
             <label>起诉文字内容：</label>
             <div class="info infoText">
-                <p>卖方出售劣质商品。严重影响了生活习惯。</p>
-                <img src={% static "images/300x300.jpg" %} />
-                <img src={% static "images/300x300.jpg" %}/>
-                <img src={% static "images/300x300.jpg" %}/>
+                <p>{{ data.content }}</p>
+                {% for url in data.picture %}
+                <img src={{ url }} />
+                {% endfor %}
             </div>
         </div>
-        <div class="item">
-            <label>卖方答辩：<span>2018.5.5 10:00:20</span></label>
-            <div class="info infoText">
-                <p>我的商品没有什么问题呀。。。</p>
-                <img src={% static "images/300x300.jpg" %}/>
-            </div>
-        </div>
-        <div class="item">
-            <label>买方答辩：<span>2018.5.5 10:00:20</span></label>
-            <div class="info infoText">
-                <p>你的商品本身就有问题，不要狡辩了。</p>
+        {% for item in data.reply %}
+            <div class="item">
+                <label style="width: 180px; margin-right: 10px;">
+                    {% if item.user.id == data.trade.buyer %}
+                        买方答辩：
+                    {% elif item.user.id == data.trade.seller %}
+                        卖方答辩：
+                    {% else %}
+                        {{ item.user.username }}答辩：
+                    {% endif %}
+                    <span>{{ item.created_at | date:"Y-m-d H:i:s" }}</span></label>
+                <div class="info infoText">
+                    <p>{{ item.content }}</p>
+                </div>
 
-            </div>
+{#                {% for i in item.reply %}#}
+{#                    <p>{{ i.content }}</p>#}
+{#                {% endfor %}#}
         </div>
-        <div class="item">
-            <label>卖方答辩：<span>2018.5.5 10:00:20</span></label>
-            <div class="info infoText">
-                <p>我的商品是没有问题的，你放心使用吧。</p>
-                <img src={% static "images/300x300.jpg" %}/>
-            </div>
-        </div>
-        <div class="item">
-            <label>买方答辩：<span>2018.5.5 10:00:20</span></label>
-            <div class="info infoText">
-                <p>恩恩，就且相信你一回。</p>
+        {% endfor %}
+{#        <div class="item">#}
+{#            <label>卖方答辩：<span>2018.5.5 10:00:20</span></label>#}
+{#            <div class="info infoText">#}
+{#                <p>我的商品没有什么问题呀。。。</p>#}
+{#                <img src={% static "images/300x300.jpg" %}/>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="item">#}
+{#            <label>买方答辩：<span>2018.5.5 10:00:20</span></label>#}
+{#            <div class="info infoText">#}
+{#                <p>你的商品本身就有问题，不要狡辩了。</p>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="item">#}
+{#            <label>卖方答辩：<span>2018.5.5 10:00:20</span></label>#}
+{#            <div class="info infoText">#}
+{#                <p>我的商品是没有问题的，你放心使用吧。</p>#}
+{#                <img src={% static "images/300x300.jpg" %}/>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="item">#}
+{#            <label>买方答辩：<span>2018.5.5 10:00:20</span></label>#}
+{#            <div class="info infoText">#}
+{#                <p>恩恩，就且相信你一回。</p>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="item">#}
+{#            <label>卖方答辩：</label>#}
+{#            <div class="info infoText">#}
+{#                <input class="input" type="text" name="">#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="item">#}
+{#            <label>评论1：<span>2018.5.5 10:00:20</span></label>#}
+{#            <div class="info infoText">#}
+{#                <p>我的商品是没有问题的，你放心使用吧。</p>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="item">#}
+{#            <label>评论2：<span>2018.5.5 10:00:20</span></label>#}
+{#            <div class="info infoText">#}
+{#                <p>我的商品是没有问题的，你放心使用吧。</p>#}
+{#            </div>#}
+{#        </div>#}
 
-            </div>
-        </div>
-        <div class="item">
-            <label>卖方答辩：</label>
-            <div class="info infoText">
-                <input class="input" type="text" name="">
-            </div>
-        </div>
-        <div class="item">
-            <label>评论1：<span>2018.5.5 10:00:20</span></label>
-            <div class="info infoText">
-                <p>我的商品是没有问题的，你放心使用吧。</p>
-            </div>
-        </div>
-        <div class="item">
-            <label>评论2：<span>2018.5.5 10:00:20</span></label>
-            <div class="info infoText">
-                <p>我的商品是没有问题的，你放心使用吧。</p>
-            </div>
-        </div>
         <div class="panel-comment">
             <div class="item">
                 <label>评论：</label>
                 <div class="info">
-                    <textarea class="textarea" placeholder="请输入内容！" rows="5"></textarea>
+                    <textarea class="textarea" placeholder="请输入内容！" name="content" rows="5"></textarea>
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn">发布评论</button>
+        <button type="submit" onclick="submitReply()" class="btn">发布评论</button>
     </div>
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+
+    var data = {{ theory | safe}};
+    function submitReply(){
+        var params = {
+            theory_id: data.id,
+            content: document.getElementsByName('content')[0].value
+        };
+        $.ajax({
+            type:'POST',
+            url: '/blogs/reply_theory',
+            data: params,
+            success: function(){
+                location.reload();
+            }
+        })
+    };
+
+    function likeThisMan(user_id, theory_id, is_prosecute){
+
+        var params = {
+            theory_id: theory_id,
+            user_id: user_id,
+            like_prosecute: false,
+            like_respondent: false
+        };
+        if (is_prosecute){
+            params.like_prosecute = true
+        } else {
+            params.like_respondent = true
+        }
+        $.ajax({
+            type:'POST',
+            url: '/blogs/reply_like',
+            data: params,
+            success: function(){
+                location.reload();
+            }
+        })
+
+    }
+</script>
 {% endblock %}

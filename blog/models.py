@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from datetime import datetime
 from django.db import models
+from mptt.models import MPTTModel
 from account.models import UserInfo
 from account.models import BLOCKS, ABOUT, TRADE_STATE, THEORY_STATE
 from django.contrib.auth.models import User
@@ -75,36 +76,6 @@ class BlogReply(BaseModel):
     ref_reply = models.ForeignKey('self', verbose_name=u'回答哪条内容', blank=True, null=True)
 
 
-class Theory(BaseModel):
-    """发起说理"""
-    user = models.ForeignKey(User, verbose_name=u'用户', blank=True)
-    code = models.CharField(max_length=50, default='', verbose_name=u'序号')
-    prosecute = models.ForeignKey(User, related_name='the_pro', verbose_name=u'起诉方')
-    respondent = models.ForeignKey(User, related_name='the_res', verbose_name=u'被诉方')
-
-    status = models.CharField(choices=THEORY_STATE, default='trial', max_length=30, verbose_name=u'状态')
-    title = models.CharField(max_length=200, default='', verbose_name=u'主题')
-    content = models.CharField(max_length=200, default='', verbose_name=u'内容')
-    picture = models.ForeignKey(Picture, verbose_name=u'起诉用图片', blank=True, null=True)
-
-    pro_support_count = models.IntegerField(verbose_name=u'起诉方支持数', default=0)
-    res_support_count = models.IntegerField(verbose_name=u'被诉方支持数', default=0)
-
-
-class TheoryReply(models.Model):
-    """
-    发起说理，内容回复
-    暂时理解 只能起诉写评论，被起诉方回答评论，
-    且再次回答需要重新填写评论
-
-    考虑是否将blogReply和TheoryReply合并一张表
-    """
-    theory = models.ForeignKey(Theory, related_name='reply', verbose_name=u'发起说理')
-    user = models.ForeignKey(User, verbose_name=u'评论的用户', blank=True)
-    content = models.TextField(default='', verbose_name=u'评论的内容')
-    ref_reply = models.ForeignKey('self', verbose_name=u'回答哪条内容')
-
-
 class Trade(BaseModel):
     """
     交易记录
@@ -119,3 +90,47 @@ class Trade(BaseModel):
     content = models.CharField(default='', max_length=100, verbose_name=u'交易内容')
     status = models.CharField(choices=TRADE_STATE, default='waiting', max_length=30, verbose_name=u'交易状态')
     img = models.CharField(default='', max_length=100, verbose_name=u'首付款截图', blank=True, null=True)
+
+
+class Theory(BaseModel):
+    """发起说理"""
+    user = models.ForeignKey(User, verbose_name=u'用户')
+    trade = models.ForeignKey(Trade, related_name='trade', verbose_name=u'交易')
+    code = models.CharField(max_length=50, default='', verbose_name=u'序号')
+
+    initiator = models.BooleanField(verbose_name=u'发起诉讼方 True(买方) False(卖方)')
+
+    status = models.CharField(choices=THEORY_STATE, default='trial', max_length=30, verbose_name=u'状态')
+    title = models.CharField(max_length=200, default='', verbose_name=u'主题')
+    content = models.CharField(max_length=200, default='', verbose_name=u'内容')
+    picture = models.ManyToManyField(Picture, related_name='pics', verbose_name=u'起诉用图片', blank=True, null=True)
+
+
+class TheoryLike(models.Model):
+    """
+    发起说理支持用户（说理点赞）
+
+    一个用户一个说理，只能支持一次
+    """
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    theory = models.ForeignKey(Theory, related_name='like')
+    user = models.ForeignKey(User, related_name='like_user', verbose_name=u'')
+    like_prosecute = models.BooleanField(verbose_name=u'支持起诉方', default=False)
+    like_respondent = models.BooleanField(verbose_name=u'支持被诉方', default=False)
+
+
+class TheoryReply(MPTTModel):
+    """
+    发起说理，内容回复
+    暂时理解 只能起诉写评论，被起诉方回答评论，
+    且再次回答需要重新填写评论
+
+    考虑是否将blogReply和TheoryReply合并一张表
+    """
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    is_delete = models.BooleanField(default=False, db_index=True)
+
+    theory = models.ForeignKey(Theory, related_name='reply', verbose_name=u'发起说理')
+    user = models.ForeignKey(User, verbose_name=u'评论的用户', blank=True)
+    content = models.TextField(default='', verbose_name=u'评论的内容')
+    parent = models.ForeignKey('self', verbose_name=u'回答哪条内容', blank=True, null=True)

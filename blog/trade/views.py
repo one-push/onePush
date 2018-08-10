@@ -15,9 +15,9 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from blog.serializer import TradeListSerializer
-from blog.serializer import TradeCreateSerializer
-from blog.serializer import TradeDetailSerializer
+from blog.trade.serializer import TradeListSerializer
+from blog.trade.serializer import TradeCreateSerializer
+from blog.trade.serializer import TradeDetailSerializer
 from blog.models import Trade
 from blog.service import update_score
 
@@ -74,21 +74,16 @@ class TradeViews(ModelViewSet):
         # serial = TradeDetailSerializer(trade)
         # data = serial.data
 
-        data = dict(trade_id=pk)
-        if request.user.username == trade.buyer.username:
-            data['prosecute_user'] = trade.buyer.username
-            data['prosecute_id'] = trade.buyer.id
-            data['prosecute'] = u'买方'
-            data['respondent_user'] = trade.seller.username
-            data['respondent_id'] = trade.seller.id
-            data['respondent'] = '卖方'
-        else:
-            data['prosecute_user'] = trade.seller.username
-            data['prosecute_id'] = trade.seller.id
-            data['prosecute'] = u'卖方'
-            data['respondent_user'] = trade.buyer.username
-            data['respondent_id'] = trade.buyer.id
-            data['respondent'] = '买方'
+        # 当前起诉用户是买方  initiator = True
+        # 当前起诉用户是卖方  initiator = False
+        initiator = True if request.user.username == trade.buyer.username else False
+        data = dict(trade_id=pk, initiator=initiator)
+        data['prosecute_user'] = trade.buyer.username if initiator else trade.seller.username
+        data['prosecute_id'] = trade.buyer.id if initiator else trade.seller.id
+        data['prosecute'] = u'买方' if initiator else u'卖方'
+        data['respondent_user'] = trade.seller.username if initiator else trade.buyer.username
+        data['respondent_id'] = trade.seller.id if initiator else trade.buyer.id
+        data['respondent'] = u'卖方' if initiator else u'买方'
 
         context = dict(data=data, content=json.dumps(data))
         return render(request, 'theory.html', context)

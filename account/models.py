@@ -46,7 +46,7 @@ ACTION_SCORE = {
     u'trade': 15,   # 交易记录
     u'man': 5,      # 达人工作台     仅VIP
     u'want': 5,     # 我要我要
-    u'theory_click': 3,  # 说说谁有理点击支持
+    u'theory_like': 3,  # 说说谁有理点击支持
     u'comments': 3,      # 发表评论
     u'like': 3,          # 赞/倒
 }

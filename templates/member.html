@@ -90,7 +90,7 @@
                         </div>
                         <div class="form-item">
                             <label>卖方</label>
-                            <input type="text" value="{{ item.seller }}" name="seller" disabled>
+                            <input type="text" value="{{ item.seller_name }}" name="seller" disabled>
                         </div>
                         <div class="form-item">
                             <label>交易金额RMB</label>
@@ -128,7 +128,7 @@
                             {% for item in trades %}
                             <tr>
                                 <td>{{ item.date }}</td>
-                                <td>{{ item.seller }}</td>
+                                <td>{{ item.seller_name }}</td>
                                 <td>{{ item.amount }}</td>
                                 <td>{{ item.content }}</td>
                                 <td><img src="{{ item.img }}" /></td>

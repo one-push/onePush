@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block main-menu-theory %}
-    <a href="theory" class="active">说说谁有理</a>
-{% endblock %}
-
 {% block main-big-title %}
     <div class="cont-text">
         <h1>群众的眼睛是雪亮的。发起你的说理，无良卖家，奇葩买家都将无所遁形。</h1>
@@ -43,10 +39,12 @@
             </div>
             <div class="item">
                 <label>起诉截图佐证：</label>
-                <div class="info infoIMG imgList">
-                    <img src="{% static "images/300x300.jpg" %}">
-                    <div class="btn-upload"><input type="file" name="">
-                    <span>上传图片</span></div>
+                <div class="info infoIMG imgList" id="imgLIst">
+
+                    <div class="btn-upload">
+                        <input type="file" id="theory-file"  name="file" onchange="uploadFile()">
+                        <span>上传图片</span>
+                    </div>
                 </div>
             </div>
             <button onclick="submitTheory()" class="btn">发起</button>
@@ -57,22 +55,44 @@
 
 {% block js-body %}
 <script type="text/javascript">
+    var pic_ids = '';
     var data = {{ content | safe}};
     function submitTheory(){
-
         var params = {
             trade_id: data.trade_id,
-            prosecute_id: data.prosecute_id,
-            respondent_id: data.respondent_id,
+            initiator: data.initiator,
             title: document.getElementsByName('title')[0].value,
             content: document.getElementsByName('content')[0].value,
-
+            pids: pic_ids
         };
         $.ajax({
             type:'POST',
             url: '/blogs/theory',
             data: params,
+            success: function(){
+                location.reload();
+            }
+        })
+    };
+
+    function uploadFile() {
+        var formData = new FormData();
+        formData.append('file', $('#theory-file')[0].files[0]);
+        $.ajax({
+            type:'POST',
+            url: '/image_upload',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                pic_ids += data.id + ',';
+                var url = '/media/' + data.url;
+                var ele = '<img src="' + url + '"/>';
+                $("#imgLIst").prepend(ele)
+            }
         })
     }
+
 </script>
 {% endblock %}
