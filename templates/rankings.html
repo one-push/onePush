@@ -36,7 +36,7 @@
 					{% for item in users %}
                     <li>
 						<a href="#">
-							<img src="{% static "images/232x300-1.jpg" %}" />
+							<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" />
 							<div class="info">
 								<div class="col name">{{ item.user.username }}</div>
 								<div class="col">经验值：{{ item.level_text }}</div>
@@ -52,7 +52,6 @@
 {#                                    {% if item.is_favorite %}#}
 {#                                        <span>取消收藏</span>#}
 {#                                    {% else %}#}
-{#
 {#                                    {% endif %}#}
                                 </div>
 							</div>
