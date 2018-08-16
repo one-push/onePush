@@ -33,29 +33,29 @@
 					</div>
 				</div>
 				<div class="btns">
-					<a href="#" class="fans">评价(5)</a>
-					<a href="#" class="fabulous"><i></i>(3)</a>
-					<a href="#" class="fabulous-no"><i></i>(5)</a>
-					<a href="#" class="follow">关注(96)</a>
-					<a href="#" class="collection">收藏(26)</a>
+					<a href="#" class="fans">评价({{ reply_count }})</a>
+{#					<a href="#" class="fabulous"><i></i>(3)</a>#}
+{#					<a href="#" class="fabulous-no"><i></i>(5)</a>#}
+					<a href="#" class="follow">关注({{ attention_count }})</a>
+					<a href="#" class="collection">收藏({{ favorite_count }})</a>
 				</div>
 				<a href="/sign/out" ><button class="sign-out">退出登录</button></a>
 				<div class="items">
 					<div class="col">
 						<div class="title">擅长品类</div>
-						<div class="desc">乐高 变形金刚 迪斯尼无限 Fisher Price玩具</div>
+						<div class="desc">{{ user_info.goods_text }}</div>
 					</div>
 					<div class="col">
 						<div class="title">产品来源</div>
-						<div class="desc">{{ user_info.source }}</div>
+						<div class="desc">{{ user_info.source_text }}</div>
 					</div>
 					<div class="col">
 						<div class="title">供货形式</div>
-						<div class="desc">{{ user_info.delivery }}</div>
+						<div class="desc">{{ user_info.delivery_text }}</div>
 					</div>
 					<div class="col">
 						<div class="title">服务内容</div>
-						<div class="desc">代购 拼单 物流转运</div>
+						<div class="desc">{{ user_info.service_text }}</div>
 					</div>
 				</div>
 			</div>

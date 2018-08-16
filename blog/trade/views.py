@@ -46,10 +46,11 @@ class TradeViews(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.POST.dict()
-        'file' in data and data.pop('file')
         if data.get('method') == 'put':
-            'method' in data and data.pop('method')
             return self.update(request, data)
+
+        for item in ['file', 'method', 'id']:
+            item in data and data.pop(item)
 
         buyer = User.objects.filter(username=data.get('buyer')).first()
         if not buyer:
@@ -89,6 +90,8 @@ class TradeViews(ModelViewSet):
         return render(request, 'theory.html', context)
 
     def update(self, request, params):
+        for item in ['file', 'method']:
+            item in params and params.pop(item)
         id = params.get('id')
         if 'buyer' in params:
             buyer = params.pop('buyer')

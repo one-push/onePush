@@ -32,11 +32,11 @@
                 </div>
             </div>
             <div class="btns">
-                <a href="#" class="fans"><i></i>评价(5)</a>
-                <a href="#" class="fabulous"><i></i>(3)</a>
-                <a href="#" class="fabulous-no"><i></i>(5)</a>
-                <a href="#" class="follow">关注(96)</a>
-                <a href="#" class="collection">收藏(26)</a>
+                <a href="#" class="fans"><i></i>评价({{ reply_count }})</a>
+{#                <a href="#" class="fabulous"><i></i>(3)</a>#}
+{#                <a href="#" class="fabulous-no"><i></i>(5)</a>#}
+                <a href="#" class="follow">关注({{ attention_count }})</a>
+                <a href="#" class="collection">收藏({{ favorite_count }})</a>
             </div>
             <button class="sign-out">退出登录</button>
         </div>
@@ -102,7 +102,7 @@
                         </div>
                         <div class="form-item">
                             <label>首付款截图</label>
-                            <img src="{% static "images/300x300.jpg" %}"/>
+                            <img src="{{ item.img }}"/>
                             <input type="hidden" value="confirm" name="status" disabled>
                             <div class="btn-upload">
                                 <input type="submit">确认</input>

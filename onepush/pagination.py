@@ -19,7 +19,7 @@ class Pagination(object):
         self.offset = int(offset)
         self.limit = int(limit)          # 每页显示数据条目数
         self.total_count = total_count          # 数据条目总数
-        self.current_page = self.offset/self.limit    # 当前页页码值
+        self.current_page = self.offset/self.limit + 1   # 当前页页码值
         self.max_page_num = max_page_num        # 页码区域最多显示页码数
         if self.current_page == 0:
             self.current_page = 1

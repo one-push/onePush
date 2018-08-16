@@ -8,7 +8,7 @@
   > CreatedTime: 05/08/2018 14:26
 """
 
-from models import Blog, Trade, Theory, BlogReply, TheoryLike
+from models import Blog, BlogRelationUser, Trade, Theory, BlogReply, TheoryLike
 from account.models import BLOCKS, TRADE_STATE, THEORY_STATE
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
@@ -26,7 +26,7 @@ class BlogCreateSerializer(ModelSerializer):
     class Meta:
         model = Blog
         fields = ('title', 'block', 'intro', 'source_area', 'article',
-                  'see_count', 'forward_count', 'reply_count', 'user_id',
+                  'see_count', 'forward_count', 'user_id',
                   'created_at')
 
 
@@ -46,12 +46,30 @@ class BlogListSerializer(ModelSerializer):
     class Meta:
         model = Blog
         fields = ('id', 'title', 'block', 'intro', 'source_area', 'article',
-                  'see_count', 'forward_count', 'reply_count', 'user_id',
+                  'see_count', 'forward_count', 'user_id',
                   'created_at')
 
 
 class BlogDetailSerializer(BlogListSerializer):
-    pass
+
+    def __init__(self, *args, **kwargs):
+        self.current_user = kwargs.pop('current_user', None)
+        super(BlogDetailSerializer, self).__init__(*args, **kwargs)
+
+    is_favorite = serializers.SerializerMethodField()
+
+    def get_is_favorite(self, obj):
+        if self.current_user:
+            return BlogRelationUser.objects.filter(
+                user=self.current_user, blog=obj).exists()
+        else:
+            return False
+
+    class Meta:
+        model = Blog
+        fields = ('id', 'is_favorite', 'title', 'block', 'intro', 'source_area', 'article',
+                  'see_count', 'forward_count', 'user_id',
+                  'created_at')
 
 
 

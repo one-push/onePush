@@ -8,6 +8,7 @@
 {% block main-body %}
 <div class="container clearfix">
     <div class="news-detail">
+
         <h1>如何找靠谱的代购</h1>
         <div class="info">
             {% if request.user.is_vip %}
@@ -19,25 +20,39 @@
             <span>浏览量：{{ data.see_count }}</span>
             <span>发布时间：{{ data.created_at }}</span>
         </div>
+
+{#        <div class="blog-favorite">#}
+{#            {% if data.is_favorite %}#}
+{#                <span onclick="disFavorites({{ data.id }})">取消收藏</span>#}
+{#            {% else %}#}
+{#                <span onclick="favorites({{ data.id }})">收藏</span>#}
+{#            {% endif %}#}
+{#        </div>#}
         <div class="cont">
             {{ data.article | linebreaks }}
         </div>
 
         <div class="panel-comments">
-            <div class="coms-title">评论内容</div>
+            <div class="coms-title">
+                评论内容
+            <div class="right fr">
+                <span style="color: #ffc100; margin-left: 20px;">收藏({{ favorite_count }})</span>
+                <span style="color: #1076c7; margin-left: 20px;">回复({{ reply_count }})</span>
+            </div>
+            </div>
             <div class="coms-list">
                 <ul>
                     {% for item in reply %}
                     <li>
-                        <img src="{% static "images/300x300.jpg" %}" />
+                        <img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" />
                         <div class="info">
                             <div class="name clearfix">
                                 <h4>{{ item.username }}</h4>
-                                <div class="right fr">
-                                    <span>转发(20)</span>
-                                    <span>收藏(13)</span>
-                                    <span>回复(3)</span>
-                                </div>
+{#                                <div class="right fr">#}
+{#                                    <span>转发(20)</span>#}
+{#                                    <span>收藏(13)</span>#}
+{#                                    <span>回复(3)</span>#}
+{#                                </div>#}
                             </div>
                             <div class="coms-cont">{{ item.content }}</div>
                             <div class="panel">
@@ -77,6 +92,30 @@
                 location.reload();
             }
         })
-    }
+    };
+
+    function favorites(blogId) {
+        $.ajax({
+            type:'POST',
+            url: '/blogs/favorite',
+            data: {blog_id: blogId},
+            success: function(data){
+                location.reload();
+            }
+        })
+    };
+
+    function disFavorites(blogId) {
+        $.ajax({
+            type:'PUT',
+            url: '/blogs/dis_favorite',
+            data: {blog_id: blogId},
+            success: function(data){
+                location.reload();
+            }
+        })
+    };
+
+
 </script>
 {% endblock %}

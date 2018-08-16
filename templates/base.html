@@ -15,7 +15,7 @@
 			<div class="top-bar clearfix">
 				<div class="logo fl">
 					<div class="m-btn"></div>
-					<a href="index.html"><img src="{% static "images/logo-black.png" %}" /></a>
+					<a href="/index"><img src="{% static "images/logo-black.png" %}" /></a>
 				</div>
 				<div class="panel-search">
 					<form class="search clearfix">
@@ -26,7 +26,7 @@
                 {% if user.is_authenticated %}
 				<div class="hd-right fr">
 					<a href="/accounts/center" class="user">
-						<img src="{% static "images/300x300.jpg" %}" width="30px">
+						<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" width="30px">
 					</a>
 					<a href="/accounts/logout" data-ele="btnLogin">退出</a>
 				</div>

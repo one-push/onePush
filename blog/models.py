@@ -58,14 +58,16 @@ class Blog(BaseModel):
 
     see_count = models.IntegerField(default=0, verbose_name=u'浏览数')
     forward_count = models.IntegerField(default=0, verbose_name=u'转发数')
-    reply_count = models.IntegerField(default=0, verbose_name=u'回复数')  # 可以在文章回复中统计
 
 
-# 文章用户关系
-# class BlogRelationUser(models.Model):
-#     blog = models.ForeignKey(Blog, verbose_name='关联博客')
-#
-#     pass
+#  文章用户关系
+class BlogRelationUser(models.Model):
+    """
+    一对多
+    博客和用户的关系
+    """
+    blog = models.ForeignKey(Blog, related_name='blog_relation', verbose_name='关联博客' )
+    user = models.ForeignKey(User, related_name='relation', verbose_name=u'收藏用户', blank=True, null=True)
 
 
 class BlogReply(BaseModel):
@@ -103,7 +105,7 @@ class Theory(BaseModel):
     status = models.CharField(choices=THEORY_STATE, default='trial', max_length=30, verbose_name=u'状态')
     title = models.CharField(max_length=200, default='', verbose_name=u'主题')
     content = models.CharField(max_length=200, default='', verbose_name=u'内容')
-    picture = models.ManyToManyField(Picture, related_name='pics', verbose_name=u'起诉用图片', blank=True, null=True)
+    picture = models.ManyToManyField(Picture, related_name='pics', verbose_name=u'起诉用图片', blank=True)
 
 
 class TheoryLike(models.Model):

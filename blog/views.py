@@ -6,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import HttpResponseRedirect
-from blog.models import Blog, BlogReply
+from blog.models import Blog, BlogReply, BlogRelationUser
 from blog.serializer import BlogListSerializer, \
     BlogCreateSerializer, BlogDetailSerializer
 from blog.blog_reply.serializer import ReplyBlogCreateSerializer, \
@@ -21,6 +21,15 @@ class BlogViews(ModelViewSet):
 
     def get_serializer_class(self):
         return BlogListSerializer
+
+    @staticmethod
+    def get_intro(article):
+        intro = article[:100] if len(article) > 100 else article
+        lines = ['\r\n', '\n']
+        for item in lines:
+            if item in intro:
+                return intro[0:intro.index(item)] + '...'
+        return intro + '...' if len(article) > 100 else intro
 
     def list(self, request, *args, **kwargs):
 
@@ -65,8 +74,7 @@ class BlogViews(ModelViewSet):
         data = request.POST.dict()
         block = data.get('block')
         article = data.get('article')
-        intro = article[:100] if len(article) > 100 else article
-        data['intro'] = intro + '...' if len(article) > 100 else intro
+        data['intro'] = BlogViews.get_intro(article)
 
         self.serializer_class = BlogCreateSerializer
         serial = self.serializer_class(data=data)
@@ -83,11 +91,11 @@ class BlogViews(ModelViewSet):
         blog = Blog.objects.filter(id=pk).first()
 
         # 博客自己查看不加1
-        if request.user != blog.user:
-            blog.see_count += 1
-            blog.save()
+        # if request.user != blog.user:
+        blog.see_count += 1
+        blog.save()
 
-        serial = BlogDetailSerializer(blog)
+        serial = BlogDetailSerializer(blog, current_user=request.user)
         data = serial.data
 
         reply_queryset = BlogReply.objects.filter(blog=blog)
@@ -97,6 +105,7 @@ class BlogViews(ModelViewSet):
             data=data,
             reply=reply_serial.data,
             reply_count=reply_queryset.count(),
+            favorite_count=BlogRelationUser.objects.filter(blog=blog).count(),
             username=blog.user.username,
             params=json.dumps(dict(
                 cur_user_id=request.user.id,

@@ -6,33 +6,39 @@ Create at 2018/7/4
 
 __author__ = 'TT'
 
-from account.models import UserInfo, UserScore
+from account.models import UserInfo, UserScore, UserFavorites
 from account.models import VIP_LEVEL
 from django.contrib.auth.models import User, AnonymousUser
+from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
+from rest_framework.viewsets import ModelViewSet
 from onepush import settings
-from blog.models import Blog, Trade, Theory
+from blog.models import Blog, Trade, Theory, BlogRelationUser, BlogReply
 from blog.serializer import BlogListSerializer
 from blog.trade.serializer import TradeListSerializer
 from blog.theory.serializer import TheoryListSerializer
+from serializer import UserInfoListSerializer
 
 
-def index(req):
+def index(request):
     """首页"""
-    user = None
-    if req.user:
-        if isinstance(req.user, User):
-            print(True)
-            user = req.user
+    user, users = None, None
+    if request.user:
+        if isinstance(request.user, User):
+            user = request.user
+            queryset = UserInfo.objects.filter(is_vip=True)[:11]
+            users = UserInfoListSerializer(queryset, many=True,
+                                           current_user=request.user)
+
     context = dict(
         STATIC_URL=settings.STATIC_URL,
-        da_list=[],
-        user=user
+        da_list=users.data if users else [],  # 达人
+        user=user,
     )
-    return render(req, 'index.html', context)
+    return render(request, 'index.html', context)
 
 
 def sign_up(req):
@@ -131,10 +137,13 @@ def user_center(req):
     blogs_serial = BlogListSerializer(blogs, many=True)
     theorys_serial = TheoryListSerializer(theorys, many=True)
     trades_serial = TradeListSerializer(trades, many=True)
+    info = UserInfo.objects.filter(user=req.user)
+    info_serial = UserInfoListSerializer(info, many=True, current_user=req.user)
+    info_data = info_serial.data
 
     context = dict(
         STATIC_URL=settings.STATIC_URL,
-        user_info=req.user.info,
+        user_info=info_data[0] if len(info_data) else {},
         level_text=dict(VIP_LEVEL).get(req.user.info.level, u'菜鸟'),
         blogs=blogs_serial.data,
         trades=trades_serial.data,
@@ -144,12 +153,42 @@ def user_center(req):
         blog_count=blogs.count(),
         trade_count=trades.count() + (trades_waiting.count() if trades_waiting else 0),
         theory_count=theorys.count(),
+        favorite_count=UserFavorites.objects.filter(favorite=req.user).count(),
+        attention_count=BlogRelationUser.objects.filter(user=req.user).count(),
+        reply_count=BlogReply.objects.filter(user=req.user).count(),
     )
 
     return render(req, html, context)
 
 
+class UserList(ModelViewSet):
 
+    def list(self, request, *args, **kwargs):
+        area = request.GET.dict().get('area', None)
+        other_area = (u'Europe', u'America', u'Oceania', u'Asia', u'Africa',)
+        queryset = UserInfo.objects.filter(is_vip=True)
+        if area == u'hot':
+            queryset = queryset.filter(~Q(source__in=other_area))
+        elif area == u'otherArea':
+            queryset = queryset.filter(source__in=other_area)
+        elif area:
+            queryset = queryset.filter(source=area)
+
+        self.serializer_class = UserInfoListSerializer
+        self.queryset = queryset
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = UserInfoListSerializer(page, many=True, current_user=request.user)
+            # ret_data = self.get_paginated_response(serializer.data)
+            return render(request, 'rankings.html', dict(
+                users=serializer.data,
+                count=len(serializer.data)
+            ))
+
+        serializer = self.get_serializer(queryset, many=True)
+        context = dict(users=serializer.data, count=len(serializer.data))
+        return render(request, 'rankings.html', context)
 
 
 

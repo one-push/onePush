@@ -12,13 +12,13 @@
 		<div class="container">
 			<div class="top-bar clearfix">
 				<div class="logo fl">
-					<a href="index"><img src="{{ STATIC_URL }}images/logo.png" /></a>
+					<a href="/index"><img src="{{ STATIC_URL }}images/logo.png" /></a>
 				</div>
-                {% if user.is_authenticated %}
+                {% if request.user.is_authenticated %}
 {#				{% if request.user.username %}#}
 				<div class="hd-right fr">
 					<a href="/accounts/center" class="user">
-						<img src="{{ STATIC_URL }}images/300x300.jpg" width="30px">
+						<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" style="max-width: 100%;border: none; width: 30px; height: 30px; vertical-align: top; border-radius: 30px;">
 					</a>
 					<a href="/accounts/logout" data-ele="btnLogin">退出</a>
 				</div>
@@ -88,72 +88,72 @@
 				<ul class="clearfix">
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=Canada">
 							<h4>加拿大</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-1.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=America">
 							<h4>美国</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-2.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=UK">
 							<h4>英国</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-3.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=France">
 							<h4>法国</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-4.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=Italy">
 							<h4>意大利</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-4.jpg">
-						<a href="#">
+						<a href="/accounts/users?area=Germany">
 							<h4>德国</h4>
 						</a>
 					</li><li>
 						<img src="{{ STATIC_URL }}images/232x300-5.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=Australia">
 							<h4>澳大利亚</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-6.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=Nz">
 							<h4>新西兰</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=Japan">
 							<h4>日本</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-1.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=Korea">
 							<h4>韩国</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-2.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=HKM">
 							<h4>港澳</h4>
 						</a>
 					</li>
 					<li>
 						<img src="{{ STATIC_URL }}images/232x300-3.jpg">
-						<a href="rankings.html">
+						<a href="/accounts/users?area=China">
 							<h4>中国</h4>
 						</a>
 					</li>
@@ -166,17 +166,28 @@
 			</div>
 			<div class="panel-row">
 				<ul class="clearfix">
-					{% for da in da_list %}
+					{% for item in da_list %}
 					<li>
 						<a href="#">
-							<img src="{{ STATIC_URL }}images/232x300-1.jpg" />
+							<img src="{{ MEDIA_URL }}{{ item.head_img }}" />
 							<div class="info">
-								<div class="col name">张某某</div>
-								<div class="col">经验值：菜鸟</div>
-								<div class="col">擅长品类：奢饰品</div>
-								<div class="col">产品来源：英国</div>
-								<div class="col">服务内容：代购</div>
-								<div class="col"><span>关注</span><span>收藏</span></div>
+								<div class="col name">{{ item.user.username }}</div>
+								<div class="col">经验值：{{ item.level_text }}</div>
+								<div class="col">擅长品类：{{ item.goods_text }}</div>
+								<div class="col">产品来源：{{ item.source_text }}</div>
+								<div class="col">服务内容：{{ item.service_text }}</div>
+								<div class="col">
+                                    {% if item.is_attention %}
+                                        <span onclick="disFavorites({{ item.id }}, 'attention')">取消关注</span>
+                                    {% else %}
+                                        <span onclick="favorites({{ item.id }}, 'attention')">关注</span>
+                                    {% endif %}
+{#                                    {% if item.is_favorite %}#}
+{#                                        <span onclick="{{ item.id }}, 'favorite'">取消收藏</span>#}
+{#                                    {% else %}#}
+{#                                        <span onclick="favorites({{ item.id }}, 'favorite')"></span>#}
+{#                                    {% endif %}#}
+                                </div>
 							</div>
 						</a>
 					</li>
@@ -185,7 +196,7 @@
 			</div>
 		</div>
 		<div class="panel-more">
-			<a href="#">查看更多</a>
+			<a href="/accounts/users">查看更多</a>
 		</div>
 		<div class="panel-code" style="background:url({{ STATIC_URL }}images/banner.jpg) no-repeat top center;">
             <div class="item">
@@ -244,3 +255,39 @@
 	<script type="text/javascript" src="{{ STATIC_URL }}js/main.js"></script>
 </body>
 </html>
+
+<script type="text/javascript">
+
+    function favorites(userId, action) {
+        var params = {
+            user_id: userId,
+            action: action
+        };
+
+        $.ajax({
+            type:'POST',
+            url: '/accounts/favorite',
+            data: params,
+            success: function(data){
+                location.reload();
+            }
+        })
+    }
+
+    function disFavorites(userId, action) {
+        var params = {
+            user_id: userId,
+            action: action
+        };
+
+        $.ajax({
+            type:'PUT',
+            url: '/accounts/dis_favorite',
+            data: params,
+            success: function(data){
+                location.reload();
+            }
+        })
+    }
+
+</script>

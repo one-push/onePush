@@ -14,6 +14,7 @@ from blog.trade.views import TradeViews
 from blog.blog_reply.views import BlogReplyViews
 from blog.theory_reply.views import TheoryReplyViews
 from blog.theory_reply.views import TheoryLikeViews
+from favorite.views import create_favorite, dis_favorite
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'block', BlogViews, base_name='blocks')
@@ -27,4 +28,6 @@ router.register(r'reply_like', TheoryLikeViews, base_name='reply_like')
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^deploy/?$', deploy_blog),
+    url(r'^favorite/?$', create_favorite, name='favorite'),
+    url(r'^dis_favorite/?$', dis_favorite, name='dis_favorite'),
 ]
