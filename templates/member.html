@@ -84,26 +84,26 @@
                     <div class="form">
                         <input type="hidden" name="method" value="put" />
                         <input type="hidden" name="id" value="{{ item.id }}" />
+                        <input type="hidden" value="confirm" name="status"/>
                         <div class="form-item">
                             <label>创建日期</label>
-                            <input type="text" value="{{ item.date }}" name="date" disabled>
+                            <input type="text" value="{{ item.date }}" name="date" disabled/>
                         </div>
                         <div class="form-item">
                             <label>卖方</label>
-                            <input type="text" value="{{ item.seller_name }}" name="seller" disabled>
+                            <input type="text" value="{{ item.seller_name }}" name="seller" disabled/>
                         </div>
                         <div class="form-item">
                             <label>交易金额RMB</label>
-                            <input type="text" value="{{ item.amount }}" name="amount" disabled>
+                            <input type="text" value="{{ item.amount }}" name="amount" disabled/>
                         </div>
                         <div class="form-item">
                             <label>交易内容</label>
-                            <input type="text" value="{{ item.content }}" name="content" disabled>
+                            <input type="text" value="{{ item.content }}" name="content" disabled/>
                         </div>
                         <div class="form-item">
                             <label>首付款截图</label>
                             <img src="{{ item.img }}"/>
-                            <input type="hidden" value="confirm" name="status" disabled>
                             <div class="btn-upload">
                                 <input type="submit">确认</input>
                             </div>
