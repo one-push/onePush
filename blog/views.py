@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import json
 from django.shortcuts import render
+from django.conf import settings
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -13,7 +14,8 @@ from blog.blog_reply.serializer import ReplyBlogCreateSerializer, \
     ReplyBlogListSerializer
 from service import update_score
 from onepush.pagination import Pagination
-from django.conf import settings
+from account.models import OTHER_AREA
+
 PAGE_SIZE = settings.REST_FRAMEWORK.get('PAGE_SIZE', 10)
 
 
@@ -35,13 +37,13 @@ class BlogViews(ModelViewSet):
 
         params = request.GET.dict()
         block = params.get('block', 'news')
+        source_area=params.get('source_area')
 
         args = dict(
             # user_id=request.user.id,
             is_delete=False,
             block=block,
             about=params.get('about'),
-            source_area=params.get('source_area')
         )
 
         # 删除为空的参数
@@ -52,6 +54,10 @@ class BlogViews(ModelViewSet):
 
         self.serializer_class = BlogListSerializer
         self.queryset = Blog.objects.filter(**args)
+        if source_area == u'hot':
+            self.queryset = self.queryset.filter(~Q(source__in=OTHER_AREA))
+        elif source_area == u'otherArea':
+            self.queryset = self.queryset.filter(source__in=OTHER_AREA)
         ret = super(BlogViews, self).list(request)
 
         data = ret.data

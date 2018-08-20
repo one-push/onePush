@@ -7,7 +7,7 @@ Create at 2018/7/4
 __author__ = 'TT'
 
 from account.models import UserInfo, UserScore, UserFavorites
-from account.models import VIP_LEVEL
+from account.models import VIP_LEVEL, OTHER_AREA
 from django.contrib.auth.models import User, AnonymousUser
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
@@ -165,12 +165,11 @@ class UserList(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         area = request.GET.dict().get('area', None)
-        other_area = (u'Europe', u'America', u'Oceania', u'Asia', u'Africa',)
         queryset = UserInfo.objects.filter(is_vip=True)
         if area == u'hot':
-            queryset = queryset.filter(~Q(source__in=other_area))
+            queryset = queryset.filter(~Q(source__in=OTHER_AREA))
         elif area == u'otherArea':
-            queryset = queryset.filter(source__in=other_area)
+            queryset = queryset.filter(source__in=OTHER_AREA)
         elif area:
             queryset = queryset.filter(source=area)
 

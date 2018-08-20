@@ -16,13 +16,13 @@
             <dl>
                 <dt><a href="block?block=man" class="active">全部</a></dt>
             </dl>
+{#            <dl>#}
+{#                <dt><a href="block?block=man&about=">关于</a></dt>#}
+{#                <dd><a href="block?block=man&about=product">产品</a></dd>#}
+{#                <dd><a href="block?block=man&about=logistics">物流</a></dd>#}
+{#            </dl>#}
             <dl>
-                <dt><a href="block?block=man&about=">关于</a></dt>
-                <dd><a href="block?block=man&about=product">产品</a></dd>
-                <dd><a href="block?block=man&about=logistics">物流</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="block?block=man&source_area=">来源于</a></dt>
+                <dt><a href="block?block=man&source_area=hot">来源于</a></dt>
                 <dd><a href="block?block=man&source_area=Canada">加拿大</a></dd>
                 <dd><a href="block?block=man&source_area=USA">美国</a></dd>
                 <dd><a href="block?block=man&source_area=UK">英国</a></dd>
@@ -35,7 +35,9 @@
                 <dd><a href="block?block=man&source_area=Korea">韩国</a></dd>
                 <dd><a href="block?block=man&source_area=HKM">港澳</a></dd>
                 <dd><a href="block?block=man&source_area=China">中国</a></dd>
-
+            </dl>
+            <dl>
+                <dt><a href="block?block=man&source_area=otherArea">其他地区</a></dt>
                 <dd><a href="block?block=man&source_area=America">美洲区</a></dd>
                 <dd><a href="block?block=man&source_area=Europe">欧洲区</a></dd>
                 <dd><a href="block?block=man&source_area=Oceania">大洋洲</a></dd>
@@ -70,97 +72,97 @@
                 <input type="text" placeholder="请输入标题" class="text" name="title">
             </div>
         </div>
-        <div class="item">
-            <label>关于：</label>
-            <div class="info">
-                <label>
-                    <input type="radio" name="about" value="product">
-                    产品
-                </label>
-                <label>
-                    <input type="radio" name="about" value="logistics">
-                    物流
-                </label>
-            </div>
-        </div>
-        <div class="item">
-            <label>来源地：</label>
-            <div class="info">
-                <label>
-                    <input type="radio" name="source_area" value="USA">
-                    美国
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="Canada">
-                    加拿大
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="UK">
-                    英国
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="France">
-                    法国
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="Italy">
-                    意大利
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="Germany">
-                    德国
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="Australia">
-                    澳大利亚
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="新西兰">
-                    新西兰
-                </label>
-                <label>
-                    <input type="radio" name="pro" value="日本">
-                    日本
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="Korea">
-                    韩国
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="HKM">
-                    港澳
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="China">
-                    中国
-                </label>
-                <span>（热门地区）</span>
-            </div>
-
-            <div class="info">
-                <label>
-                    <input type="radio" name="source_area" value="Europe">
-                    欧洲
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="America">
-                    美洲
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="Oceania">
-                    大洋洲
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="Asia">
-                    亚洲
-                </label>
-                <label>
-                    <input type="radio" name="source_area" value="Africa">
-                    非洲
-                </label>
-                <span>（五大洲）</span>
-            </div>
-        </div>
+{#        <div class="item">#}
+{#            <label>关于：</label>#}
+{#            <div class="info">#}
+{#                <label>#}
+{#                    <input type="radio" name="about" value="product">#}
+{#                    产品#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="about" value="logistics">#}
+{#                    物流#}
+{#                </label>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="item">#}
+{#            <label>来源地：</label>#}
+{#            <div class="info">#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="USA">#}
+{#                    美国#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Canada">#}
+{#                    加拿大#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="UK">#}
+{#                    英国#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="France">#}
+{#                    法国#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Italy">#}
+{#                    意大利#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Germany">#}
+{#                    德国#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Australia">#}
+{#                    澳大利亚#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="新西兰">#}
+{#                    新西兰#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="pro" value="日本">#}
+{#                    日本#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Korea">#}
+{#                    韩国#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="HKM">#}
+{#                    港澳#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="China">#}
+{#                    中国#}
+{#                </label>#}
+{#                <span>（热门地区）</span>#}
+{#            </div>#}
+{##}
+{#            <div class="info">#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Europe">#}
+{#                    欧洲#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="America">#}
+{#                    美洲#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Oceania">#}
+{#                    大洋洲#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Asia">#}
+{#                    亚洲#}
+{#                </label>#}
+{#                <label>#}
+{#                    <input type="radio" name="source_area" value="Africa">#}
+{#                    非洲#}
+{#                </label>#}
+{#                <span>（五大洲）</span>#}
+{#            </div>#}
+{#        </div>#}
         <div class="item">
             <label>文章内容：</label>
             <div class="info">

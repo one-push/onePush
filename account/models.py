@@ -59,6 +59,8 @@ SOURCE_AREA = (
     (u'China', u'中国')
 )
 
+OTHER_AREA = (u'Europe', u'America', u'Oceania', u'Asia', u'Africa',)
+
 LEVEL_SCORE = {
     1: (0, 100),
     2: (101, 200),
