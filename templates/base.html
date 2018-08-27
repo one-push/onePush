@@ -26,7 +26,7 @@
                 {% if user.is_authenticated %}
 				<div class="hd-right fr">
 					<a href="/accounts/center" class="user">
-						<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" width="30px">
+						<img src="{{ request.user.info.head_img }}" width="30px">
 					</a>
 					<a href="/accounts/logout" data-ele="btnLogin">退出</a>
 				</div>
