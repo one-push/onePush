@@ -17,17 +17,14 @@ from onepush.utils import format_datetime
 
 class BlogCreateSerializer(ModelSerializer):
 
-    title = serializers.CharField(required=True, max_length=200)
+    # title = serializers.CharField(required=True, max_length=200)
     block = serializers.CharField(required=False, max_length=50, allow_blank=True)
-    source_area = serializers.CharField(required=False, max_length=50, allow_blank=True)
     article = serializers.CharField(max_length=None, min_length=None, allow_blank=False, trim_whitespace=True)
     user_id = serializers.IntegerField(required=True)
 
     class Meta:
         model = Blog
-        fields = ('title', 'block', 'intro', 'source_area', 'article',
-                  'see_count', 'forward_count', 'user_id',
-                  'created_at')
+        fields = ('block', 'article', 'user_id')
 
 
 class BlogListSerializer(ModelSerializer):

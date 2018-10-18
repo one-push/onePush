@@ -40,11 +40,6 @@ SERVICE = (
 )
 
 SOURCE_AREA = (
-    (u'Europe', u'欧洲'),
-    (u'America', u'美洲'),
-    (u'Oceania', u'大洋洲'),
-    (u'Asia', u'亚洲'),
-    (u'Africa', u'非洲'),
     (u'USA', u'美国'),
     (u'Canada', u'加拿大'),
     (u'UK', u'英国'),
@@ -59,7 +54,13 @@ SOURCE_AREA = (
     (u'China', u'中国')
 )
 
-OTHER_AREA = (u'Europe', u'America', u'Oceania', u'Asia', u'Africa',)
+OTHER_AREA = [
+    (u'Europe', u'欧洲'),
+    (u'America', u'美洲'),
+    (u'Oceania', u'大洋洲'),
+    (u'Asia', u'亚洲'),
+    (u'Africa', u'非洲'),
+]
 
 LEVEL_SCORE = {
     1: (0, 100),
@@ -135,6 +136,7 @@ class UserInfo(models.Model):
     is_buyer = models.BooleanField(default=False)
     head_img = models.CharField(max_length=200, default=u'', verbose_name=u'头像')
     desc = models.TextField(default=u'描述')
+    address = models.TextField(max_length=300, default=u'', verbose_name=u'地址')
     source = models.CharField(max_length=200, default=u'', verbose_name=u'来源')
     goods = models.CharField(max_length=200, default=u'', verbose_name=u'擅长品类, 多个用逗号隔开')
     delivery = models.CharField(max_length=200, default=u'', verbose_name=u'供货方式, 多个用逗号隔开')

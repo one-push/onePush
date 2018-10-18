@@ -7,7 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import HttpResponseRedirect
-from blog.models import Blog, BlogReply, BlogRelationUser
+from blog.models import Blog, BlogReply, BlogRelationUser, Picture
 from blog.serializer import BlogListSerializer, \
     BlogCreateSerializer, BlogDetailSerializer
 from blog.blog_reply.serializer import ReplyBlogCreateSerializer, \
@@ -15,6 +15,7 @@ from blog.blog_reply.serializer import ReplyBlogCreateSerializer, \
 from service import update_score
 from onepush.pagination import Pagination
 from account.models import OTHER_AREA
+from service import hot_area
 
 PAGE_SIZE = settings.REST_FRAMEWORK.get('PAGE_SIZE', 10)
 
@@ -71,23 +72,30 @@ class BlogViews(ModelViewSet):
         limit_str = '&limit={}'.format(PAGE_SIZE)
         page_str = ps.replace(limit_str, limit_str + '&block={}'.format(block))
 
-        context = dict(data=ret.data.get('results', []),
-                       page_str=page_str)
+        data = ret.data.get('results', [])
+        areas = hot_area()
+        context = dict(data=data,
+                       page_str=page_str,
+                       areas=areas)
         html = block + '.html'
         return render(request, html, context)
 
     def create(self, request, *args, **kwargs):
         data = request.POST.dict()
-        block = data.get('block')
-        article = data.get('article')
-        data['intro'] = BlogViews.get_intro(article)
+        block = 'man'
+        content = dict(
+            block=block,
+            user_id=request.user.id,
+            article=data.get('article')
+        )
+        ins = Blog.objects.create(**content)
+        pic_ids = data.get('pic_ids')
+        pic_ids = [p for p in pic_ids.split(',') if p]
+        pics = Picture.objects.filter(id__in=pic_ids)
+        for pic in pics:
+            ins.picture.add(pic)
 
-        self.serializer_class = BlogCreateSerializer
-        serial = self.serializer_class(data=data)
-        if not serial.is_valid():
-            return Response(status=400, error=serial.errors)
-
-        ins = serial.save()
+        ins.save()
         if ins:
             update_score(request.user, block, ins.id)
         return HttpResponseRedirect('block?block={}'.format(block))
@@ -123,12 +131,14 @@ class BlogViews(ModelViewSet):
 
 class AreaViews(ModelViewSet):
     def list(self, request, *args, **kwargs):
-        context = dict()
+        areas = hot_area()
+        context = dict(areas=areas)
         return render(request, 'rankings.html', context)
 
 
 @api_view(['GET'])
 def deploy_blog(request):
+
     return render(request, 'news-add.html', context={})
 
 

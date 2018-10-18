@@ -7,7 +7,7 @@ Create at 2018/7/4
 __author__ = 'TT'
 
 from account.models import UserInfo, UserScore, UserFavorites
-from account.models import VIP_LEVEL, OTHER_AREA
+from account.models import VIP_LEVEL, OTHER_AREA, SOURCE_AREA
 from django.contrib.auth.models import User, AnonymousUser
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
@@ -104,7 +104,8 @@ def user_setting(req):
 
     context = dict(
         STATIC_URL=settings.STATIC_URL,
-        user_info=info
+        user_info=info,
+        contries=[dict(name=k, value=v) for k, v in SOURCE_AREA],
     )
     return render(req, 'release.html', context)
 
@@ -114,6 +115,16 @@ def user_center(req):
     """
     用户中心
     """
+
+    user_field = (
+        (u'user', u'用户名'),
+        (u'address', u'所在地'),
+        (u'phone', u'电话'),
+        (u'email', u'邮箱'),
+        (u'wx', u'微信'),
+        (u'qq', u'QQ'),
+        (u'desc', u'需求描述'),
+    )
 
     html = 'member.html'
     trades_waiting = None
@@ -141,9 +152,16 @@ def user_center(req):
     info_serial = UserInfoListSerializer(info, many=True, current_user=req.user)
     info_data = info_serial.data
 
+    user_data = []
+    info_data = info_data[0] if len(info_data) else {}
+    for k, v in user_field:
+        if k in info_data:
+            user_data.append(dict(name=v, value=info_data.get(k)))
+
     context = dict(
         STATIC_URL=settings.STATIC_URL,
-        user_info=info_data[0] if len(info_data) else {},
+        user_data=user_data,
+        is_self=True,
         level_text=dict(VIP_LEVEL).get(req.user.info.level, u'菜鸟'),
         blogs=blogs_serial.data,
         trades=trades_serial.data,

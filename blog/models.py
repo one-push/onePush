@@ -50,11 +50,12 @@ class Blog(BaseModel):
     user = models.ForeignKey(User, related_name='blo_user', blank=True)
 
     title = models.CharField(max_length=200, default='', verbose_name=u'主题')
-    about = models.CharField(max_length=50, default='', choices=ABOUT, verbose_name=u'主题')
+    about = models.CharField(max_length=50, default='', choices=ABOUT, verbose_name=u'关于')
     block = models.CharField(max_length=20, default='', choices=BLOCKS, verbose_name=u'发布板块')
     intro = models.CharField(max_length=250, default='', verbose_name=u'文章简介')
     source_area = models.CharField(max_length=50, verbose_name=u'来源地', blank=True, null=True)
     article = models.TextField(default='', verbose_name=u'文章正文')
+    picture = models.ManyToManyField(Picture, related_name='bpics', verbose_name=u'图片', blank=True)
 
     see_count = models.IntegerField(default=0, verbose_name=u'浏览数')
     forward_count = models.IntegerField(default=0, verbose_name=u'转发数')

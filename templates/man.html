@@ -1,57 +1,44 @@
 {% extends 'base.html' %}
 
 {% block main-menu-man %}
-    <a href="block?block=man" class="active">达人发布台</a>
+{#    <a href="block?block=man" class="active">达人发布台</a>#}
 {% endblock %}
 
 {% block main-big-title %}
-    <div class="cont-text">
-        <h1>不再担心朋友圈被拉黑，尽情发送你的推荐，让属于你的粉丝终将找到你。</h1>
-    </div>
 {% endblock %}
 
 {% block main-body %}
     <div class="news-wrap clearfix">
         <div class="aside-type fl">
             <dl>
-                <dt><a href="block?block=man" class="active">全部</a></dt>
-            </dl>
-{#            <dl>#}
-{#                <dt><a href="block?block=man&about=">关于</a></dt>#}
-{#                <dd><a href="block?block=man&about=product">产品</a></dd>#}
-{#                <dd><a href="block?block=man&about=logistics">物流</a></dd>#}
-{#            </dl>#}
-            <dl>
-                <dt><a href="block?block=man&source_area=hot">来源于</a></dt>
-                <dd><a href="block?block=man&source_area=Canada">加拿大</a></dd>
-                <dd><a href="block?block=man&source_area=USA">美国</a></dd>
-                <dd><a href="block?block=man&source_area=UK">英国</a></dd>
-                <dd><a href="block?block=man&source_area=France">法国</a></dd>
-                <dd><a href="block?block=man&source_area=Italy">意大利</a></dd>
-                <dd><a href="block?block=man&source_area=Germany">德国</a></dd>
-                <dd><a href="block?block=man&source_area=Australia">澳大利亚</a></dd>
-                <dd><a href="block?block=man&source_area=Nz">新西兰</a></dd>
-                <dd><a href="block?block=man&source_area=Japan">日本</a></dd>
-                <dd><a href="block?block=man&source_area=Korea">韩国</a></dd>
-                <dd><a href="block?block=man&source_area=HKM">港澳</a></dd>
-                <dd><a href="block?block=man&source_area=China">中国</a></dd>
+                <dt><a href="block?block=man&source_area=hot">热门地区</a></dt>
+                {% for item in areas.hot %}
+                    <dd><a href="block?block=man&source_area={{ item }}">{{ item }}</a></dd>
+                {% endfor %}
             </dl>
             <dl>
                 <dt><a href="block?block=man&source_area=otherArea">其他地区</a></dt>
-                <dd><a href="block?block=man&source_area=America">美洲区</a></dd>
-                <dd><a href="block?block=man&source_area=Europe">欧洲区</a></dd>
-                <dd><a href="block?block=man&source_area=Oceania">大洋洲</a></dd>
-                <dd><a href="block?block=man&source_area=Asia">亚洲区</a></dd>
-                <dd><a href="block?block=man&source_area=Africa">非洲区</a></dd>
+                {% for item in areas.other %}
+                    <dd><a href="block?block=man&source_area={{ item }}">{{ item }}</a></dd>
+                {% endfor %}
             </dl>
         </div>
         <div class="news-list fr">
             <ul>
                 {% for item in data %}
                 <li>
-                    <h4><a href="block/{{ item.id }}">{{ item.title }}</a></h4>
-                    <p>{{ item.intro | linebreaks }}</p>
-                    <span>{{ item.created_at }}</span>
+                    <div style="width: 100%; height: 260px">
+                    <div style=" width:20%; float:left; ">
+                        <img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" />
+                        <label>来源</label>
+                        <button>收藏</button>
+                    </div>
+                    <div style="width: 80%; float:right;">
+                        <a href="">用户名</a>
+                        <p>{{ item.article | linebreaks }}</p>
+                        <span>{{ item.created_at }}</span>
+                    </div>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
@@ -62,115 +49,69 @@
     </div>
     <div class="release-container news-container clearfix">
         {% if request.user.info.is_vip %}
-        <div class="q-title">快速发布</div>
-        <form method="post", action="/blogs/block">
+{#        <form method="post", action="/blogs/block">#}
+{#        <form >#}
         <div class="item">
-            <label>主题：</label>
+            <label>产品描述：</label>
             <div class="info">
-                <input type="text", name="block" value="man" hidden="true">
-                <input type="text", name="user_id" value="{{ request.user.id }}" hidden="true">
-                <input type="text" placeholder="请输入标题" class="text" name="title">
+                <textarea class="textarea" id="article" placeholder="请输入内容" name="article" rows="5"></textarea>
             </div>
         </div>
-{#        <div class="item">#}
-{#            <label>关于：</label>#}
-{#            <div class="info">#}
-{#                <label>#}
-{#                    <input type="radio" name="about" value="product">#}
-{#                    产品#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="about" value="logistics">#}
-{#                    物流#}
-{#                </label>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="item">#}
-{#            <label>来源地：</label>#}
-{#            <div class="info">#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="USA">#}
-{#                    美国#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Canada">#}
-{#                    加拿大#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="UK">#}
-{#                    英国#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="France">#}
-{#                    法国#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Italy">#}
-{#                    意大利#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Germany">#}
-{#                    德国#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Australia">#}
-{#                    澳大利亚#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="新西兰">#}
-{#                    新西兰#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="pro" value="日本">#}
-{#                    日本#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Korea">#}
-{#                    韩国#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="HKM">#}
-{#                    港澳#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="China">#}
-{#                    中国#}
-{#                </label>#}
-{#                <span>（热门地区）</span>#}
-{#            </div>#}
-{##}
-{#            <div class="info">#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Europe">#}
-{#                    欧洲#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="America">#}
-{#                    美洲#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Oceania">#}
-{#                    大洋洲#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Asia">#}
-{#                    亚洲#}
-{#                </label>#}
-{#                <label>#}
-{#                    <input type="radio" name="source_area" value="Africa">#}
-{#                    非洲#}
-{#                </label>#}
-{#                <span>（五大洲）</span>#}
-{#            </div>#}
-{#        </div>#}
         <div class="item">
-            <label>文章内容：</label>
-            <div class="info">
-                <textarea class="textarea" placeholder="请输入内容" name="article" rows="5"></textarea>
+            <label>产品图片：</label>
+            <div class="info infoIMG imgList" id="imgLIst">
+                <div class="btn-upload but-margin-top">
+                    <input type="file"  id="blog-img"  name="file" onchange="uploadFile()">
+                    <span>上传图片</span>
+                </div>
             </div>
         </div>
-        <button type="submit" class="btn">发布</button>
-        </form>
+        <button type="submit" class="btn" onclick="deploy()">发布</button>
+{#        </form>#}
     {% endif %}
     </div>
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+
+    var pic_ids = '';
+    var data = "";
+    function uploadFile() {
+        var formData = new FormData();
+        formData.append('file', $('#blog-img')[0].files[0]);
+        $.ajax({
+            type:'POST',
+            url: '/image_upload',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                pic_ids += data.id + ',';
+                var url = '/media/' + data.url;
+                var ele = '<img src="' + url + '"/>';
+                $("#imgLIst").prepend(ele)
+            }
+        })
+    }
+
+    function deploy() {
+        var formData = {
+            article: $('#article').val(),
+            pic_ids: pic_ids
+        };
+        $.ajax({
+            type:'POST',
+            url: '/blogs/block',
+            cache: false,
+            data: formData,
+            success: function(data){
+                window.location.reload()
+            }
+        });
+        console.log(pic_ids)
+    }
+
+</script>
 {% endblock %}

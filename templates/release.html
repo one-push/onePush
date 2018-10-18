@@ -1,223 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>一甫集代购达人 IF Collections Master Buyer</title>
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
-	<link rel="stylesheet" type="text/css" href="/{{ STATIC_URL }}css/main.min.css" />
-</head>
-<body class="bg-fff">
-	<!--header-->
-	<div class="header panel-header">
-		<div class="container">
-			<div class="top-bar clearfix">
-				<div class="logo fl">
-					<div class="m-btn"></div>
-					<a href="index.html"><img src="/{{ STATIC_URL }}images/logo-black.png" /></a>
-				</div>
-				<div class="panel-search">
-					<form class="search clearfix">
-						<input type="text" class="text fl" placeholder="开始在全世界淘你想淘" name="keywords">
-						<input type="submit" class="submit fl" value="搜索" name="submit">
-					</form>
-				</div>
-				<div class="hd-right fr hide">
-					<a href="#">达人入驻</a>
-					<a href="#">登录</a>
-					<a href="#" class="join">加入</a>
-				</div>
-				<div class="hd-right fr">
-					<a href="#" class="user">
-						<img src="/{{ STATIC_URL }}images/300x300.jpg">
-					</a>
-				</div>
-			</div>
-			
-		</div>
-	</div>
-	<div class="nav">
-		<div class="container">
-			<a href="/index">首页</a>
-			<a href="news.html">海淘那些事</a>
-			<a href="man.html">达人发布台</a>
-			<a href="want.html">我要我要的</a>
-			<a href="reasoning.html">说说谁有理</a>
-		</div>
-	</div>
-	<!--main-->
-	<div class="main">
-		<div class="container release-container clearfix">
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block main-menu-man %}
+{#    <a href="block?block=man" class="active">达人发布台</a>#}
+{% endblock %}
+
+{% block main-big-title %}
+{% endblock %}
+
+{% block main-body %}
+    <div class="container release-container clearfix">
 			<form method="post">
 			<div class="item">
 				<label>头像：</label>
 				<div class="info infoIMG">
-					<img src="/{{ STATIC_URL }}images/300x300.jpg">
+					<img src="{% static "images/300x300.jpg" %}"/>
 					<div class="btn-upload"><input type="file" name="head_img">
 					<span>上传图片</span></div>
 				</div>
 			</div>
 			<div class="item">
-				<label>描述：</label>
+				<label>服务详情：</label>
 				<div class="info">
 					<textarea name="desc" class="textarea" placeholder="请输入描述内容" rows="5"></textarea>
 				</div>
 			</div>
 			<div class="item">
-				<label>擅长品类：<em>（最多选三项）</em></label>
-				<div class="info">
-					<label>
-						<input type="checkbox" name="goods">
-						奢侈品
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						服装 鞋帽 箱包
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						美妆 个护健康
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						玩具 母婴 儿童用品
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						食品 保健品 酒水
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						钟表 首饰
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						手机 摄影 数码
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						电器 电子配件 智能生活
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						家具 厨具  家装
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						电脑 办公
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						运动 户外
-					</label>
-					<label>
-						<input type="checkbox" name="goods">
-						汽车用品
-					</label>
-				</div>
+				<label>擅长品类：</label>
+                <div class="info other">
+                    <input type="text" placeholder="请输入擅长品类" name="goods">
+                </div>
 			</div>
 			<div class="item">
-				<label>单选产品主要来源地：</label>
-				<div class="info">
-					<label>
-						<input type="radio" name="source">
-						欧洲
-					</label>
-					<label>
-						<input type="radio" name="source">
-						美洲
-					</label>
-					<label>
-						<input type="radio" name="source">
-						大洋洲
-					</label>
-					<label>
-						<input type="radio" name="source">
-						亚洲
-					</label>
-					<label>
-						<input type="radio" name="source">
-						非洲
-					</label>
-					<span>（五大洲）</span>
-				</div>
-				<div class="info">
-					<label>
-						<input type="radio" name="pro">
-						美国
-					</label>
-					<label>
-						<input type="radio" name="source">
-						加拿大
-					</label>
-					<label>
-						<input type="radio" name="source">
-						英国
-					</label>
-					<label>
-						<input type="radio" name="source">
-						法国
-					</label>
-					<label>
-						<input type="radio" name="source">
-						意大利
-					</label>
-					<label>
-						<input type="radio" name="source">
-						德国
-					</label>
-					<label>
-						<input type="radio" name="source">
-						澳大利亚
-					</label>
-					<label>
-						<input type="radio" name="source">
-						新西兰
-					</label>
-					<label>
-						<input type="radio" name="source">
-						日本
-					</label>
-					<label>
-						<input type="radio" name="source">
-						韩国
-					</label>
-					<label>
-						<input type="radio" name="source">
-						港澳
-					</label>
-					<label>
-						<input type="radio" name="source">
-						中国
-					</label>
-					<span>（热门地区）</span>
-				</div>
+				<label>产品来源：</label>
 				<div class="info other">
-					<label>
-						<input type="text" placeholder="不在热门地区的，手动输入国名" name="source">
-					</label>
-					<span>（其他）</span>
+					<select>
+                        {% for item in contries %}
+                            <option value="{{ item.value }}">{{ item.value }}</option>
+                        {% endfor %}
+                    </select>
 				</div>
 			</div>
 			<div class="item">
-				<label>供货形式：<em>（多选）</em></label>
+				<label>会员性质：</label>
 				<div class="info">
 					<label>
-						<input type="checkbox" name="delivery">
-						海外直邮
+						<input type="radio" name="vipType" id="PV" value="person" checked="checked">
+						个人
 					</label>
-					<label>
-						<input type="checkbox" name="delivery">
-						国内现货
+					<label id="lastLabel">
+						<input type="radio" name="vipType" id="CV" value="company">
+						公司
 					</label>
-					<label>
-						<input type="checkbox" name="delivery">
-						人肉带回
-					</label>
-					<label>
-						<input type="checkbox" name="delivery">
-						物流转运
-					</label>
-					
+                    <div id="inCom">
+                    <div>
+                        <label>姓名</label>
+                        <input class="user-info-input" type="text" placeholder="请输入姓名" name="">
+                    </div>
+                    <div>
+                        <label>地址</label>
+                        <input class="user-info-input" type="text" placeholder="请输入地址" name="">
+                        </div>
+                    </div>
 				</div>
 			</div>
 			<div class="item">
@@ -239,7 +83,7 @@
 						<input type="checkbox" name="service">
 						物流货代
 					</label>
-					
+
 				</div>
 			</div>
 			<div class="item">
@@ -275,16 +119,77 @@
 			<button type="submit" class="btn">提交</button>
 			</form>
 		</div>
-	</div>
-		
-	<!--footer-->
-	<div class="footer">
-		<div class="container">
-			版权所有&copy;2018 一甫集代购达人
-		</div>
-	</div>
-	<div class="m-mask"></div>
-	<script type="text/javascript" src="/{{ STATIC_URL }}js/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript" src="/{{ STATIC_URL }}js/main.js"></script>
-</body>
-</html>
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+
+    $("#CV").change(function (ele) {
+        var target = ele.target;
+        var lastInput = ele.srcElement.parentElement.nextElementSibling;
+        var html = "" +
+        "<div id=\"outCom\">" +
+            "<label>境外公司（若有）：</label>" +
+            "<div>" +
+            "    <label>公司名称</label>" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司名称\" name=\"\"> " +
+            "</div>" +
+            "<div>" +
+            "    <label>公司地址</label>" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司地址\" name=\"\">" +
+            "</div>" +
+            "<label>境内公司（若有）：</label>" +
+            "<div>" +
+            "    <label>公司名称</label>" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司名称\" name=\"\">" +
+            "</div>" +
+            "<div>" +
+            "    <label>公司地址</label>" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司地址\" name=\"\"> " +
+            "</div>" +
+        "</div>"
+
+        $('#outCom').remove();
+        $('#inCom').remove();
+        $('#lastLabel').after(html);
+    });
+
+    $("#PV").change(function (ele) {
+        var target = ele.target;
+        var html = "" +
+        "<div id=\"inCom\">" +
+            "<div>" +
+            "    <label>姓名</label>" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入姓名\" name=\"\"> " +
+            "</div>" +
+            "<div>" +
+            "    <label>地址</label>" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入地址\" name=\"\">" +
+            "</div>" +
+        "</div>";
+        $('#outCom').remove();
+        $('#inCom').remove();
+        $('#lastLabel').after(html);
+    });
+
+    function uploadFile() {
+        var formData = new FormData();
+        formData.append('file', $('#blog-img')[0].files[0]);
+        $.ajax({
+            type:'POST',
+            url: '/image_upload',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                pic_ids += data.id + ',';
+                var url = '/media/' + data.url;
+                var ele = '<img src="' + url + '"/>';
+                $("#imgLIst").prepend(ele)
+            }
+        })
+    }
+
+</script>
+{% endblock %}

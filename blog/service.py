@@ -9,9 +9,12 @@
 """
 
 import random
+from django.db.models import Q, Count
 from datetime import datetime
 from account.models import ACTION_SCORE, LEVEL_SCORE
+from account.models import SOURCE_AREA
 from account.models import UserScore
+from blog.models import Blog
 
 
 def created_code():
@@ -67,3 +70,30 @@ def update_score(user=None, action=None, blog_id=None):
             break
 
     user.info.save()
+
+
+def hot_area():
+    """
+    12个热门地区
+    其他地区，除12个地区外的所有地区
+    :return:
+    """
+    hot = []
+    hot_keys = []
+    for area in SOURCE_AREA:
+        en, ch = area
+        hot_keys.append(ch)
+        hot.append(ch)
+
+    other = []
+    query = Blog.objects.filter(
+        ~Q(source_area__in=hot_keys), source_area__isnull=False
+    ).all()
+    bls = query.values('source_area').annotate(Count('id'))
+    for b in bls:
+        other.append(b.get('source_area'))
+
+    return dict(
+        hot=hot,
+        other=other,
+    )

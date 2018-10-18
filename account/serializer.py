@@ -105,7 +105,7 @@ class UserInfoListSerializer(ModelSerializer):
         model = UserInfo
         fields = ('id', 'user', 'is_vip', 'level', 'score', 'nickname',
                   'level_text', 'goods_text', 'delivery_text', 'service_text',
-                  'source_text',
+                  'source_text', 'address',
                   'open_id', 'is_buyer', 'head_img', 'desc',  'goods', 'source',
                   'delivery', 'service', 'wx', 'qq', 'phone', 'email', 'www',
                   'created_at', 'last_login_at', 'is_favorite', 'is_attention',

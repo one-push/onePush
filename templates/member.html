@@ -10,7 +10,7 @@
             <div class="head-portrait">
 
                 <div class="name">Hi，{{ request.user.username }}</div>
-                <a href="/blogs/deploy" class="btn-demand">发布你的需求</a>
+                <a href="/blogs/deploy" class="btn-demand">关注此会员</a>
                 <p class="declaration">经验值<span>{{ level_text }}</span>{{ user_info.score }}积分<a href=""
                 title="海淘那些事： 发布篇原创文章 一次25分 （达人／普通会员均可）
 创建一次交易记录：一次15分 （达人会员创建，邀请普通会员（买方）确认）
@@ -19,152 +19,64 @@
 说说谁有理中：点击支持任何一方一次 3个分
 在任何地方发表评论：一次3分 （达人／普通会员均可）
 在任何地方点 赞 或 倒： 一次1分 （达人／普通会员均可）">积分说明</a></p>
-                <div class="credit">
-                    <div class="stars">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <i style="width:80%"></i>
-                    </div>
-                    <em>80%（靠谱度）</em>
-                </div>
             </div>
             <div class="btns">
-                <a href="#" class="fans"><i></i>评价({{ reply_count }})</a>
-{#                <a href="#" class="fabulous"><i></i>(3)</a>#}
-{#                <a href="#" class="fabulous-no"><i></i>(5)</a>#}
+                <a href="" >问问看</a>
+            </div>
+            <div class="btns">
                 <a href="#" class="follow">关注({{ attention_count }})</a>
                 <a href="#" class="collection">收藏({{ favorite_count }})</a>
+            </div>
+            <div class="btns">
+                <a href="" >消息(5)</a>
             </div>
             <button class="sign-out">退出登录</button>
         </div>
 
         <div class="member-cont fr">
             <div class="member-tab-title">
-                <a href="javascript:;" class="active">发布记录({{ blog_count }}条)</a>
-                <a href="javascript:;">交易记录({{ trade_count }}条)</a>
-                <a href="javascript:;">说理记录({{ theory_count }}条)</a>
+                <a>个人信息</a>
             </div>
+
+
             <div class="member-tab-cont m-table">
-
-                <div class="member-tab-item tab-transactionRecord">
-                    <a href="/blogs/deploy" class="btn-add">新发布</a>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>顺序</th>
-                                <th>日期</th>
-                                <th>板块</th>
-                                <th>标题</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in blogs %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ item.created_at }}</td>
-                                <td>{{ item.block }}</td>
-                                <td>{{ item.title }}</td>
-                                <td class="red"><a href="/blogs/block/{{ item.id }}">查看详情</a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="member-tab-item tab-transactionRecord hide">
-
-                    <div class="transactionRecord-title">待确认交易</div>
-                    {% for item in trades_waiting %}
-                    <form method="post", action="/blogs/trade">
-                    <div class="form">
-                        <input type="hidden" name="method" value="put" />
-                        <input type="hidden" name="id" value="{{ item.id }}" />
-                        <input type="hidden" value="confirm" name="status"/>
-                        <div class="form-item">
-                            <label>创建日期</label>
-                            <input type="text" value="{{ item.date }}" name="date" disabled/>
+                {% if is_self %}
+                <div class="user-info user-info-left">
+                    <div style="height: 30px"></div>
+                    {% for item in user_data %}
+                        <div style="height: 30px; margin-bottom: 10px; vertical-align: top;">
+                            <label style="width: 40%; min-width: 60px">{{ item.name }}</label>
+                            {% if item.name == '需求描述' %}
+                                <textarea rows="3" id="{{ item.name }}" value="{{ item.value }}" style="vertical-align:top"></textarea>
+                            {% else %}
+                                <input style="width: 60%" type="text" id="{{ item.name }}" value="{{ item.value }}">
+                            {% endif %}
                         </div>
-                        <div class="form-item">
-                            <label>卖方</label>
-                            <input type="text" value="{{ item.seller_name }}" name="seller" disabled/>
-                        </div>
-                        <div class="form-item">
-                            <label>交易金额RMB</label>
-                            <input type="text" value="{{ item.amount }}" name="amount" disabled/>
-                        </div>
-                        <div class="form-item">
-                            <label>交易内容</label>
-                            <input type="text" value="{{ item.content }}" name="content" disabled/>
-                        </div>
-                        <div class="form-item">
-                            <label>首付款截图</label>
-                            <img src="{{ item.img }}"/>
-                            <div class="btn-upload">
-                                <input type="submit">确认</input>
-                            </div>
-                        </div>
-                    </div>
-                    </form>
                     {% endfor %}
-                    <div class="transactionRecord-title">历史交易</div>
-                    <table class="tb">
-                        <thead>
-                            <tr>
-                                <th>创建日期</th>
-                                <th>卖方</th>
-                                <th>交易金额RMB</th>
-                                <th>交易内容</th>
-                                <th>首付款截图</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in trades %}
-                            <tr>
-                                <td>{{ item.date }}</td>
-                                <td>{{ item.seller_name }}</td>
-                                <td>{{ item.amount }}</td>
-                                <td>{{ item.content }}</td>
-                                <td><img src="{{ item.img }}" /></td>
-                                <td class="red">{{ item.status }}</td>
-                                <td class="green"><a href="/blogs/trade/{{ item.id }}">发起说理</a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
                 </div>
+                <div class="user-info user-info-right">
+                    <div style="height: 30px"> <label>是否对外公开</label></div>
+                    {% for item in user_data %}
+                        <div style="height: 30px; margin-bottom: 10px">
+                            <input id="{{ item.name }}" type="radio" name="{{ item.name }}">
+                            <label>是</label>
+                            <input id="{{ item.name }}" type="radio" name="{{ item.name }}">
+                            <label>否</label>
+                        </div>
 
-                <div class="member-tab-item tab-transactionRecord hide">
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>顺序</th>
-                                <th>序号</th>
-                                <th>主题</th>
-                                <th>状态</th>
-                                <th>详情</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in theorys %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ item.code }}</td>
-                                <td>{{ item.title }}</td>
-                                <td>{{ item.status }}</td>
-                                <td class="red"><a href="/blogs/theory/{{ item.id }}">查看详情</a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    {% endfor %}
                 </div>
+                {% else %}
+                    <div class="user-info user-info-left">
+                    <div style="height: 20px"></div>
+                    <div style="width:20%; float:left">
+                        <label>姓名</label>
+                    </div>
+                    <div style="width:80%; float:right">
+                        <input id="userName" type="text">
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
 

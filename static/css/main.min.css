@@ -989,6 +989,16 @@ body {
     line-height: 32px
 }
 
+.user-info-input {
+    line-height: 32px;
+    width: 340px;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    line-height: 20px;
+    font-size: 14px;
+    border-radius: 2px
+}
+
 .release-container .item .other input {
     width: 240px;
     border: 1px solid #ccc;
@@ -1046,7 +1056,7 @@ body {
 }
 
 .btn-upload input {
-    font-size: 1000px;
+    font-size: 12px;
     opacity: 0;
     filter: alpha(opacity=0);
     position: absolute;
@@ -1923,3 +1933,69 @@ body {
         color: #fff
     }
 }
+
+
+.but-margin-top {
+    margin-top: 0px;
+}
+
+.user-info {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.user-info-left {
+    width:50%;
+    float:left;
+}
+
+.user-info-right {
+    width:50%;
+    float:right;
+}
+
+.user-info-form{
+      >div{
+        margin-bottom: 20px;
+      }
+      label{
+        display: inline-block;
+        vertical-align: middle;
+        color: #000;
+        font-weight: normal;
+      }
+      input{
+        vertical-align: middle;
+        width: 610px;
+        height: 36px;
+      }
+      textarea{
+        width: 610px;
+        height: 96px;
+        resize:none;
+        vertical-align: middle;
+      }
+    }
+
+.new-add {
+    width: 100px;
+    padding: 10px;
+    margin: 5px 0 5px 10px;
+    border: none;
+    line-height: 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    font-family: 'Microsoft YaHei';
+    color: #fff;
+    background: #00b22d;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/*.but-input-size {*/
+    /*font-size: 12px;*/
+    /*width: 300px !important;*/
+    /*height: 40px !important;*/
+/*}*/

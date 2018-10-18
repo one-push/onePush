@@ -9,26 +9,15 @@
 			<div class="aside-area fl">
 				<dl>
 					<dt><a href="/accounts/users?area=hot">热门地区</a></dt>
-					<dd><a href="/accounts/users?area=Canada">加拿大</a></dd>
-					<dd><a href="/accounts/users?area=America">美国</a></dd>
-					<dd><a href="/accounts/users?area=UK">英国</a></dd>
-					<dd><a href="/accounts/users?area=France">法国</a></dd>
-					<dd><a href="/accounts/users?area=Italy">意大利</a></dd>
-					<dd><a href="/accounts/users?area=Germany">德国</a></dd>
-					<dd><a href="/accounts/users?area=Australia">澳大利亚</a></dd>
-					<dd><a href="/accounts/users?area=Nz">新西兰</a></dd>
-					<dd><a href="/accounts/users?area=Japan">日本</a></dd>
-					<dd><a href="/accounts/users?area=Korea">韩国</a></dd>
-					<dd><a href="/accounts/users?area=HKM">港澳</a></dd>
-					<dd><a href="/accounts/users?area=China">中国</a></dd>
+                    {% for item in areas.hot %}
+                        <dd><a href="/accounts/users?area={{ item }}">{{ item }}</a></dd>
+                    {% endfor %}
 				</dl>
 				<dl>
 					<dt><a href="/accounts/users?area=otherArea">其他地区</a></dt>
-					<dd><a href="/accounts/users?area=America">美洲区</a></dd>
-					<dd><a href="/accounts/users?area=Europe">欧洲区</a></dd>
-					<dd><a href="/accounts/users?area=Oceania">大洋洲</a></dd>
-					<dd><a href="/accounts/users?area=Asia">亚洲区</a></dd>
-					<dd><a href="/accounts/users?area=Africa">非洲区</a></dd>
+                    {% for item in areas.other %}
+                        <dd><a href="/accounts/users?area={{ item }}">{{ item }}</a></dd>
+                    {% endfor %}
 				</dl>
 			</div>
 			<div class="panel-row fr">
