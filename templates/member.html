@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main-body %}
-    <div class="container member-container clearfix">
+    <div class="member-container clearfix">
         <div class="member-aside fl">
             <div class="head-portrait">
 
@@ -37,48 +37,97 @@
             <div class="member-tab-title">
                 <a>个人信息</a>
             </div>
-
-
+            <form method="post", action="/accounts/update_info">
             <div class="member-tab-cont m-table">
-                {% if is_self %}
-                <div class="user-info user-info-left">
-                    <div style="height: 30px"></div>
+                <div class="col-xs-12 col-sm-12 col-md-12" style="padding-left: 0px; padding-right: 0px">
+                    <label class="col-xs-9 col-sm-9 col-md-9"></label>
+                    {% if is_self %}
+                    <label class="col-xs-3 col-sm-3 col-md-3" style="padding-left: 30px">是否对外公开</label>
+                    {% endif %}
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9" style="padding-left: 0px; padding-right: 0px">
+
                     {% for item in user_data %}
-                        <div style="height: 30px; margin-bottom: 10px; vertical-align: top;">
-                            <label style="width: 40%; min-width: 60px">{{ item.name }}</label>
-                            {% if item.name == '需求描述' %}
-                                <textarea rows="3" id="{{ item.name }}" value="{{ item.value }}" style="vertical-align:top"></textarea>
+                        <div class="col-xs-12 col-sm-12 col-md-12" style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px;">
+                            <label class="col-xs-3 col-sm-3 col-md-3" style="padding-left: 0px;">{{ item.name }}</label>
+                            {% if item.en_name == 'desc' %}
+                                <textarea class="col-xs-9 col-sm-9 col-md-9"  rows="3" id="{{ item.en_name }}" name="{{ item.en_name }}" style="vertical-align:top; resize: vertical;">{{ item.value }}</textarea>
                             {% else %}
-                                <input style="width: 60%" type="text" id="{{ item.name }}" value="{{ item.value }}">
+                                <input class="col-xs-9 col-sm-9 col-md-9" type="text" id="{{ item.en_name }}" name="{{ item.en_name }}" value="{{ item.value }}">
                             {% endif %}
                         </div>
                     {% endfor %}
                 </div>
-                <div class="user-info user-info-right">
-                    <div style="height: 30px"> <label>是否对外公开</label></div>
-                    {% for item in user_data %}
-                        <div style="height: 30px; margin-bottom: 10px">
-                            <input id="{{ item.name }}" type="radio" name="{{ item.name }}">
-                            <label>是</label>
-                            <input id="{{ item.name }}" type="radio" name="{{ item.name }}">
-                            <label>否</label>
-                        </div>
-
-                    {% endfor %}
-                </div>
-                {% else %}
-                    <div class="user-info user-info-left">
-                    <div style="height: 20px"></div>
-                    <div style="width:20%; float:left">
-                        <label>姓名</label>
+                {% if is_self %}
+                    <div class="col-xs-3 col-sm-3 col-md-3" style="padding-left: 10px; padding-right: 0px">
+                        {% for item in user_data %}
+                            <div class="col-xs-12 col-sm-12 col-md-12" style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px;">
+                                {% if item.is_show %}
+                                    <input class="col-xs-3 col-sm-3 col-md-3" style="padding: 0px" name="is_{{ item.en_name }}" type="radio" value="1" checked>
+                                    <label class="col-xs-3 col-sm-3 col-md-3" style="padding: 0px">是</label>
+                                    <input class="col-xs-3 col-sm-3 col-md-3" style="padding: 0px" name="is_{{ item.en_name }}" type="radio" value="0">
+                                    <label class="col-xs-3 col-sm-3 col-md-3" style="padding: 0px">否</label>
+                                {% else %}
+                                    <input class="col-xs-3 col-sm-3 col-md-3" style="padding: 0px" name="is_{{ item.en_name }}" type="radio" value="1">
+                                    <label class="col-xs-3 col-sm-3 col-md-3" style="padding: 0px">是</label>
+                                    <input class="col-xs-3 col-sm-3 col-md-3" style="padding: 0px" name="is_{{ item.en_name }}" type="radio" value="0" checked>
+                                    <label class="col-xs-3 col-sm-3 col-md-3" style="padding: 0px">否</label>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                     </div>
-                    <div style="width:80%; float:right">
-                        <input id="userName" type="text">
-                    </div>
-                </div>
                 {% endif %}
+                <div class="col-xs-12 col-sm-12 col-md-12" style="padding-left: 0px; padding-right: 0px">
+                    <div class="col-xs-8 col-sm-8 col-md-8"></div>
+                    <div class="col-xs-4 col-sm-4 col-md-4"><button type="submit" class="btn-demand" style="width: 100px;">提交</button></div>
+                </div>
             </div>
+            </form>
         </div>
 
     </div>
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+
+    var pic_ids = '';
+    var data = "";
+    function uploadFile() {
+        var formData = new FormData();
+        formData.append('file', $('#blog-img')[0].files[0]);
+        $.ajax({
+            type:'POST',
+            url: '/image_upload',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                pic_ids += data.id + ',';
+                var url = '/media/' + data.url;
+                var ele = '<img src="' + url + '"/>';
+                $("#imgLIst").prepend(ele)
+            }
+        })
+    }
+
+    function deploy() {
+        var formData = {
+            article: $('#article').val(),
+            pic_ids: pic_ids
+        };
+        $.ajax({
+            type:'POST',
+            url: '/blogs/block',
+            cache: false,
+            data: formData,
+            success: function(data){
+                window.location.reload()
+            }
+        });
+        console.log(pic_ids)
+    }
+
+</script>
 {% endblock %}

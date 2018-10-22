@@ -59,6 +59,7 @@ class Blog(BaseModel):
 
     see_count = models.IntegerField(default=0, verbose_name=u'浏览数')
     forward_count = models.IntegerField(default=0, verbose_name=u'转发数')
+    favorite_count = models.IntegerField(default=0, verbose_name=u'收藏数')
 
 
 #  文章用户关系

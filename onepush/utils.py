@@ -21,6 +21,32 @@ INPUT_IMG_SINGLE = 'Filedata'
 USE_ALIYUN_OSS = True
 
 
+def convert_date(dt):
+    """
+    返回距离当前时间的天数
+    一个月以后统一返回一个月前
+    :param dt:
+    :return:
+    """
+    if isinstance(dt, str):
+        dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
+    if not isinstance(dt, datetime):
+        return ''
+
+    cur = datetime.now()
+    if cur.month - dt.month > 1:
+        return u'一个月前'
+
+    day = cur.day - dt.day
+    if day < 1:
+        if cur.hour - dt.hour < 1:
+            return u'{}分钟前'.format(cur.minute - dt.minute)
+        else:
+            return u'{}小时前'.format(cur.hour - dt.hour)
+    else:
+        return u'{}天前'.format(day)
+
+
 def format_datetime(dt):
     """
     Args:

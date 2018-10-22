@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import json
 from django.shortcuts import render
 from django.conf import settings
+from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -38,7 +39,7 @@ class BlogViews(ModelViewSet):
 
         params = request.GET.dict()
         block = params.get('block', 'news')
-        source_area=params.get('source_area')
+        source_area = params.get('source_area')
 
         args = dict(
             # user_id=request.user.id,
@@ -54,7 +55,7 @@ class BlogViews(ModelViewSet):
                 args.pop(key)
 
         self.serializer_class = BlogListSerializer
-        self.queryset = Blog.objects.filter(**args)
+        self.queryset = Blog.objects.filter(**args).order_by('-id')
         if source_area == u'hot':
             self.queryset = self.queryset.filter(~Q(source__in=OTHER_AREA))
         elif source_area == u'otherArea':
@@ -98,7 +99,7 @@ class BlogViews(ModelViewSet):
         ins.save()
         if ins:
             update_score(request.user, block, ins.id)
-        return HttpResponseRedirect('block?block={}'.format(block))
+        return HttpResponseRedirect('block?block=man')
 
     def retrieve(self, request, *args, **kwargs):
         pk = kwargs.get('pk')

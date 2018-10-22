@@ -9,7 +9,7 @@
     <div class="container member-container clearfix">
 			<div class="member-aside fl">
 				<div class="head-portrait">
-					<img src="{{ user_info.head_img }}" />
+					<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" />
 					<i class="grade"></i>
 					<div class="name">{{ user.username }}</div>
 					<p class="declaration">经验值<span>菜鸟</span>35积分<a href=""
@@ -35,64 +35,58 @@
 				<div class="items">
 					<div class="col">
 						<div class="title">会员性质</div>
-						<div class="desc">{{ user_info.goods_text }}</div>
-					</div>
+                        {% if attr.type == 'person' %}
+                            <div><label  style="padding: 10px;">姓名：{{ attr.user_name }}</label></div>
+                            <div><label  style="padding: 10px;">地址：{{ attr.user_address }}</label></div>
+                        {% else %}
+                            <div><label style="padding-left: 0px;">境外公司</label></div>
+                                <div><label >公司名称：{{ attr.outside_company }}</label></div>
+                                <div><label >公司地址：{{ attr.outside_address }}</label></div>
+                            <div><label style="padding-left: 0px;">境内公司</label></div>
+                                <div><label >公司名称：{{ attr.inside_company }}</label></div>
+                                <div><label >公司名称：{{ attr.inside_address }}</label></div>
+                        {% endif  %}
+                    </div>
 					<div class="col">
 						<div class="title">产品来源</div>
-						<div class="desc">{{ user_info.source_text }}</div>
+						<div class="desc">{{ user_info.source }}</div>
 					</div>
 					<div class="col">
 						<div class="title">联系方式</div>
-						<div class="desc">{{ user_info.delivery_text }}</div>
+						<div class="desc">{{ user_info.phone }}</div>
 					</div>
 					<div class="col">
 						<div class="title">网站</div>
-						<div class="desc">{{ user_info.service_text }}</div>
+						<div class="desc">{{ user_info.www }}</div>
 					</div>
                     <div class="col">
 						<div class="title">服务详情</div>
-						<div class="desc">{{ user_info.service_text }}</div>
+						<div class="desc">{{ user_info.desc }}</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="member-cont fr">
 				<div class="member-tab-title">
-                    <button class="new-add" type="submit">新发布</button>
+                    <button class="new-add" type="submit" onclick="deploy()">新发布</button>
 				</div>
 				<div class="member-tab-cont m-table">
-					<div class="member-tab-item tab-details">
-						网站： {{ user_info.www }}‍　<br/>
-						客服邮箱：{{ user_info.email }}<br/>
-						客服微信号：{{ user_info.wx }}<br/>
-						客服QQ号：{{ user_info.qq }}<br/>
-						详情介绍：<br/>
-						{{ user_info.desc }}
-					</div>
-					<div class="member-tab-item tab-transactionRecord hide">
-						<a href="/blogs/deploy" class="btn-add">新发布</a>
-						<table>
-							<thead>
-								<tr>
-									<th>顺序</th>
-									<th>日期</th>
-									<th>板块</th>
-									<th>标题</th>
-									<th>详情</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for item in blogs %}
-                                <tr>
-                                    <td>{{ item.id }}</td>
-                                    <td>{{ item.created_at }}</td>
-                                    <td>{{ item.block }}</td>
-                                    <td>{{ item.title }}</td>
-                                    <td class="red"><a href="/blogs/block/{{ item.id }}">查看详情</a></td>
-                                </tr>
-                                {% endfor %}
-							</tbody>
-						</table>
+					<div class="member-tab-item tab-transactionRecord">
+                        <div class="col-md-12" style="padding-top: 20px;">
+                            <label class="col-md-3">产品描述：</label>
+                            <div class="col-md-9">
+                                <textarea class="col-md-12" id="article" placeholder="请输入内容" name="article" rows="5" style="resize: vertical"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="padding-top: 20px;">
+                            <label class="col-md-3">产品图片：</label>
+                            <div class="col-md-9" class="info infoIMG imgList" id="imgList1">
+                                <div class="btn-upload but-margin-top">
+                                    <input type="file"  id="blog-img1"  name="file" onchange="uploadFile()">
+                                    <span>上传图片</span>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -101,10 +95,10 @@
 
 {% block js-body %}
 <script type="text/javascript">
-
+    var pic_ids = '';
     function uploadFile() {
         var formData = new FormData();
-        formData.append('file', $('#trade-file')[0].files[0]);
+        formData.append('file', $('#blog-img1')[0].files[0]);
         $.ajax({
             type:'POST',
             url: '/image_upload',
@@ -113,16 +107,31 @@
             processData: false,
             contentType: false,
             success: function(data){
+                pic_ids += data.id + ',';
                 var url = '/media/' + data.url;
-                $("#trade-img").attr("src", url);
-                $("#trade-img-url").val(url);
-            },
+                var ele = '<img src="' + url + '"/>';
+                $("#imgList1").prepend(ele)
+            }
         })
     }
 
-    function createTrade(){
-
+    function deploy() {
+        var formData = {
+            article: $('#article').val(),
+            pic_ids: pic_ids
+        };
+        $.ajax({
+            type:'POST',
+            url: '/blogs/block',
+            cache: false,
+            data: formData,
+            success: function(data){
+                window.location.reload()
+            }
+        });
+        console.log(pic_ids)
     }
+
 
     // 直接传item对象，语法报错
     function updateTrade(id, date, buyer, amount, content, img){

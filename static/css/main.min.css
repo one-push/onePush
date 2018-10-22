@@ -61,6 +61,7 @@ a, button, input, select, textarea {
     float: right
 }
 
+
 body {
     font: 14px 'Microsoft YaHei';
     background: #f7f7f7
@@ -1317,6 +1318,23 @@ body {
     font-size: 12px
 }
 
+/*.news-list fr {*/
+    /*width: 550px;*/
+    /*height: 350px*/
+
+/*}*/
+
+.news-list  li {
+    list-style:none;
+    float:left
+
+}
+.news-list  li img {
+    width:220px;
+    height:220px;
+    border:0px
+
+}
 .panel-paging {
     padding-top: 40px;
     padding-left: 220px
@@ -1390,7 +1408,7 @@ body {
 }
 
 .news-wrap .news-list {
-    width: 980px
+    width: 940px
 }
 
 .coms-title {

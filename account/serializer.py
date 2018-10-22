@@ -10,7 +10,7 @@
 
 from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SerializerMethodField
-from models import UserInfo
+from models import UserInfo, UserInfoShow
 from models import UserFavorites
 from models import VIP_LEVEL, SOURCE_AREA, SERVICE, DELIVERY, GOODS
 
@@ -21,6 +21,7 @@ class UserInfoListSerializer(ModelSerializer):
         self.current_user = kwargs.pop('current_user', None)
         super(UserInfoListSerializer, self).__init__(*args, **kwargs)
 
+    user_name = SerializerMethodField()
     source_text = SerializerMethodField()
     service_text = SerializerMethodField()
     delivery_text = SerializerMethodField()
@@ -30,6 +31,10 @@ class UserInfoListSerializer(ModelSerializer):
     attention_ids = SerializerMethodField()
     is_favorite = SerializerMethodField()
     is_attention = SerializerMethodField()
+
+    @staticmethod
+    def get_user_name(obj):
+        return obj.user.username
 
     @staticmethod
     def get_enum(macro, item):
@@ -103,7 +108,7 @@ class UserInfoListSerializer(ModelSerializer):
 
     class Meta:
         model = UserInfo
-        fields = ('id', 'user', 'is_vip', 'level', 'score', 'nickname',
+        fields = ('id', 'user', 'user_name', 'is_vip', 'level', 'score', 'nickname',
                   'level_text', 'goods_text', 'delivery_text', 'service_text',
                   'source_text', 'address',
                   'open_id', 'is_buyer', 'head_img', 'desc',  'goods', 'source',
@@ -118,3 +123,10 @@ class UserFavoriteListSerializer(ModelSerializer):
         model = UserFavorites
         fields = ('user',)
         # fields = ('id', 'user', 'favorite', 'attention')
+
+
+class UserInfoShowListSerializer(ModelSerializer):
+
+    class Meta:
+        model = UserInfoShow
+        fields = ('user_name', 'address', 'phone', 'email', 'wx', 'qq', 'desc')

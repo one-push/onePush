@@ -10,9 +10,11 @@
 
 from models import Blog, BlogRelationUser, Trade, Theory, BlogReply, TheoryLike
 from account.models import BLOCKS, TRADE_STATE, THEORY_STATE
+from account.models import UserBlogFavorites
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from onepush.utils import format_datetime
+from onepush.utils import convert_date
 
 
 class BlogCreateSerializer(ModelSerializer):
@@ -31,6 +33,34 @@ class BlogListSerializer(ModelSerializer):
 
     created_at = serializers.SerializerMethodField()
     block = serializers.SerializerMethodField()
+    picture = serializers.SerializerMethodField()
+    pic_length = serializers.SerializerMethodField()
+    source = serializers.SerializerMethodField()
+    owner_id = serializers.SerializerMethodField()
+    forward_count = serializers.SerializerMethodField()
+    favorite_count = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
+    show_time = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_show_time(obj):
+        return convert_date(obj.created_at)
+
+    @staticmethod
+    def get_username(obj):
+        return obj.user.username
+
+    @staticmethod
+    def get_forward_count(obj):
+        return UserBlogFavorites.objects.filter(
+            blog=obj, type='forward'
+        ).count()
+
+    @staticmethod
+    def get_favorite_count(obj):
+        return UserBlogFavorites.objects.filter(
+            blog=obj, type='favorite'
+        ).count()
 
     @staticmethod
     def get_created_at(obj):
@@ -40,10 +70,29 @@ class BlogListSerializer(ModelSerializer):
     def get_block(obj):
         return dict(BLOCKS).get(obj.block)
 
+    @staticmethod
+    def get_picture(obj):
+        pics = obj.picture.all()
+        return ['/media/' + pic.url for pic in pics]
+
+    @staticmethod
+    def get_pic_length(obj):
+        return obj.picture.count();
+
+    @staticmethod
+    def get_source(obj):
+        return obj.user.info.source
+
+    @staticmethod
+    def get_owner_id(obj):
+        return obj.user.id
+
     class Meta:
         model = Blog
         fields = ('id', 'title', 'block', 'intro', 'source_area', 'article',
-                  'see_count', 'forward_count', 'user_id',
+                  'user_id', 'source', 'owner_id', 'username', 'show_time',
+                  'see_count',  'forward_count', 'favorite_count',
+                  'picture', 'pic_length',
                   'created_at')
 
 

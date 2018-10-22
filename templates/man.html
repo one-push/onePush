@@ -24,52 +24,77 @@
             </dl>
         </div>
         <div class="news-list fr">
-            <ul>
-                {% for item in data %}
-                <li>
-                    <div style="width: 100%; height: 260px">
-                    <div style=" width:20%; float:left; ">
-                        <img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" />
-                        <label>来源</label>
-                        <button>收藏</button>
+          {% for item in data %}
+            <div class="col-xs-12 col-md-12" style="padding-bottom: 20px; padding-top: 5px;">
+                <div class="col-xs-2 col-md-2">
+                    <img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" />
+                    <div style="padding-top: 5px">
+                        <label class="fl">{{ item.source }}</label>
+                        <button class="fr" onclick="favorite({{ item.owner_id }})">关注</button>
                     </div>
-                    <div style="width: 80%; float:right;">
-                        <a href="">用户名</a>
+                </div>
+                <div class="col-xs-10 col-md-10" style="padding: 0px">
+                    <div class="col-xs-12 col-md-12" style="padding-left: 0px;padding-right: 0px;">
+                        <div style="height: 30px;">
+                            <a href="/accounts/center" style="margin-bottom: 15px; color: blue;">{{ item.username }} </a>
+                        </div>
                         <p>{{ item.article | linebreaks }}</p>
-                        <span>{{ item.created_at }}</span>
                     </div>
+                    <div class="col-xs-12 col-md-12" style="padding-left: 0px;padding-right: 0px;padding-top: 5px;">
+                    {% for pic in item.picture %}
+                        <div class="col-xs-4 col-md-4" style="padding-left: 2px; padding-right: 2px">
+                            <img src={{ pic }}/>
+                        </div>
+                    {% endfor %}
                     </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="panel-paging">
-            {{ page_str | safe }}
-        </div>
-    </div>
-    <div class="release-container news-container clearfix">
-        {% if request.user.info.is_vip %}
-{#        <form method="post", action="/blogs/block">#}
-{#        <form >#}
-        <div class="item">
-            <label>产品描述：</label>
-            <div class="info">
-                <textarea class="textarea" id="article" placeholder="请输入内容" name="article" rows="5"></textarea>
-            </div>
-        </div>
-        <div class="item">
-            <label>产品图片：</label>
-            <div class="info infoIMG imgList" id="imgLIst">
-                <div class="btn-upload but-margin-top">
-                    <input type="file"  id="blog-img"  name="file" onchange="uploadFile()">
-                    <span>上传图片</span>
+                    <div class="col-xs-12 col-md-12" style="padding-left: 0px">
+                        <label class="fl">{{ item.show_time }}</label>
+                        <div class="fr">
+                            <div class="fl">
+                                <label class="fl" style="margin-bottom: 0px; margin-top: 3px; padding-right: 3px;">
+                                {{ item.favorite_count }}
+                                </label>
+                                <button class="fr" onclick="blog_relation({{ item.id }}, 'favorite')" >收藏</button>
+                            </div>
+                            <div class="fr">
+                                <label class="fl" style="margin-bottom: 0px; margin-top: 3px; padding-right: 3px; padding-left: 10px;">
+                                {{ item.forward_count }}
+                                </label>
+                                <button class="fr" onclick="blog_relation({{ item.id }}, 'forward')" >转发</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+          {% endfor %}
         </div>
-        <button type="submit" class="btn" onclick="deploy()">发布</button>
-{#        </form>#}
-    {% endif %}
-    </div>
+        <div class="panel-paging">
+                {{ page_str | safe }}
+            </div>
+        </div>
+        <div class="release-container news-container clearfix">
+            {% if request.user.info.is_vip %}}
+            <form >
+            <div class="item">
+                <label>产品描述：</label>
+                <div class="info">
+                    <textarea class="textarea" id="article" placeholder="请输入内容" name="article" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="item">
+                <label>产品图片：</label>
+                <div class="info infoIMG imgList" id="imgLIst">
+                    <div class="btn-upload but-margin-top">
+                        <input type="file"  id="blog-img"  name="file" onchange="uploadFile()">
+                        <span>上传图片</span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn" onclick="deploy()">发布</button>
+            </form>
+        {% endif %}
+        </div>
 {% endblock %}
 
 {% block js-body %}
@@ -113,5 +138,97 @@
         console.log(pic_ids)
     }
 
+    function favorite(owner_id) {
+        var formData = {
+            user_id: owner_id,
+            action: 'favorite'
+        };
+        $.ajax({
+            type:'POST',
+            url: '/accounts/favorite',
+            cache: false,
+            data: formData,
+            success: function(data){
+                window.location.reload()
+            }
+        });
+        console.log(pic_ids)
+    }
+
+    function blog_relation(blog_id, type) {
+        var formData = {
+            blog_id: blog_id,
+            type: type
+        };
+        $.ajax({
+            type:'POST',
+            url: '/accounts/blog_relation',
+            cache: false,
+            data: formData,
+            success: function(data){
+                window.location.reload()
+            }
+        });
+        console.log(pic_ids)
+    }
 </script>
 {% endblock %}
+
+
+{#            <ul>#}
+{#                {% for item in data %}#}
+{#                <li>#}
+{#                    <div style="width: 600px; height: 350px">#}
+{#                    <div style=" width:30%; float:left; ">#}
+{#                        <img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" style=" width:165px; height:165px " />#}
+{#                        <label>{{ item.source }}</label>#}
+{#                        <button onclick="favorite({{ item.owner_id }})">收藏</button>#}
+{#                    </div>#}
+{#                    <div style="width: 70%; float:right;">#}
+{#                        <a href="">用户名</a>#}
+{#                        <p>{{ item.article | linebreaks }}</p>#}
+{#                        <span>{{ item.created_at }}</span>#}
+{##}
+{##}
+{#                        {% if item.pic_length == 1 %}#}
+{#                            <div style="width: 450px; height: 450px; margin-top:10px;">#}
+{#                        {% for pic in item.picture %}#}
+{#                            <img style="width: 450px; height: 450px" src={{ pic }}  />#}
+{#                        {% endfor %}#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{##}
+{##}
+{##}
+{#                        {% if item.pic_length > 1 and item.pic_length < 4 %}#}
+{#                            <div style="width: 700px; height: 240px; margin-top:10px;">#}
+{#                        {% for pic in item.picture %}#}
+{#                            <img src={{ pic }}/>#}
+{#                        {% endfor %}#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{##}
+{##}
+{##}
+{#                        {% if item.pic_length > 3 and item.pic_length < 7 %}#}
+{#                            <div style="width: 700px; height: 450px; margin-top:10px;">#}
+{#                        {% for pic in item.picture %}#}
+{#                            <img src={{ pic }}/>#}
+{#                        {% endfor %}#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{##}
+{#                        {% if item.pic_length > 7 and item.pic_length < 10 %}#}
+{#                            <div style="width: 700px; height: 700px; margin-top:10px;">#}
+{#                        {% for pic in item.picture %}#}
+{#                            <img src={{ pic }}/>#}
+{#                        {% endfor %}#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{##}
+{##}
+{#                    </div>#}
+{#                    </div>#}
+{#                </li>#}
+{#                {% endfor %}#}
+{#            </ul>#}

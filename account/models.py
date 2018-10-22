@@ -149,6 +149,8 @@ class UserInfo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_login_at = models.DateTimeField(auto_now_add=True)
 
+    # company
+
     # 关注该用户的用户
     # attention = models.ManyToManyField(User, related_name=u'user_att', verbose_name=u'关注的用户', blank=True)
     # 收藏该用户的用户
@@ -168,10 +170,11 @@ class UserScore(models.Model):
 
 
 class UserBlogFavorites(models.Model):
-    """博客收藏表"""
+    """博客收藏&转发表"""
     from blog.models import Blog
     user = models.ForeignKey(User, related_name=u'blog_favorite', verbose_name=u'关联用户')
-    block = models.CharField(default=0, max_length=20, verbose_name=u'博客板块')
+    block = models.CharField(default='man', max_length=20, verbose_name=u'博客板块')
+    type = models.CharField(default='', max_length=20, verbose_name=u'类型')   # favorite forward
     blog = models.ForeignKey(Blog, blank=True, null=True, verbose_name=u'关联博客')
 
 
@@ -187,3 +190,39 @@ class UserFavorites(models.Model):
 #     # unlike = models.IntegerField(default=0, verbose_name=u'不喜欢/拉黑')
 #     # comment = models.IntegerField(default=0, verbose_name=u'评论')
 
+
+class UserInfoShow(models.Model):
+    """
+    个人信息是否对外展示
+    """
+    user = models.ForeignKey(User, related_name=u'info_show', verbose_name=u'关联用户')
+    user_name = models.BooleanField(default=False, verbose_name=u'用户名')
+    nickname = models.BooleanField(default=False)
+    open_id = models.BooleanField(default=False, verbose_name=u'微信ID')
+    is_buyer = models.BooleanField(default=False)
+    head_img = models.BooleanField(default=False, verbose_name=u'头像')
+    desc = models.BooleanField(default=False)
+    address = models.BooleanField(default=False, verbose_name=u'地址')
+    source = models.BooleanField(default=False, verbose_name=u'来源')
+    goods = models.BooleanField(default=False, verbose_name=u'擅长品类, 多个用逗号隔开')
+    delivery = models.BooleanField(default=False, verbose_name=u'供货方式, 多个用逗号隔开')
+    service = models.BooleanField(default=False, verbose_name=u'服务内容，多个用逗号隔开')
+    wx = models.BooleanField(default=False, verbose_name=u'微信号')
+    qq = models.BooleanField(default=False, verbose_name=u'QQ')
+    phone = models.BooleanField(default=False, verbose_name=u'电话')
+    email = models.BooleanField(default=False, verbose_name=u'邮箱')
+    www = models.BooleanField(default=False, verbose_name=u'网址')
+
+
+class UserAttributes(models.Model):
+    """
+    会员属性
+    """
+    user = models.ForeignKey(User, related_name=u'info_attr', verbose_name=u'关联用户')
+    type = models.CharField(max_length=20, default='person',  verbose_name=u'会员性质')  # person || company
+    user_name = models.CharField(max_length=200, default=u'')
+    user_address = models.TextField(max_length=300, default=u'', verbose_name=u'地址')
+    outside_company = models.CharField(max_length=200, default=u'', verbose_name=u'境外公司名称')
+    outside_address = models.CharField(max_length=200, default=u'', verbose_name=u'境外公司地址')
+    inside_company = models.CharField(max_length=200, default=u'', verbose_name=u'境内公司名称')
+    inside_address = models.CharField(max_length=200, default=u'', verbose_name=u'境内公司地址')

@@ -10,33 +10,40 @@
 
 {% block main-body %}
     <div class="container release-container clearfix">
-			<form method="post">
+			<form method="post" action="/accounts/setting">
 			<div class="item">
 				<label>头像：</label>
 				<div class="info infoIMG">
-					<img src="{% static "images/300x300.jpg" %}"/>
-					<div class="btn-upload"><input type="file" name="head_img">
-					<span>上传图片</span></div>
+					<img id="user-img" src="{{ MEDIA_URL }}{{ request.user.info.head_img }}"/>
+					<div class="btn-upload">
+                        <input id="user-upload-img" type="file"  onchange="uploadFile()">
+					    <span>上传图片</span>
+                        <input id="user-upload-img1" hidden="true" name="head_img" value="{{ request.user.info.head_img }}">
+                    </div>
 				</div>
 			</div>
 			<div class="item">
 				<label>服务详情：</label>
 				<div class="info">
-					<textarea name="desc" class="textarea" placeholder="请输入描述内容" rows="5"></textarea>
+					<textarea name="desc" class="textarea" placeholder="请输入描述内容" rows="5">{{ user_info.desc }}</textarea>
 				</div>
 			</div>
 			<div class="item">
 				<label>擅长品类：</label>
                 <div class="info other">
-                    <input type="text" placeholder="请输入擅长品类" name="goods">
+                    <input type="text" placeholder="请输入擅长品类" name="goods" value="{{ user_info.goods }}">
                 </div>
 			</div>
 			<div class="item">
 				<label>产品来源：</label>
-				<div class="info other">
-					<select>
+				<div class="info other ">
+					<select class="form-control" style="max-width: 240px" name="source">
                         {% for item in contries %}
-                            <option value="{{ item.value }}">{{ item.value }}</option>
+                            {% if item.value == user_info.source %}
+                                <option value="{{ item.value }}" selected>{{ item.value }}</option>
+                            {% else %}
+                               <option value="{{ item.value }}">{{ item.value }}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
 				</div>
@@ -44,76 +51,87 @@
 			<div class="item">
 				<label>会员性质：</label>
 				<div class="info">
-					<label>
-						<input type="radio" name="vipType" id="PV" value="person" checked="checked">
-						个人
-					</label>
-					<label id="lastLabel">
-						<input type="radio" name="vipType" id="CV" value="company">
-						公司
-					</label>
-                    <div id="inCom">
-                    <div>
-                        <label>姓名</label>
-                        <input class="user-info-input" type="text" placeholder="请输入姓名" name="">
-                    </div>
-                    <div>
-                        <label>地址</label>
-                        <input class="user-info-input" type="text" placeholder="请输入地址" name="">
+                    {% if attr.type != 'company' %}
+                        <label>
+                            <input type="radio" name="vip_type" id="PV" value="person" checked="checked">
+                            个人
+                        </label>
+                        <label id="lastLabel">
+                            <input type="radio" name="vip_type" id="CV" value="company">
+                            公司
+                        </label>
+                        <div id="inCom">
+                        <div>
+                            <label>姓名</label>
+                            <input class="user-info-input" type="text" placeholder="请输入姓名" name="attr_user_name" value="{{ attr.user_name }}">
                         </div>
-                    </div>
-				</div>
-			</div>
-			<div class="item">
-				<label>服务内容：<em>（多选）</em></label>
-				<div class="info">
-					<label>
-						<input type="checkbox" name="service">
-						代购
-					</label>
-					<label>
-						<input type="checkbox" name="service">
-						拼单
-					</label>
-					<label>
-						<input type="checkbox" name="service">
-						代收转发
-					</label>
-					<label>
-						<input type="checkbox" name="service">
-						物流货代
-					</label>
+                        <div>
+                            <label>地址</label>
+                            <input class="user-info-input" type="text" placeholder="请输入地址" name="attr_user_address" value="{{ attr.user_address }}">
+                        </div>
+                        </div>
+                    {% else %}
+                        <label>
+						    <input type="radio" name="vip_type" id="PV" value="person" >
+						    个人
+                        </label>
+                        <label id="lastLabel">
+                            <input type="radio" name="vip_type" id="CV" value="company" checked="checked">
+                            公司
+                        </label>
+                        <div id="outCom">
+                            <label>境外公司（若有）：</label>
+                            <div>
+                                <label>公司名称</label>
+                                <input class="user-info-input" type="text" placeholder="请输入公司名称" name="attr_outside_company" value="{{ attr.outside_company }}">
+                            </div>
+                            <div>
+                                <label>公司地址</label>
+                                <input class="user-info-input" type="text" placeholder="请输入公司地址" name="attr_outside_address" value="{{ attr.outside_address }}">
+                            </div>
+                            <label>境内公司（若有）：</label>
+                            <div>
+                                <label>公司名称</label>
+                                <input class="user-info-input" type="text" placeholder="请输入公司名称" name="attr_inside_company" value="{{ attr.inside_company }}">
+                            </div>
+                            <div>
+                                <label>公司地址</label>
+                                <input class="user-info-input" type="text" placeholder="请输入公司地址" name="attr_inside_address" value="{{ attr.inside_address }}">
+                            </div>
+                        </div>
+
+                    {% endif %}
 
 				</div>
 			</div>
 			<div class="item">
 				<label>客服微信号：</label>
 				<div class="info">
-					<input type="text" placeholder="请输入微信号" class="text" name="wx">
+					<input type="text" placeholder="请输入微信号" class="text" name="wx" value="{{ user_info.wx }}">
 				</div>
 			</div>
 			<div class="item">
 				<label>客服QQ号：</label>
 				<div class="info">
-					<input type="text" placeholder="请输入QQ号" class="text" name="qq">
+					<input type="text" placeholder="请输入QQ号" class="text" name="qq" value="{{ user_info.qq }}">
 				</div>
 			</div>
 			<div class="item">
 				<label>客服电话号码：</label>
 				<div class="info">
-					<input type="text" placeholder="请输入电话号码" class="text" name="phone">
+					<input type="text" placeholder="请输入电话号码" class="text" name="phone" value="{{ user_info.phone }}">
 				</div>
 			</div>
 			<div class="item">
 				<label>客服电子邮箱：</label>
 				<div class="info">
-					<input type="text" placeholder="请输入电子邮箱" class="text" name="email">
+					<input type="text" placeholder="请输入电子邮箱" class="text" name="email" value="{{ user_info.email }}">
 				</div>
 			</div>
 			<div class="item">
 				<label>网址：</label>
 				<div class="info">
-					<input type="text" placeholder="请输入网址" class="text" name="www">
+					<input type="text" placeholder="请输入网址" class="text" name="www" value="{{ user_info.www }}">
 				</div>
 			</div>
 			<button type="submit" class="btn">提交</button>
@@ -132,20 +150,20 @@
             "<label>境外公司（若有）：</label>" +
             "<div>" +
             "    <label>公司名称</label>" +
-            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司名称\" name=\"\"> " +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司名称\" name=\"attr_outside_company\" value=\"{{ attr.outside_company }}\"> " +
             "</div>" +
             "<div>" +
             "    <label>公司地址</label>" +
-            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司地址\" name=\"\">" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司地址\" name=\"attr_outside_address\" value=\"{{ attr.outside_address }}\">" +
             "</div>" +
             "<label>境内公司（若有）：</label>" +
             "<div>" +
             "    <label>公司名称</label>" +
-            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司名称\" name=\"\">" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司名称\" name=\"attr_inside_company\" value=\"{{ attr.inside_company }}\">" +
             "</div>" +
             "<div>" +
             "    <label>公司地址</label>" +
-            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司地址\" name=\"\"> " +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入公司地址\" name=\"attr_inside_address\" value=\"{{ attr.inside_address }}\"> " +
             "</div>" +
         "</div>"
 
@@ -160,11 +178,11 @@
         "<div id=\"inCom\">" +
             "<div>" +
             "    <label>姓名</label>" +
-            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入姓名\" name=\"\"> " +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入姓名\" name=\"attr_user_name\" value=\"{{ attr.user_name }}\"> " +
             "</div>" +
             "<div>" +
             "    <label>地址</label>" +
-            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入地址\" name=\"\">" +
+            "    <input class=\"user-info-input\" type=\"text\" placeholder=\"请输入地址\" name=\"attr_user_address\" value=\"{{ attr.user_address }}\">" +
             "</div>" +
         "</div>";
         $('#outCom').remove();
@@ -174,7 +192,8 @@
 
     function uploadFile() {
         var formData = new FormData();
-        formData.append('file', $('#blog-img')[0].files[0]);
+        formData.append('file', $('#user-upload-img')[0].files[0]);
+        console.log(formData)
         $.ajax({
             type:'POST',
             url: '/image_upload',
@@ -183,10 +202,11 @@
             processData: false,
             contentType: false,
             success: function(data){
-                pic_ids += data.id + ',';
                 var url = '/media/' + data.url;
-                var ele = '<img src="' + url + '"/>';
-                $("#imgLIst").prepend(ele)
+                $("#user-img").attr("src", url);
+                var uri = data.url
+                $("#user-upload-img1").val(uri);
+                console.log(url)
             }
         })
     }

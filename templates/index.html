@@ -1,10 +1,15 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>一甫集代购达人 IF Collections Master Buyer</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
-	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.min.css" />
+{#	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.min.css" />#}
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.min.css" %}" />
+    <script src="{% static "js/jquery.min.js" %}"></script>
+	<script src="{% static "js/bootstrap.min.js"  %}"></script>
 </head>
 <body>
 	<!--header-->
@@ -22,7 +27,7 @@
                         <a href="/accounts/setting">达人入住</a>
                     {% endif %}
 					<a href="/accounts/center" class="user">
-						<img src="{{ request.user.info.head_img }}" style="max-width: 100%;border: none; width: 30px; height: 30px; vertical-align: top; border-radius: 30px;">
+						<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" style="max-width: 100%;border: none; width: 30px; height: 30px; vertical-align: top; border-radius: 30px;">
 					</a>
 					<a href="/accounts/logout" data-ele="btnLogin">退出</a>
 				</div>
@@ -39,9 +44,10 @@
 				<h1>找个代购达人当朋友，让海淘生活更精彩</h1>
 				<h5>更贴心的海淘生活就在这里</h5>
 				<form class="search clearfix">
-					<input type="text" class="text fl" placeholder="开始在全世界淘你想淘" name="keywords">
-					<input type="submit" class="submit fl" value="搜索" name="submit">
-				</form>
+                    <input type="text" class="text fl" placeholder="开始在全世界淘你想淘" name="keywords">
+					<input type="submit" class="submit fr" value="搜索" name="submit">
+                </form>
+
 				<div class="area">
 					<a href="blogs/area"><span></span>国家与地区</a>
 				</div>

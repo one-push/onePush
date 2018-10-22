@@ -6,7 +6,8 @@ Create at 2018/7/4
 
 __author__ = 'TT'
 
-from account.models import UserInfo, UserScore, UserFavorites
+from account.models import UserInfo, UserScore, UserFavorites, UserInfoShow
+from account.models import UserAttributes
 from account.models import VIP_LEVEL, OTHER_AREA, SOURCE_AREA
 from django.contrib.auth.models import User, AnonymousUser
 from django.db.models import Q
@@ -20,7 +21,7 @@ from blog.models import Blog, Trade, Theory, BlogRelationUser, BlogReply
 from blog.serializer import BlogListSerializer
 from blog.trade.serializer import TradeListSerializer
 from blog.theory.serializer import TheoryListSerializer
-from serializer import UserInfoListSerializer
+from serializer import UserInfoListSerializer, UserInfoShowListSerializer
 
 
 def index(request):
@@ -88,26 +89,90 @@ def sign_out(req):
 @login_required()
 def user_setting(req):
     """"""
-    key_list = [u'nickname', u'head_img', u'desc', u'goods', u'source', u'delivery', u'service',
+    key_list = [u'head_img', u'desc', u'goods', u'source',
                 u'wx', u'qq', u'phone', u'email', u'www']
+    attr_person = [u'attr_user_name', u'attr_user_address']
+    attr_company = [u'attr_outside_company', u'attr_outside_address',
+                    u'attr_inside_company', u'attr_inside_address']
     info = req.user.info
     print(req.POST)
     print(info.id)
     if req.method == 'POST':
+        req_data = req.POST.dict()
+
+        # 用户性质更新
+        vip_type = req_data.get('vip_type', 'person')
+        user_attr, is_crea = UserAttributes.objects.get_or_create(user=req.user, type=vip_type)
+        attr_data = dict()
+        if vip_type == 'person':
+            for k in attr_person:
+                attr_data[k.replace('attr_', '')] = req_data.get(k, '')
+        elif vip_type == 'company':
+            for k in attr_company:
+                attr_data[k.replace('attr_', '')] = req_data.get(k, '')
+        if user_attr:
+            UserAttributes.objects.filter(pk=user_attr.id).update(**attr_data)
+            UserAttributes.objects.filter(
+                user=req.user,
+                type='person' if vip_type == 'company' else 'company'
+            ).delete()
+
+        # 用户信息
         for key in key_list:
-            if req.POST.get(key, ''):
-                print(key, req.POST.get(key, ''))
-                setattr(info, key, req.POST.get(key, ''))
-            print(getattr(info, key))
+            setattr(info, key, req.POST.get(key, ''))
+        info.is_vip = True
         info.save()
-        return HttpResponseRedirect('/account/center')
+        return HttpResponseRedirect('/accounts/center')
+    elif req.method == 'GET':
+        pass
+
+    # 达人页面信息
+    attr = UserAttributes.objects.filter(user=req.user).first()
+    attr = attr if attr else dict()
+    if not attr:
+        attr['user_name'] = req.user.username
+        attr['user_address'] = info.address
+    if attr and attr.type == 'person':
+        un = req.user.username if not attr.user_name else attr.user_name
+        ua = info.address if not attr.user_address else info.address
+        attr.user_name = un
+        attr.user_address = ua
 
     context = dict(
         STATIC_URL=settings.STATIC_URL,
         user_info=info,
+        attr=attr,
         contries=[dict(name=k, value=v) for k, v in SOURCE_AREA],
     )
     return render(req, 'release.html', context)
+
+
+@login_required()
+def user_update(req):
+    if not req.method.upper() == 'POST':
+        return user_center(req)
+
+    pdata = req.POST.dict()
+    show_data = dict()
+    user_info_data = dict()
+    for k, v in pdata.items():
+        if "is_" in k:
+            # val = bool(v) if v.upper() in ('FALSE', 'TRUE') else False
+            show_data[k.replace('is_', '')] = v
+        else:
+            user_info_data[k] = v
+
+    user_show, is_create = UserInfoShow.objects.get_or_create(user=req.user)
+    if user_show:
+        UserInfoShow.objects.filter(pk=user_show.id).update(**show_data)
+
+    if 'user_name' in user_info_data:
+        user_name = user_info_data.pop('user_name')
+        req.user.username = user_name
+        req.user.save()
+    UserInfo.objects.filter(pk=req.user.info.id).update(**user_info_data)
+
+    return user_center(req)
 
 
 @login_required()
@@ -117,7 +182,7 @@ def user_center(req):
     """
 
     user_field = (
-        (u'user', u'用户名'),
+        (u'user_name', u'用户名'),
         (u'address', u'所在地'),
         (u'phone', u'电话'),
         (u'email', u'邮箱'),
@@ -127,50 +192,40 @@ def user_center(req):
     )
 
     html = 'member.html'
-    trades_waiting = None
-    trades_waiting_serial = None
     params = dict(is_delete=False)
     args = dict(user=req.user, is_delete=False)
     if isinstance(req.user.info, UserInfo) and req.user.info.is_vip:
         params['user'] = req.user
         html = 'member-vip.html'
-        trades = Trade.objects.filter(**params).all()
     else:
         params['buyer'] = req.user
-        trades = Trade.objects.filter(**dict(params, **dict(status='confirm'))).all()
-        params = dict(params, **dict(status='waiting'))
-        trades_waiting = Trade.objects.filter(**params).all()
-        trades_waiting_serial = TradeListSerializer(trades_waiting, many=True)
 
-    blogs = Blog.objects.filter(**args).all()
-    theorys = Theory.objects.filter(**args).all()
-
-    blogs_serial = BlogListSerializer(blogs, many=True)
-    theorys_serial = TheoryListSerializer(theorys, many=True)
-    trades_serial = TradeListSerializer(trades, many=True)
     info = UserInfo.objects.filter(user=req.user)
     info_serial = UserInfoListSerializer(info, many=True, current_user=req.user)
     info_data = info_serial.data
+
+    show = UserInfoShow.objects.filter(user=req.user).first()
+    show_serial = UserInfoShowListSerializer(show)
+    show_data = show_serial.data
 
     user_data = []
     info_data = info_data[0] if len(info_data) else {}
     for k, v in user_field:
         if k in info_data:
-            user_data.append(dict(name=v, value=info_data.get(k)))
+            user_data.append(dict(name=v,
+                                  value=info_data.get(k),
+                                  en_name=k,
+                                  is_show=show_data.get(k, False)))
 
+    attr = UserAttributes.objects.filter(user=req.user).first()
     context = dict(
         STATIC_URL=settings.STATIC_URL,
         user_data=user_data,
         is_self=True,
         level_text=dict(VIP_LEVEL).get(req.user.info.level, u'菜鸟'),
-        blogs=blogs_serial.data,
-        trades=trades_serial.data,
-        trades_waiting=trades_waiting_serial.data if trades_waiting_serial else [],
-        theorys=theorys_serial.data,
         user=req.user,
-        blog_count=blogs.count(),
-        trade_count=trades.count() + (trades_waiting.count() if trades_waiting else 0),
-        theory_count=theorys.count(),
+        attr=attr,
+        user_info=info_data,
         favorite_count=UserFavorites.objects.filter(favorite=req.user).count(),
         attention_count=BlogRelationUser.objects.filter(user=req.user).count(),
         reply_count=BlogReply.objects.filter(user=req.user).count(),
