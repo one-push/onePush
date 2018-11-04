@@ -17,6 +17,8 @@ from django.contrib.auth.decorators import login_required
 from account.models import UserFavorites
 from account.models import UserBlogFavorites
 from blog.models import Blog
+from blog.service import update_score
+from django.contrib.auth.models import User
 
 
 @api_view(['POST'])
@@ -44,6 +46,8 @@ def create_favorite(request):
     ins = UserFavorites.objects.filter(**data).first()
     if not ins:
         ins = UserFavorites.objects.create(**data)
+        user = User.objects.get(id=user_id)
+        update_score(user, 'attention', user.info.id)
     return Response(data=dict(id=ins.id))
 
 
@@ -90,5 +94,6 @@ def blog_relation(request):
     )
 
     ins, is_create = UserBlogFavorites.objects.update_or_create(**data)
+    update_score(blog.user, params.get('type'), blog.id)
     return Response(data=dict(id=ins.id))
 

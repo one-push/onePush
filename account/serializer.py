@@ -21,6 +21,7 @@ class UserInfoListSerializer(ModelSerializer):
         self.current_user = kwargs.pop('current_user', None)
         super(UserInfoListSerializer, self).__init__(*args, **kwargs)
 
+    user_id = SerializerMethodField()
     user_name = SerializerMethodField()
     source_text = SerializerMethodField()
     service_text = SerializerMethodField()
@@ -31,6 +32,10 @@ class UserInfoListSerializer(ModelSerializer):
     attention_ids = SerializerMethodField()
     is_favorite = SerializerMethodField()
     is_attention = SerializerMethodField()
+
+    @staticmethod
+    def get_user_id(obj):
+        return obj.user.id
 
     @staticmethod
     def get_user_name(obj):
@@ -110,7 +115,7 @@ class UserInfoListSerializer(ModelSerializer):
         model = UserInfo
         fields = ('id', 'user', 'user_name', 'is_vip', 'level', 'score', 'nickname',
                   'level_text', 'goods_text', 'delivery_text', 'service_text',
-                  'source_text', 'address',
+                  'source_text', 'address', 'user_id',
                   'open_id', 'is_buyer', 'head_img', 'desc',  'goods', 'source',
                   'delivery', 'service', 'wx', 'qq', 'phone', 'email', 'www',
                   'created_at', 'last_login_at', 'is_favorite', 'is_attention',

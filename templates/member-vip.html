@@ -68,27 +68,55 @@
 
 			<div class="member-cont fr">
 				<div class="member-tab-title">
-                    <button class="new-add" type="submit" onclick="deploy()">新发布</button>
+                    {% if is_self %}
+                    <a href="/blogs/deploy"><button class="new-add" type="submit">新发布</button></a>
+                    {% endif %}
 				</div>
-				<div class="member-tab-cont m-table">
-					<div class="member-tab-item tab-transactionRecord">
-                        <div class="col-md-12" style="padding-top: 20px;">
-                            <label class="col-md-3">产品描述：</label>
-                            <div class="col-md-9">
-                                <textarea class="col-md-12" id="article" placeholder="请输入内容" name="article" rows="5" style="resize: vertical"></textarea>
-                            </div>
+                {% for item in blogs %}
+            <div class="col-xs-12 col-md-12" style="padding-bottom: 20px; padding-top: 5px;">
+                <div class="col-xs-2 col-md-2">
+                    <div style="padding-top: 5px">
+                        <label class="fl">{{ item.show_time }}</label>
+                    </div>
+                </div>
+                <div class="col-xs-10 col-md-10" style="padding: 0px">
+                    <div class="col-xs-12 col-md-12" style="padding-left: 0px;padding-right: 0px;">
+                        <p>{{ item.article | linebreaks }}</p>
+                    </div>
+                    <div class="col-xs-12 col-md-12" style="padding-left: 0px;padding-right: 0px;padding-top: 5px;">
+                    {% for pic in item.picture %}
+                        <div class="col-xs-4 col-md-4" style="padding-left: 2px; padding-right: 2px">
+                            <img src={{ pic }}/>
                         </div>
-                        <div class="col-md-12" style="padding-top: 20px;">
-                            <label class="col-md-3">产品图片：</label>
-                            <div class="col-md-9" class="info infoIMG imgList" id="imgList1">
-                                <div class="btn-upload but-margin-top">
-                                    <input type="file"  id="blog-img1"  name="file" onchange="uploadFile()">
-                                    <span>上传图片</span>
-                                </div>
-                            </div>
-                        </div>
-					</div>
-				</div>
+                    {% endfor %}
+                    </div>
+                    <div class="col-xs-12 col-md-12" style="padding-left: 0px">
+
+
+                    </div>
+                </div>
+            </div>
+          {% endfor %}
+{#				<div class="member-tab-cont m-table">#}
+{#					<div class="member-tab-item tab-transactionRecord">#}
+{#                        <div class="col-md-12" style="padding-top: 20px;">#}
+{#                            <label class="col-md-3">产品描述：</label>#}
+{#                            <div class="col-md-9">#}
+{#                                <textarea class="col-md-12" id="article" placeholder="请输入内容" name="article" rows="5" style="resize: vertical"></textarea>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="col-md-12" style="padding-top: 20px;">#}
+{#                            <label class="col-md-3">产品图片：</label>#}
+{#                            <div class="col-md-9" class="info infoIMG imgList" id="imgList1">#}
+{#                                <div class="btn-upload but-margin-top">#}
+{#                                    <input type="file"  id="blog-img1"  name="file" onchange="uploadFile()">#}
+{#                                    <span>上传图片</span>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#					</div>#}
+{#				</div>#}
+
 			</div>
 		</div>
 {% endblock %}
@@ -115,14 +143,14 @@
         })
     }
 
-    function deploy() {
+    function jump_deploy() {
         var formData = {
-            article: $('#article').val(),
-            pic_ids: pic_ids
+{#            article: $('#article').val(),#}
+{#            pic_ids: pic_ids#}
         };
         $.ajax({
-            type:'POST',
-            url: '/blogs/block',
+            type:'GET',
+            url: '/blogs/deploy',
             cache: false,
             data: formData,
             success: function(data){

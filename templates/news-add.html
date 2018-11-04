@@ -5,132 +5,65 @@
 {% endblock %}
 
 	{% block main-body %}
-        <form method="post", action="/blogs/block">
+{#        <form method="post", action="">#}
 		<div class="container release-container news-container clearfix">
-			<div class="item">
-				<label>主题：</label>
-				<div class="info">
-                    <input type="text", name="user_id" value="{{ request.user.id }}" hidden="true">
-                    <input type="text" placeholder="请输入标题" class="text" name="title">
-				</div>
-			</div>
-			<div class="item">
-				<label>板块：</label>
-				<div class="info">
-					<label>
-						<input type="radio" name="block" value="news">
-						海淘那些事
-					</label>
-                    {% if request.user.info.is_vip %}
-					<label>
-						<input type="radio" name="block" value="man">
-						达人发布
-					</label>
-                    {% endif %}
-					<label>
-						<input type="radio" name="block" value="want">
-						我要我要的
-					</label>
-				</div>
-			</div>
-{#			<div class="item">#}
-{#				<label>关于：</label>#}
-{#				<div class="info">#}
-{#					<label>#}
-{#                        <input type="radio" name="about" value="product">#}
-{#                        产品#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="about" value="logistics">#}
-{#                        物流#}
-{#                    </label>#}
-{#				</div>#}
-{#			</div>#}
-{#			<div class="item">#}
-{#				<label>来源地：</label>#}
-{#				<div class="info">#}
-{#					 <label>#}
-{#                        <input type="radio" name="source_area" value="USA">#}
-{#                        美国#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="Canada">#}
-{#                        加拿大#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="UK">#}
-{#                        英国#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="France">#}
-{#                        法国#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="Italy">#}
-{#                        意大利#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="Germany">#}
-{#                        德国#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="Australia">#}
-{#                        澳大利亚#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="新西兰">#}
-{#                        新西兰#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="pro" value="日本">#}
-{#                        日本#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="Korea">#}
-{#                        韩国#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="HKM">#}
-{#                        港澳#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="China">#}
-{#                        中国#}
-{#                    </label>#}
-{#					<span>（热门地区）</span>#}
-{#				</div>#}
-{##}
-{#				<div class="info">#}
-{#					<label>#}
-{#                        <input type="radio" name="source_area" value="Europe">#}
-{#                        欧洲#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="America">#}
-{#                        美洲#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="Oceania">#}
-{#                        大洋洲#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="Asia">#}
-{#                        亚洲#}
-{#                    </label>#}
-{#                    <label>#}
-{#                        <input type="radio" name="source_area" value="Africa">#}
-{#                        非洲#}
-{#                    </label>#}
-{#					<span>（五大洲）</span>#}
-{#				</div>#}
-{#			</div>#}
 			<div class="item">
 				<label>文章内容：</label>
 				<div class="info">
-					<textarea class="textarea" name="article" placeholder="请输入内容" rows="5"></textarea>
+					<textarea class="textarea" name="article" id="article" placeholder="请输入内容" rows="5" style="resize: vertical"></textarea>
 				</div>
 			</div>
-			<button type="submit" class="btn">发布</button>
+            <div class="item">
+                <label>产品图片：</label>
+                <div class="info infoIMG imgList" id="imgList1">
+                    <div class="btn-upload but-margin-top">
+                        <input type="file"  id="blog-img1"  name="file" onchange="uploadFile()">
+                        <span>上传图片</span>
+                    </div>
+                </div>
+            </div>
+			<button type="submit" class="btn" onclick="deploy()">发布</button>
 		</div>
-        </form>
+{#        </form>#}
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+    var pic_ids = '';
+    function uploadFile() {
+        var formData = new FormData();
+        formData.append('file', $('#blog-img1')[0].files[0]);
+        $.ajax({
+            type:'POST',
+            url: '/image_upload',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                pic_ids += data.id + ',';
+                var url = '/media/' + data.url;
+                var ele = '<img src="' + url + '"/>';
+                $("#imgList1").prepend(ele)
+            }
+        })
+    }
+
+    function deploy() {
+        var formData = {
+            article: $('#article').val(),
+            pic_ids: pic_ids
+        };
+        $.ajax({
+            type:'POST',
+            url: '/blogs/block',
+            cache: false,
+            data: formData,
+            success: function(data){
+                window.location.href="/blogs/block"
+            }
+        });
+        console.log(pic_ids)
+    }
+</script>
 {% endblock %}

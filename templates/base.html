@@ -33,7 +33,7 @@
                     {% if not request.user.info.is_vip %}
                         <a href="/accounts/setting">达人入住</a>
                     {% endif %}
-					<a href="/accounts/center" class="user">
+					<a href="/accounts/center?user_id={{ request.user.id }}" class="user">
 						<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" width="30px">
 					</a>
 					<a href="/accounts/logout" data-ele="btnLogin">退出</a>

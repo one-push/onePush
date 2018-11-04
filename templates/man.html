@@ -36,7 +36,8 @@
                 <div class="col-xs-10 col-md-10" style="padding: 0px">
                     <div class="col-xs-12 col-md-12" style="padding-left: 0px;padding-right: 0px;">
                         <div style="height: 30px;">
-                            <a href="/accounts/center" style="margin-bottom: 15px; color: blue;">{{ item.username }} </a>
+                            <label style="margin-bottom: 15px; color: blue;">{{ item.username }} </label>
+{#                            <a href="/accounts/center?user_id={{ item.user_id }}" style="margin-bottom: 15px; color: blue;">{{ item.username }} </a>#}
                         </div>
                         <p>{{ item.article | linebreaks }}</p>
                     </div>
@@ -132,7 +133,7 @@
             cache: false,
             data: formData,
             success: function(data){
-                window.location.reload()
+{#                window.location.reload()#}
             }
         });
         console.log(pic_ids)

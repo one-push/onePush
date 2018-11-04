@@ -38,7 +38,7 @@ class BlogViews(ModelViewSet):
     def list(self, request, *args, **kwargs):
 
         params = request.GET.dict()
-        block = params.get('block', 'news')
+        block = params.get('block', 'man')
         source_area = params.get('source_area')
 
         args = dict(
@@ -99,7 +99,8 @@ class BlogViews(ModelViewSet):
         ins.save()
         if ins:
             update_score(request.user, block, ins.id)
-        return HttpResponseRedirect('block?block=man')
+        return HttpResponseRedirect('/blogs/block')
+        # return render(request, 'man.html', dict())
 
     def retrieve(self, request, *args, **kwargs):
         pk = kwargs.get('pk')

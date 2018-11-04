@@ -10,7 +10,12 @@
             <div class="head-portrait">
 
                 <div class="name">Hi，{{ request.user.username }}</div>
-                <a href="/blogs/deploy" class="btn-demand">关注此会员</a>
+                {% if is_self %}
+                    <label class="btn-demand">普通会员</label>
+                {% else %}
+                    <a href="/blogs/deploy" class="btn-demand">关注此会员</a>
+                {% endif %}
+
                 <p class="declaration">经验值<span>{{ level_text }}</span>{{ user_info.score }}积分<a href=""
                 title="海淘那些事： 发布篇原创文章 一次25分 （达人／普通会员均可）
 创建一次交易记录：一次15分 （达人会员创建，邀请普通会员（买方）确认）
