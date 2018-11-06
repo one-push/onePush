@@ -40,6 +40,8 @@ def convert_date(dt):
     day = cur.day - dt.day
     if day < 1:
         if cur.hour - dt.hour < 1:
+            if cur.minute - dt.minute == 0:
+                return u'刚刚'
             return u'{}分钟前'.format(cur.minute - dt.minute)
         else:
             return u'{}小时前'.format(cur.hour - dt.hour)

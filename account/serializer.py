@@ -12,7 +12,9 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SerializerMethodField
 from models import UserInfo, UserInfoShow
 from models import UserFavorites
+from models import Question, Answer
 from models import VIP_LEVEL, SOURCE_AREA, SERVICE, DELIVERY, GOODS
+from onepush.utils import convert_date
 
 
 class UserInfoListSerializer(ModelSerializer):
@@ -135,3 +137,53 @@ class UserInfoShowListSerializer(ModelSerializer):
     class Meta:
         model = UserInfoShow
         fields = ('user_name', 'address', 'phone', 'email', 'wx', 'qq', 'desc')
+
+
+class QuestionAnswerListSerializer(ModelSerializer):
+
+    answers = SerializerMethodField()
+    q_user = SerializerMethodField()
+    a_user = SerializerMethodField()
+    show_time = SerializerMethodField()
+
+    @staticmethod
+    def get_show_time(obj):
+        return convert_date(obj.created_at)
+
+    @staticmethod
+    def get_answers(obj):
+        answer = Answer.objects.filter(question=obj).all()
+        serial = AnswerListSerializer(answer, many=True)
+        return serial.data
+
+    @staticmethod
+    def get_q_user(obj):
+        return obj.q_user
+
+    @staticmethod
+    def get_a_user(obj):
+        return obj.a_user
+
+    class Meta:
+        model = Question
+        fields = ('id', 'q_user', 'a_user', 'content', 'picture',
+                  'show_time', 'answers')
+
+
+class AnswerListSerializer(ModelSerializer):
+
+    user = SerializerMethodField()
+    show_time = SerializerMethodField()
+
+    @staticmethod
+    def get_user(obj):
+        return obj.user
+
+    @staticmethod
+    def get_show_time(obj):
+        return convert_date(obj.created_at)
+
+    class Meta:
+        model = Answer
+        fields = ('id', 'user', 'content', 'picture',
+                  'show_time', 'parent')

@@ -8,7 +8,7 @@ __author__ = 'TT'
 
 from django.conf.urls import url
 from account.views import index, sign_up, sign_in, sign_out, \
-    user_center, user_setting, UserList, user_update
+    user_center, user_setting, UserList, user_update, qa, question, answer
 from account.favorite.views import create_favorite, dis_favorite
 from account.favorite.views import blog_relation
 
@@ -27,4 +27,7 @@ urlpatterns = [
     url(r'^favorite/?$', create_favorite, name='favorite'),
     url(r'^dis_favorite/?$', dis_favorite, name='dis_favorite'),
     url(r'^blog_relation/?$', blog_relation, name='blog_relation'),
+    url(r'^qa/?$', qa, name='qa'),
+    url(r'^question/?$', question, name='question'),
+    url(r'^reply/?$', answer, name='reply'),
 ]

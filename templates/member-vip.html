@@ -21,7 +21,11 @@
 在任何地方发表评论：一次3分 （达人／普通会员均可）
 在任何地方点 赞 或 倒： 一次1分 （达人／普通会员均可）">积分说明</a></p>
 					<div class="btns">
-                        <a href="" >问问看</a>
+                        {% if is_attention %}
+                            <a href="/accounts/qa?vip_user={{ user.id }}" >问问看</a>
+                        {% else %}
+{#                            <a href="" >问问看</a>#}
+                        {% endif %}
                     </div>
 				</div>
                 <div class="btns">
@@ -70,6 +74,8 @@
 				<div class="member-tab-title">
                     {% if is_self %}
                     <a href="/blogs/deploy"><button class="new-add" type="submit">新发布</button></a>
+                    {% else %}
+                        <a href=""></a>
                     {% endif %}
 				</div>
                 {% for item in blogs %}

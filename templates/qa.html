@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block main-big-title %}
+{% endblock %}
+	{% block main-body %}
+{#        <form method="post", action="">#}
+		<div class="container release-container news-container clearfix">
+			<div class="col-xs-12 col-sm-12 col-md-12" style="padding-left: 0px;">
+                <div class="col-xs-7 col-sm-7 col-md-7" style="min-height: 100px; padding-left: 0px;">
+                    <textarea placeholder="写下您的问题" id="ques" class="textarea col-sm-12 col-md-12" rows="4"
+                          style="margin-top:20px; resize: vertical"></textarea>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2">
+{#                    <div class="btn-upload but-margin-top" style="margin-top:20px;">#}
+{#                        <input type="file"  id="blog-img1"  name="file" onchange="uploadFile()">#}
+{#                        <span>上传图片</span>#}
+{#                    </div>#}
+                    <button type="submit" class="btn-upload" style="background: #00b22d; margin-top: 20px;" onclick="question({{ request.user.id }}, {{ vip_user.id }})">问问看</button>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3" style="margin-top: 20px;">
+                    <img src="" style="padding-left: 0px; padding-right: 5px; " id="img1" class="col-xs-4 col-sm-4 col-md-4"/>
+                    <img src="" style="padding-left: 0px; padding-right: 5px; " id="img2" class="col-xs-4 col-sm-4 col-md-4"/>
+                    <img src="" style="padding-left: 0px; padding-right: 5px; " id="img3" class="col-xs-4 col-sm-4 col-md-4"/>
+                </div>
+            </div>
+		</div>
+        {% for item in data %}
+            <div class="container release-container news-container clearfix" style="padding-bottom: 10px; padding-top: 10px;">
+                <div class="col-xs-1 col-sm-1 col-md-1"
+                     style="padding-left: 0px; padding-right: 0px; max-height: 40px; max-width: 40px;">
+                    <img src="{{ MEDIA_URL }}{{ item.q_user.info.head_img }}" style="max-width: 100%;border: none; width: 30px; height: 30px; vertical-align: top; border-radius: 30px;">
+                </div>
+                <div class="col-xs-10 col-sm-10 col-md-10" style="padding-left: 0px;">
+                    <label class="col-xs-12 col-sm-12 col-md-12"><span style="color: blue;">{{ item.q_user.username }}</span>&nbsp;&nbsp;<span>{{ item.show_time }}</span></label>
+                    <label class="col-xs-12 col-sm-12 col-md-12">{{ item.content }}</label>
+                    {% for answer in item.answers %}
+                        <div class="col-xs-12 col-sm-12 col-md-12" style="padding: 0px;">
+                        <div class="col-xs-1 col-sm-1 col-md-1"
+                            style="padding-left: 0px; padding-right: 0px; max-height: 30px; max-width: 30px;">
+                            <img src="{{ MEDIA_URL }}{{ answer.user.info.head_img }}" style="max-width: 100%;border: none; width: 30px; height: 30px; vertical-align: top; border-radius: 30px;">
+                        </div>
+                        <div class="col-xs-11 col-sm-11 col-md-11" style="padding-left: 0px;">
+                            <label class="col-xs-12 col-sm-12 col-md-12"><span style="color: blue;">{{ answer.user.username }}</span>&nbsp;&nbsp;<span>{{ answer.show_time }}</span></label>
+                            <label class="col-xs-12 col-sm-12 col-md-12">{{ answer.content }}</label>
+                        </div>
+                        </div>
+                    {% endfor %}
+                    {% if request.user == item.q_user %}
+                        <div class="col-xs-12 col-sm-12 col-md-12" style="padding: 0px;">
+                        <input class="col-xs-8 col-sm-8 col-md-8" id="answer"/>
+                        <button style="outline:0 none !important;" onclick="answer({{ item.id }})">回复</button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+{#        </form>#}
+{% endblock %}
+
+{% block js-body %}
+<script type="text/javascript">
+    var pic_ids = '';
+    function uploadFile() {
+        var formData = new FormData();
+        formData.append('file', $('#blog-img1')[0].files[0]);
+        $.ajax({
+            type:'POST',
+            url: '/image_upload',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                var url = '/media/' + data.url;
+                if (!$('#img1').attr("src")) {
+                    $("#img1").attr("src", url);
+                    $("#img1").css("height", "80px")
+                } else if (!$('#img2').attr("src")) {
+                    $("#img2").attr("src", url);
+                    $("#img2").css("height", "80px")
+                } else {
+                    $("#img3").attr("src", url);
+                    $("#img3").css("height", "80px")
+                }
+            }
+        })
+    }
+
+    function question(q_user, a_user) {
+        console.log('q_user', q_user, ' a_user ', a_user);
+        var formData = {
+            q_user_id: q_user,
+            a_user_id: a_user,
+            content: $("#ques").val(),
+        };
+        $.ajax({
+            type:'POST',
+            url: '/accounts/question',
+            cache: false,
+            data: formData,
+            success: function(data){
+                window.location.href="/accounts/qa?vip_user=" + a_user.toString()
+            }
+        });
+    }
+
+    function answer(question_id) {
+        console.log('-------', question_id)
+        var formData = {
+            content: $('#answer').val(),
+            question_id: question_id
+        };
+        $.ajax({
+            type:'POST',
+            url: '/accounts/reply',
+            cache: false,
+            data: formData,
+            success: function(data){
+                window.location.href="/accounts/qa"
+            }
+        });
+        console.log(pic_ids)
+    }
+</script>
+{% endblock %}

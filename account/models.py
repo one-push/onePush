@@ -233,3 +233,25 @@ class UserAttributes(models.Model):
     outside_address = models.CharField(max_length=200, default=u'', verbose_name=u'境外公司地址')
     inside_company = models.CharField(max_length=200, default=u'', verbose_name=u'境内公司名称')
     inside_address = models.CharField(max_length=200, default=u'', verbose_name=u'境内公司地址')
+
+
+class Question(models.Model):
+    """询问"""
+    from blog.models import Picture
+    q_user = models.ForeignKey(User, related_name=u'q_user', verbose_name=u'提问用户')
+    a_user = models.ForeignKey(User, related_name=u'a_user', verbose_name=u'回答用户')
+
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    content = models.CharField(max_length=200, default='', verbose_name=u'内容')
+    picture = models.ManyToManyField(Picture, related_name='q_pics', verbose_name=u'图片', blank=True)
+
+
+class Answer(models.Model):
+    """ 回答 """
+    from blog.models import Picture
+    question = models.ForeignKey(Question, related_name='question', verbose_name=u'回答的问题')
+    user = models.ForeignKey(User, verbose_name=u'回复的用户', blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    content = models.TextField(default='', verbose_name=u'评论的内容')
+    picture = models.ManyToManyField(Picture, related_name='a_pics', verbose_name=u'图片', blank=True)
+    parent = models.ForeignKey('self', verbose_name=u'回答哪条内容', blank=True, null=True)

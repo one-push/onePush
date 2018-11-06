@@ -9,6 +9,7 @@ __author__ = 'TT'
 from account.models import UserInfo, UserScore, UserFavorites, UserInfoShow
 from account.models import UserAttributes
 from account.models import VIP_LEVEL, OTHER_AREA, SOURCE_AREA
+from account.models import Question, Answer
 from django.contrib.auth.models import User, AnonymousUser
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
@@ -16,12 +17,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
 from onepush import settings
 from blog.models import Blog, Trade, Theory, BlogRelationUser, BlogReply
 from blog.serializer import BlogListSerializer
 from blog.trade.serializer import TradeListSerializer
 from blog.theory.serializer import TheoryListSerializer
 from serializer import UserInfoListSerializer, UserInfoShowListSerializer
+from serializer import QuestionAnswerListSerializer
 from blog.service import update_score, hot_area
 
 
@@ -233,6 +236,7 @@ def user_center(req):
         STATIC_URL=settings.STATIC_URL,
         user_data=user_data,
         is_self=is_self,
+        is_attention=False if is_self else UserFavorites.objects.filter(attention=user_ins, user=req.user).exists(),
         blogs=blogs,
         level_text=dict(VIP_LEVEL).get(user_ins.info.level, u'菜鸟'),
         user=user_ins,
@@ -244,6 +248,56 @@ def user_center(req):
     )
 
     return render(req, html, context)
+
+
+@login_required()
+def qa(req):
+
+    params = req.GET.dict()
+    vip_user_id = params.pop('vip_user') if 'vip_user' in params else -1
+    offset = params.get('offset', 0)
+    limit = params.get('limit', 20)
+    queryset = Question.objects.all()[offset: limit]
+    serial = QuestionAnswerListSerializer(queryset, many=True)
+    data = serial.data
+    context = dict(
+        data=data,
+        vip_user=User.objects.filter(id=vip_user_id).first(),
+    )
+    print(data)
+    return render(req, 'qa.html', context)
+
+
+@login_required()
+def question(req):
+
+    data = req.POST.dict()
+    data['user'] = req.user
+    params = dict(
+        # user=req.user,
+        a_user=User.objects.filter(id=data.get('a_user_id')).first(),
+        q_user=User.objects.filter(id=data.get('q_user_id')).first(),
+        content=data.get('content')
+    )
+    ans, is_create = Question.objects.get_or_create(**params)
+    return HttpResponseRedirect('/accounts/qa?vip_user=' + data.get('q_user_id'))
+
+
+@login_required()
+def answer(req):
+
+    data = req.POST.dict()
+    data['user'] = req.user
+    ans, is_create = Answer.objects.get_or_create(**data)
+    return HttpResponseRedirect('/accounts/qa')
+
+    # queryset = Question.objects.all()[offset: limit]
+    # serial = QuestionAnswerListSerializer(queryset, many=True)
+    # data = serial.data
+    # context = dict(
+    #     data=data,
+    # )
+    # print(data)
 
 
 class UserList(ModelViewSet):
@@ -277,8 +331,3 @@ class UserList(ModelViewSet):
                        count=len(serializer.data),
                        )
         return render(request, 'rankings.html', context)
-
-
-
-
-
