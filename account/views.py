@@ -26,6 +26,7 @@ from blog.theory.serializer import TheoryListSerializer
 from serializer import UserInfoListSerializer, UserInfoShowListSerializer
 from serializer import QuestionAnswerListSerializer
 from blog.service import update_score, hot_area
+from rest_framework.authentication import TokenAuthentication
 
 
 def index(request):
@@ -196,7 +197,9 @@ def user_center(req):
         (u'qq', u'QQ'),
         (u'desc', u'需求描述'),
     )
-
+    user = None
+    if isinstance(req.user, User):
+        user = req.user
     html = 'member.html'
     params = dict(is_delete=False)
     blogs = []
@@ -237,7 +240,7 @@ def user_center(req):
         STATIC_URL=settings.STATIC_URL,
         user_data=user_data,
         is_self=is_self,
-        is_attention=False if is_self else UserFavorites.objects.filter(attention=user_ins, user=req.user).exists(),
+        is_attention=False if is_self else UserFavorites.objects.filter(attention=user_ins, user=user).exists(),
         blogs=blogs,
         level_text=dict(VIP_LEVEL).get(user_ins.info.level, u'菜鸟'),
         user=user_ins,
@@ -303,7 +306,13 @@ def answer(req):
 
 class UserList(ModelViewSet):
 
+    permission_classes = []
+    authentication_classes = []
+
     def list(self, request, *args, **kwargs):
+        current_user = None
+        if request.user:
+            current_user = request.user
         area = request.GET.dict().get('area', None)
         queryset = UserInfo.objects.filter(is_vip=True)
         if area == u'hot':
@@ -319,7 +328,7 @@ class UserList(ModelViewSet):
         page = self.paginate_queryset(queryset)
         areas = hot_area()
         if page is not None:
-            serializer = UserInfoListSerializer(page, many=True, current_user=request.user)
+            serializer = UserInfoListSerializer(page, many=True, current_user=current_user)
             # ret_data = self.get_paginated_response(serializer.data)
             return render(request, 'rankings.html', dict(
                 users=serializer.data,
