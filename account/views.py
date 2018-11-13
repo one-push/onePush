@@ -208,7 +208,7 @@ def user_center(req):
         is_self = True
     elif not user_ins:
         user_ins = req.user
-    if isinstance(user_ins.info, UserInfo) and user_ins.info.is_vip:
+    if user_ins.info.is_vip:
         params['user'] = user_ins
         html = 'member-vip.html'
         query = Blog.objects.filter(user=user_ins, block='man').order_by('-id')

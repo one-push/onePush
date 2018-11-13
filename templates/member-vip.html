@@ -9,7 +9,7 @@
     <div class="container member-container clearfix">
 			<div class="member-aside fl">
 				<div class="head-portrait">
-					<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" />
+					<img src="{{ MEDIA_URL }}{{ user.info.head_img }}" />
 					<i class="grade"></i>
 					<div class="name">{{ user.username }}</div>
 					<p class="declaration">经验值<span>菜鸟</span>35积分<a href=""
@@ -21,11 +21,11 @@
 在任何地方发表评论：一次3分 （达人／普通会员均可）
 在任何地方点 赞 或 倒： 一次1分 （达人／普通会员均可）">积分说明</a></p>
 					<div class="btns">
-                        {% if is_attention %}
+{#                        {% if is_attention %}#}
                             <a href="/accounts/qa?vip_user={{ user.id }}" >问问看</a>
-                        {% else %}
+{#                        {% else %}#}
 {#                            <a href="" >问问看</a>#}
-                        {% endif %}
+{#                        {% endif %}#}
                     </div>
 				</div>
                 <div class="btns">
@@ -33,7 +33,7 @@
                     <a href="#" class="collection">收藏({{ favorite_count }})</a>
                 </div>
                 <div class="btns">
-                    <a href="" >消息(5)</a>
+                    <a href="" >消息({{ reply_count }})</a>
                 </div>
                 <button class="sign-out">退出登录</button>
 				<div class="items">
