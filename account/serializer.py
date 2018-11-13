@@ -49,28 +49,32 @@ class UserInfoListSerializer(ModelSerializer):
 
     @staticmethod
     def get_goods_text(obj):
-        gos = obj.goods.split(',')
-        gost = [UserInfoListSerializer.get_enum(GOODS, item) for item in gos
-                if item and UserInfoListSerializer.get_enum(GOODS, item)]
-        return ','.join(gost)
+        return obj.goods
+        # gos = obj.goods.split(',')
+        # gost = [UserInfoListSerializer.get_enum(GOODS, item) for item in gos
+        #         if item and UserInfoListSerializer.get_enum(GOODS, item)]
+        # return ','.join(gost)
 
     @staticmethod
     def get_delivery_text(obj):
-        dels = obj.delivery.split(',')
-        dt = [UserInfoListSerializer.get_enum(DELIVERY, item) for item in dels
-              if item and UserInfoListSerializer.get_enum(DELIVERY, item)]
-        return ','.join(dt)
+        # dels = obj.delivery.split(',')
+        # dt = [UserInfoListSerializer.get_enum(DELIVERY, item) for item in dels
+        #       if item and UserInfoListSerializer.get_enum(DELIVERY, item)]
+        # return ','.join(dt)
+        return obj.delivery
 
     @staticmethod
     def get_service_text(obj):
-        sers = obj.service.split(',')
-        st = [UserInfoListSerializer.get_enum(SERVICE, item) for item in sers
-              if item and UserInfoListSerializer.get_enum(SERVICE, item)]
-        return ','.join(st)
+        # sers = obj.service.split(',')
+        # st = [UserInfoListSerializer.get_enum(SERVICE, item) for item in sers
+        #       if item and UserInfoListSerializer.get_enum(SERVICE, item)]
+        # return ','.join(st)
+        return obj.service
 
     @staticmethod
     def get_source_text(obj):
-        return dict(SOURCE_AREA).get(obj.source, u'')
+        # return dict(SOURCE_AREA).get(obj.source, u'')
+        return obj.source
 
     @staticmethod
     def get_level_text(obj):

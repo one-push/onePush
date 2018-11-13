@@ -331,4 +331,5 @@ class UserList(ModelViewSet):
         context = dict(users=serializer.data,
                        count=len(serializer.data),
                        )
+
         return render(request, 'rankings.html', context)
