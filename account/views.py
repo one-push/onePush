@@ -283,7 +283,7 @@ def question(req):
         content=data.get('content')
     )
     ans, is_create = Question.objects.get_or_create(**params)
-    return HttpResponseRedirect('/accounts/qa?vip_user=' + data.get('q_user_id'))
+    return HttpResponseRedirect('/accounts/qa?vip_user=' + data.get('a_user_id'))
 
 
 @login_required()
