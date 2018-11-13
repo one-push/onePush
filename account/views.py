@@ -181,7 +181,7 @@ def user_update(req):
     return user_center(req)
 
 
-@login_required()
+# @login_required()
 def user_center(req):
     """
     用户中心
@@ -251,7 +251,7 @@ def user_center(req):
     return render(req, html, context)
 
 
-@login_required()
+# @login_required()
 def qa(req):
 
     params = req.GET.dict()
