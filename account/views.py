@@ -292,7 +292,7 @@ def answer(req):
     data = req.POST.dict()
     data['user'] = req.user
     ans, is_create = Answer.objects.get_or_create(**data)
-    return HttpResponseRedirect('/accounts/qa?vip_user=' + ans.question.a_user.id)
+    return HttpResponseRedirect('/accounts/qa?vip_user=' + str(ans.question.a_user.id))
 
     # queryset = Question.objects.all()[offset: limit]
     # serial = QuestionAnswerListSerializer(queryset, many=True)
