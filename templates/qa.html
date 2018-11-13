@@ -46,12 +46,12 @@
                         </div>
                         </div>
                     {% endfor %}
-                    {% if request.user == item.q_user %}
+{#                    {% if request.user == item.q_user %}#}
                         <div class="col-xs-12 col-sm-12 col-md-12" style="padding: 0px;">
                         <input class="col-xs-8 col-sm-8 col-md-8" id="answer"/>
                         <button style="outline:0 none !important;" onclick="answer({{ item.id }})">回复</button>
                         </div>
-                    {% endif %}
+{#                    {% endif %}#}
                 </div>
             </div>
         {% endfor %}

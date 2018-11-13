@@ -34,9 +34,9 @@ def index(request):
     if request.user:
         if isinstance(request.user, User):
             user = request.user
-            queryset = UserInfo.objects.filter(is_vip=True)[:11]
-            users = UserInfoListSerializer(queryset, many=True,
-                                           current_user=request.user)
+    queryset = UserInfo.objects.filter(is_vip=True)[:11]
+    users = UserInfoListSerializer(queryset, many=True,
+                                   current_user=request.user)
 
     context = dict(
         STATIC_URL=settings.STATIC_URL,
@@ -133,15 +133,18 @@ def user_setting(req):
 
     # 达人页面信息
     attr = UserAttributes.objects.filter(user=req.user).first()
-    attr = attr if attr else dict()
+    # attr = attr if attr else dict()
+    # if not attr:
+    #     attr['user_name'] = req.user.username
+    #     attr['user_address'] = info.address
+    # if attr and attr.type == 'person':
+    #     un = req.user.username if not attr.user_name else attr.user_name
+    #     ua = info.address if not attr.user_address else info.address
+    #     attr.user_name = un
+    #     attr.user_address = ua
+    # else:
     if not attr:
-        attr['user_name'] = req.user.username
-        attr['user_address'] = info.address
-    if attr and attr.type == 'person':
-        un = req.user.username if not attr.user_name else attr.user_name
-        ua = info.address if not attr.user_address else info.address
-        attr.user_name = un
-        attr.user_address = ua
+        attr = UserAttributes(user_name=req.user.username, user_address=info.address)
 
     context = dict(
         STATIC_URL=settings.STATIC_URL,
@@ -254,10 +257,10 @@ def user_center(req):
 def qa(req):
 
     params = req.GET.dict()
-    vip_user_id = params.pop('vip_user') if 'vip_user' in params else -1
+    vip_user_id = params.pop('vip_user') if 'vip_user' in params else 0
     offset = params.get('offset', 0)
     limit = params.get('limit', 20)
-    queryset = Question.objects.all()[offset: limit]
+    queryset = Question.objects.filter(a_user_id=vip_user_id).all()[offset: limit]
     serial = QuestionAnswerListSerializer(queryset, many=True)
     data = serial.data
     context = dict(
