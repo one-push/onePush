@@ -311,7 +311,7 @@ class UserList(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         current_user = None
-        if request.user:
+        if isinstance(request.user, User):
             current_user = request.user
         area = request.GET.dict().get('area', None)
         queryset = UserInfo.objects.filter(is_vip=True)
