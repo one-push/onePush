@@ -40,7 +40,7 @@ SERVICE = (
 )
 
 SOURCE_AREA = (
-    (u'USA', u'美国'),
+    (u'America', u'美国'),
     (u'Canada', u'加拿大'),
     (u'UK', u'英国'),
     (u'France', u'法国'),

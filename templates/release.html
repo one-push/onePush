@@ -40,9 +40,9 @@
 					<select class="form-control" style="max-width: 240px" name="source">
                         {% for item in contries %}
                             {% if item.value == user_info.source %}
-                                <option value="{{ item.value }}" selected>{{ item.value }}</option>
+                                <option value="{{ item.key }}" selected>{{ item.value }}</option>
                             {% else %}
-                               <option value="{{ item.value }}">{{ item.value }}</option>
+                               <option value="{{ item.key }}">{{ item.value }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>

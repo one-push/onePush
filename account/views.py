@@ -100,8 +100,6 @@ def user_setting(req):
     attr_company = [u'attr_outside_company', u'attr_outside_address',
                     u'attr_inside_company', u'attr_inside_address']
     info = req.user.info
-    print(req.POST)
-    print(info.id)
     if req.method == 'POST':
         req_data = req.POST.dict()
 
