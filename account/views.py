@@ -36,7 +36,7 @@ def index(request):
             user = request.user
     queryset = UserInfo.objects.filter(is_vip=True)[:11]
     users = UserInfoListSerializer(queryset, many=True,
-                                   current_user=request.user)
+                                   current_user=user)
 
     context = dict(
         STATIC_URL=settings.STATIC_URL,
