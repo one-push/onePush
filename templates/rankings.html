@@ -24,8 +24,8 @@
 				<ul class="clearfix">
 					{% for item in users %}
                     <li>
-						<a href="#">
-							<img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" />
+						<a href="/accounts/center?user_id={{ item.user_id }}">
+							<img src="{{ MEDIA_URL }}{{ item.info.head_img }}" />
 							<div class="info">
 								<div class="col name">{{ item.user.username }}</div>
 								<div class="col">经验值：{{ item.level_text }}</div>
