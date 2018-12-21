@@ -34,6 +34,11 @@ class UserInfoListSerializer(ModelSerializer):
     attention_ids = SerializerMethodField()
     is_favorite = SerializerMethodField()
     is_attention = SerializerMethodField()
+    head_img = SerializerMethodField()
+
+    @staticmethod
+    def head_img(obj):
+        return obj.head_img or 'uploads/1545378607288.jpg'
 
     @staticmethod
     def get_user_id(obj):
@@ -125,7 +130,7 @@ class UserInfoListSerializer(ModelSerializer):
                   'open_id', 'is_buyer', 'head_img', 'desc',  'goods', 'source',
                   'delivery', 'service', 'wx', 'qq', 'phone', 'email', 'www',
                   'created_at', 'last_login_at', 'is_favorite', 'is_attention',
-                  'favorite_ids', 'attention_ids')
+                  'favorite_ids', 'attention_ids',)
 
 
 class UserFavoriteListSerializer(ModelSerializer):
