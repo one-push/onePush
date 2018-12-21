@@ -162,9 +162,9 @@
 						</a>
 					</li>
 					<li>
-						<img src="{{ STATIC_URL }}images/232x300-3.jpg">
-						<a href="/accounts/users?area=中国">
-							<h4>中国</h4>
+						<img src="{{ STATIC_URL }}images/Singapore.jpeg">
+						<a href="/accounts/users?area=新加坡">
+							<h4>新加坡</h4>
 						</a>
 					</li>
 				</ul>
@@ -179,7 +179,7 @@
 					{% for item in da_list %}
 					<li>
 						<a href="/accounts/center?user_id={{ item.user_id }}">
-							<img src="{{ MEDIA_URL }}{{ item.head_img }}" />
+							<img src="{{ MEDIA_URL }}{{ item.headimg }}" />
 							<div class="info">
 								<div class="col name">{{ item.user_name }}</div>
 								<div class="col">经验值：{{ item.level_text }}</div>

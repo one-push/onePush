@@ -51,7 +51,7 @@ SOURCE_AREA = (
     (u'Japan', u'日本'),
     (u'Korea', u'韩国'),
     (u'HKM', u'港澳'),
-    (u'China', u'中国')
+    (u'Singapore', u'新加坡')
 )
 
 OTHER_AREA = [
@@ -162,6 +162,10 @@ class UserInfo(models.Model):
     # attention = models.ManyToManyField(User, related_name=u'user_att', verbose_name=u'关注的用户', blank=True)
     # 收藏该用户的用户
     # favorite = models.ManyToManyField(User, related_name=u'user_fav', verbose_name=u'收藏的用户', blank=True)
+
+    @property
+    def headimg(self):
+        return self.head_img or 'uploads/1545378607288.jpg'
 
 
 class UserScore(models.Model):
