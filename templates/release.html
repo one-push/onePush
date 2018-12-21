@@ -14,11 +14,11 @@
 			<div class="item">
 				<label>头像：</label>
 				<div class="info infoIMG">
-					<img id="user-img" src="{{ MEDIA_URL }}{{ request.user.info.headimg }}"/>
+					<img id="user-img" src="{{ MEDIA_URL }}{{ request.user.info.head_img }}"/>
 					<div class="btn-upload">
                         <input id="user-upload-img" type="file"  onchange="uploadFile()">
 					    <span>上传图片</span>
-                        <input id="user-upload-img1" hidden="true" name="head_img" value="{{ request.user.info.headimg }}">
+                        <input id="user-upload-img1" hidden="true" name="head_img" value="{{ request.user.info.head_img }}">
                     </div>
 				</div>
 			</div>

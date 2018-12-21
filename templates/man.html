@@ -27,7 +27,7 @@
           {% for item in data %}
             <div class="col-xs-12 col-md-12" style="padding-bottom: 20px; padding-top: 5px;">
                 <div class="col-xs-2 col-md-2">
-                    <img src="{{ MEDIA_URL }}{{ item.user.info.headimg }}" />
+                    <img src="{{ MEDIA_URL }}{{ item.user.info.head_img }}" />
                     <div style="padding-top: 5px">
                         <label class="fl">{{ item.source }}</label>
                         <button class="fr" onclick="favorite({{ item.owner_id }})">关注</button>
@@ -181,7 +181,7 @@
 {#                <li>#}
 {#                    <div style="width: 600px; height: 350px">#}
 {#                    <div style=" width:30%; float:left; ">#}
-{#                        <img src="{{ MEDIA_URL }}{{ request.user.info.headimg }}" style=" width:165px; height:165px " />#}
+{#                        <img src="{{ MEDIA_URL }}{{ request.user.info.head_img }}" style=" width:165px; height:165px " />#}
 {#                        <label>{{ item.source }}</label>#}
 {#                        <button onclick="favorite({{ item.owner_id }})">收藏</button>#}
 {#                    </div>#}
